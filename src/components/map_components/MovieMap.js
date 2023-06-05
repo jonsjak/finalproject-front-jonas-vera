@@ -2,7 +2,7 @@ import React from 'react';
 import { MapContainer, Marker, Popup, TileLayer } from 'react-leaflet';
 import { useDispatch } from 'react-redux';
 import location from 'reducers/location';
-import sampleData from '../../data/sampleData';
+import movieData from '../../data/movies.json';
 
 // Custom icon if we want
 /* import L from 'leaflet';
@@ -31,13 +31,14 @@ export const MovieMap = () => {
         url="http://services.arcgisonline.com/arcgis/rest/services/NatGeo_World_Map/MapServer/tile/{z}/{y}/{x}"
         attribution='Tiles &copy; <a href="https://www.nationalgeographic.org/">National Geographic Society</a> | Data &copy; <a href="https://www.arcgis.com/home/item.html?id=2b93b06dc0dc4e809d3c8db5cb96ba69">Esri</a>' />
 
-      {sampleData.map((movie) => (
+      {movieData.map((movie) => (
         <Marker
           key={movie.id}
-          position={[movie.lat, movie.lng]}>
+          position={movie.coordinates}>
           <Popup>
-            <h2>{movie.movie}</h2>
-            <p>{movie.plot}</p>
+            <h2>{movie.title}</h2>
+            <p>{movie.location}</p>
+            {/* Add link round button */}
             <button
               type="button"
               onClick={
