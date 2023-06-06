@@ -12,6 +12,7 @@ import { NotFound } from 'components/bars_and_navigation/NotFound';
 import ResponsiveAppBar from 'components/bars_and_navigation/Navbar'
 import About from 'components/bars_and_navigation/About';
 import { MovieMap } from 'components/map_components/MovieMap';
+/* import { MovieList } from 'components/movie_details/MovieList'; */
 
 const reducer = combineReducers({
   user: user.reducer,
