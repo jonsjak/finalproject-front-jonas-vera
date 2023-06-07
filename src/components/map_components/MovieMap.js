@@ -12,7 +12,7 @@ export const MovieMap = () => {
   const movieItems = useSelector((store) => store.location.movies);
   const movieCoordinates = useSelector((store) => store.location.coordinates);
   const movieUrl = process.env.REACT_APP_MOVIE_URL;
-  const isLoading = useSelector((store) => store.location.isLoading); // Add isLoading state
+  const isLoading = useSelector((store) => store.location.isLoading); // Add isLoading state 
   const [detailPage, setDetailPage] = useState(false)
 
   useEffect(() => {
@@ -53,13 +53,9 @@ export const MovieMap = () => {
     dispatch(location.actions.setMovies(movie.movie));
   };
 
-  const handleToggleDetails = () => {
-    setDetailPage(!detailPage);
-  };
-
-  const handleOnReadClick = (_id) => {
-    dispatch(location.actions.setShowMovieDetails(_id));
-    handleToggleDetails()
+  const handleOnReadClick = (movie) => {
+    console.log(movie)
+    dispatch(location.actions.setActiveMovie(movie));
   };
 
   if (isLoading) {
@@ -90,7 +86,7 @@ export const MovieMap = () => {
                 <button
                   type="button"
                   onClick={
-                    () => handleOnReadClick(movie._id)
+                    () => handleOnReadClick(movie)
                   }> Read more
                   </button>
                   <button

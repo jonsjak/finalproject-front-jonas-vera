@@ -6,7 +6,8 @@ const location = createSlice({
   initialState: {
     movies: null,
     coordinates: [],
-    isLoading: true
+    isLoading: true,
+    activeMovie: null
   },
   reducers: {
     setMovies: (store, action) => {
@@ -18,31 +19,11 @@ const location = createSlice({
     setLoading: (store, action) => {
       store.isLoading = action.payload;
     },
-    setShowMovieDetails: (state, action) => {
-      // Find the selected movie by its _id
-      const selectedMovie = state.movies.find((movie) => movie._id === action.payload);
-    
-      if (selectedMovie) {
-        // Toggle the showMovieDetails property of the selected movie
-        const updatedMovies = state.movies.map((movie) => {
-          if (movie._id === action.payload) {
-            return {
-              ...movie,
-              showMovieDetails: !movie.showMovieDetails, // Toggle the value
-            };
-          }
-          return movie;
-        });
-    
-        return {
-          ...state,
-          movies: updatedMovies,
-        };
+    setActiveMovie: (store, action) => {
+      store.activeMovie = action.payload;
       }
-    
-      return state; // Return the current state if the movie is not found
     }
   }
-});
+);
 
 export default location;
