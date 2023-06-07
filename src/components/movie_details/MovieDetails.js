@@ -13,6 +13,7 @@ import FavoriteIcon from '@mui/icons-material/Favorite';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import { useSelector } from 'react-redux';
+import Carousel from 'react-material-ui-carousel';
 
 const ExpandMore = styled((props) => {
   const { expand, ...other } = props; // eslint-disable-line prefer-object-spread
@@ -36,7 +37,7 @@ export const MovieDetails = () => {
   return (
     <div>
       {selectedMovie && (
-        <Card sx={{ maxWidth: 345, position: 'absolute', right: '30px', top: '3e0px', zIndex: '999' }}>
+        <Card sx={{ maxWidth: 345, position: 'absolute', right: '30px', top: '30px', zIndex: '999', width: '345px', maxHeight: '85vh', overflow: 'scroll' }}>
           <CardHeader
             action={
               <IconButton aria-label="settings">
@@ -44,23 +45,30 @@ export const MovieDetails = () => {
               </IconButton>
             }
             title={selectedMovie.title}
-            subheader={`(${selectedMovie.Year}), ${selectedMovie.Country}`} />
-          <CardMedia
-            component="img"
-            height="184.645px"
-            width="100%"
-            sx={{ objectFit: 'cover' }}
-            image={selectedMovie.location_image}
-            alt={`Image from ${selectedMovie.title}`} />
-          <CardMedia
-            component="img"
-            height="184.645px"
-            width="0%"
-            sx={{ objectFit: 'cover' }}
-            image={selectedMovie.movie_location_still}
-            alt={`Image from ${selectedMovie.title}`} />
+            subheader={`(${selectedMovie.Year}), ${selectedMovie.Country}`}
+            sx={{ paddingBottom: '0px' }} />
+          <Typography variant="body2" color="text.secondary" sx={{ padding: '16px', paddingTop: '0px', fontStyle: 'italic', fontSize: '1rem' }}>
+            {selectedMovie.Genre}
+          </Typography>
+          <Carousel
+            animation="fade">
+            <CardMedia
+              component="img"
+              height="184.645px"
+              width="100%"
+              sx={{ objectFit: 'cover' }}
+              image={selectedMovie.location_image}
+              alt={`Image from ${selectedMovie.title}`} />
+            <CardMedia
+              component="img"
+              height="184.645px"
+              width="100%"
+              sx={{ objectFit: 'cover' }}
+              image={selectedMovie.movie_location_still}
+              alt={`Image from ${selectedMovie.title}`} />
+          </Carousel>
           <CardContent>
-            <Typography variant="body1" color="text.secondary" sx={{ marginBottom: '10px' }}>
+            <Typography variant="body1" color="text.primary" paragraph>
               {selectedMovie.location}
             </Typography>
             <Typography variant="body2" color="text.secondary">
@@ -81,13 +89,23 @@ export const MovieDetails = () => {
           </CardActions>
           <Collapse in={expanded} timeout="auto" unmountOnExit>
             <CardContent>
-              <Typography paragraph>{selectedMovie.Plot}</Typography>
-              <Typography paragraph>Heat 1/2 cup</Typography>
-              <Typography paragraph>bring to a boil.</Typography>
-              <Typography paragraph>Add rice</Typography>
+              <div style={{ display: 'flex' }}>
+                <Typography variant="body2" paragraph alignLeft>Director / Writer:</Typography>
+                <Typography paragraph alignRight>{`${selectedMovie.Director} / ${selectedMovie.Writer}`}</Typography>
+              </div>
+              <Typography variant="body2" paragraph>Actors: {selectedMovie.Actors}</Typography>
+              <Typography variant="body2" paragraph>Language: {selectedMovie.Language}</Typography>
+              <Typography variant="body2" paragraph>Production Country: {selectedMovie.Country}</Typography>
               <Typography>
-                Set aside off of the heat to let rest for 10 minutes, and then serve.
+                {selectedMovie.Plot}
               </Typography>
+              <CardMedia
+                component="img"
+                height="100%"
+                width="100%"
+                sx={{ objectFit: 'cover' }}
+                image={selectedMovie.Poster}
+                alt={`Poster for ${selectedMovie.title}`} />
             </CardContent>
           </Collapse>
         </Card>
