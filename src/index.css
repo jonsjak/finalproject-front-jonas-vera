@@ -20,3 +20,12 @@ code {
 .leaflet-control-attribution.leaflet-control {
   display: none;
 }
+
+.leaflet-popup-content {
+  margin: 0px;
+}
+
+.leaflet-popup-content-wrapper {
+  border-radius: 4px;
+  padding: 0px;
+}

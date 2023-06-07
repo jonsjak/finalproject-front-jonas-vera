@@ -1,10 +1,11 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable */
 /* import { MovieDetails } from 'components/movie_details/MovieDetails'; */
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { MapContainer, Marker, Popup, TileLayer, FeatureGroup } from 'react-leaflet';
 import { useDispatch, useSelector } from 'react-redux';
 import location from 'reducers/location';
+import { MovieCard } from '../map_components/MovieCard';
 
 export const MovieMap = () => {
   const dispatch = useDispatch();
@@ -13,7 +14,6 @@ export const MovieMap = () => {
   const movieCoordinates = useSelector((store) => store.location.coordinates);
   const movieUrl = process.env.REACT_APP_MOVIE_URL;
   const isLoading = useSelector((store) => store.location.isLoading); // Add isLoading state 
-  const [detailPage, setDetailPage] = useState(false)
 
   useEffect(() => {
     const fetchCoordinates = async () => {
@@ -77,29 +77,8 @@ export const MovieMap = () => {
             key={movie._id}
             // eslint-disable-next-line max-len
             position={movieCoordinates ? movieCoordinates[index] : [-33.893, 151.1988]}>
-            <Popup>
-            {!detailPage && (
-              <>
-                <h2>{movie.title}</h2>
-                <p style={{margin: '5px'}}>{movie.location}</p>
-                <img src={movie.movie_location_still} alt="location-img" style={{width: '100%'}}/>
-                <button
-                  type="button"
-                  onClick={
-                    () => handleOnReadClick(movie)
-                  }> Read more
-                  </button>
-                  <button
-                    type="button"
-                    onClick={
-                      () => handleLocationClick(movie)
-                    }>Save location to state
-                  </button>
-                </>
-              )}
-              {detailPage && (
-                <img src={movie.location_image} alt="location-img" style={{ width: '100%' }} />
-              )}
+            <Popup style={{ margin: '0px' }}>
+              <MovieCard movie={movie} handleOnReadClick={handleOnReadClick} handleLocationClick={handleLocationClick} />
             </Popup>
           </Marker>
         ))}
