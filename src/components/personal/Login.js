@@ -1,5 +1,5 @@
 /* eslint-disable react/jsx-props-no-spreading */
-import * as React from 'react';
+import React from 'react';
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -14,28 +14,56 @@ import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { ThemeProvider } from '@mui/material/styles';
 import { muiTheme } from 'MUI-styling/muiTheme';
-
-export const Copyright = (props) => {
-  return (
-    <Typography variant="body2" color="text.secondary" align="center" {...props}>
-      {'Copyright © '}
-      <Link color="inherit" href="https://mui.com/">
-        Your Website
-      </Link>{' '}
-      {new Date().getFullYear()}
-      .
-    </Typography>
-  );
-};
+import { useDispatch } from 'react-redux';
+/* import { useDispatch, useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom'; */
+import user from 'reducers/user';
 
 export const Login = () => {
-  const handleSubmit = (event) => {
+  const loginUrl = process.env.REACT_APP_LOGIN_URL;
+  const dispatch = useDispatch();
+
+  // Redirect to personal page or personalized map
+  /* useEffect(() => {
+    if (accessToken) {
+      navigate('/personal');
+    }
+  }, [accessToken, navigate]); */
+
+  // Login-handler
+  const handleLoginSubmit = (event) => {
     event.preventDefault();
-    const data = new FormData(event.currentTarget);
-    console.log({
-      email: data.get('email'),
-      password: data.get('password')
-    });
+    const { username, password } = event.target.elements;
+    const data = {
+      username: username.value,
+      password: password.value
+    };
+
+    const options = {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(data)
+    };
+    // fetches and dispatches data to store
+    fetch(loginUrl, options)
+      .then((response) => response.json())
+      .then((json) => {
+        if (json.success) {
+          console.log(json);
+          dispatch(user.actions.setAccessToken(json.response.accessToken));
+          dispatch(user.actions.setUserName(json.response.username));
+          dispatch(user.actions.setUserId(json.response.id));
+          dispatch(user.actions.setError(data.response));
+        } else {
+          dispatch(user.actions.setAccessToken(null));
+          dispatch(user.actions.setUserName(null));
+          dispatch(user.actions.setUserId(null));
+          dispatch(user.actions.setError(data.response));
+        }
+      })
+      .catch((error) => console.log(error))
   };
 
   return (
@@ -55,15 +83,16 @@ export const Login = () => {
           <Typography component="h1" variant="h5">
             Sign in
           </Typography>
-          <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
+
+          <Box component="form" onSubmit={handleLoginSubmit} noValidate sx={{ mt: 1 }}>
             <TextField
               margin="normal"
               required
               fullWidth
-              id="email"
-              label="Email Address"
-              name="email"
-              autoComplete="email"
+              id="username"
+              label="Username"
+              name="username"
+              autoComplete="username"
               autoFocus />
             <TextField
               margin="normal"
@@ -98,7 +127,6 @@ export const Login = () => {
             </Grid>
           </Box>
         </Box>
-        <Copyright sx={{ mt: 8, mb: 4 }} />
       </Container>
     </ThemeProvider>
   );

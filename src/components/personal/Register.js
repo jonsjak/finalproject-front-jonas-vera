@@ -45,7 +45,7 @@ export const Register = () => {
       .then((response) => response.json())
       .then((json) => {
         console.log(json);
-        // what to do more with the recived data?
+        // what to do more with the recived data? Redirect to...
         dispatch(user.actions.setUserName(json.response.username));
         dispatch(user.actions.setUserId(json.response.id));
         dispatch(user.actions.setAccessToken(json.response.accessToken));
