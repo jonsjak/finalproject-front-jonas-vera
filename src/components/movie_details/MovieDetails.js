@@ -43,7 +43,7 @@ export const MovieDetails = () => {
   return (
     <div>
       {selectedMovie && (
-        <Card sx={{ maxWidth: 345, position: 'absolute', right: '150px', top: '30px', zIndex: '999', width: '345px', maxHeight: '85vh', overflow: 'scroll' }}>
+        <Card sx={{ maxWidth: 345, position: 'absolute', right: '20px', top: '30px', zIndex: '999', width: '345px', maxHeight: '85vh', overflow: 'scroll' }}>
           <CardHeader
             action={
               <IconButton

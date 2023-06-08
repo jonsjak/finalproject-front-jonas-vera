@@ -59,11 +59,11 @@ export const Register = () => {
   };
   return (
     <ThemeProvider theme={muiTheme}>
-      <Container component="main" maxWidth="xs">
-        <CssBaseline />
+      <Container component="main" maxWidth="xs" sx={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)', zIndex: '999', maxHeight: '423px', padding: '30px' }}>
+        <CssBaseline sx={{ marginTop: '0px' }} />
         <Box
           sx={{
-            marginTop: 8,
+            marginTop: '0px',
             display: 'flex',
             flexDirection: 'column',
             alignItems: 'center'

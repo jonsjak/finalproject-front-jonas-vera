@@ -1,11 +1,12 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable */
 /* import { MovieDetails } from 'components/movie_details/MovieDetails'; */
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { MapContainer, Marker, Popup, TileLayer } from 'react-leaflet';
 import { useDispatch, useSelector } from 'react-redux';
 import location from 'reducers/location';
 import { MovieCard } from '../map_components/MovieCard';
+import { Loader } from 'components/bars_and_navigation/Loader';
 
 export const MovieMap = () => {
   const dispatch = useDispatch();
@@ -38,8 +39,8 @@ export const MovieMap = () => {
             console.log('no movie location');
           }
         }
-
-        dispatch(location.actions.setLoading(false))
+        setTimeout(() => dispatch(location.actions.setLoading(false)), 2000)
+        
       } catch (error) {
         console.log(error);
       }
@@ -60,7 +61,7 @@ export const MovieMap = () => {
 
   if (isLoading) {
     return (
-      <div>Loading...</div>
+      <Loader />
     )
     // Show loading spinner while fetching
   }
@@ -72,7 +73,7 @@ export const MovieMap = () => {
 
   return (
     <div style={{ position: 'relative'}}>
-      <MapContainer center={startingPosition} maxBounds={outerBounds} maxBoundsViscosity={1} zoom={2} scrollWheelZoom={true} minZoom={1} zoomStart={2}>
+      <MapContainer center={startingPosition} maxBounds={outerBounds} maxBoundsViscosity={1} zoom={2} scrollWheelZoom={true} minZoom={3} zoomStart={2}>
         <TileLayer
           bounds={outerBounds}
           noWrap={true}
@@ -86,7 +87,7 @@ export const MovieMap = () => {
             // eslint-disable-next-line max-len
             position={movieCoordinates ? movieCoordinates[index] : [-33.893, 151.1988]}>
             <Popup style={{ margin: '0px' }}>
-              <MovieCard movie={movie} handleOnReadClick={handleOnReadClick} handleLocationClick={handleLocationClick} />
+              <MovieCard movie={movie} handleOnReadClick={handleOnReadClick} />
             </Popup>
           </Marker>
         ))}

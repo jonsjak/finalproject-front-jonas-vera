@@ -5,6 +5,7 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  overflow: hidden;
 }
 
 code {
@@ -31,73 +32,6 @@ code {
   padding: 0px;
 }
 
-.ball {
-  display: inline-block;
-  width: 100%;
-  height: 100%;
-  margin: 0;
-  border-radius: 50%;
-  position: relative;
-  background: radial-gradient(circle at 50% 120%,  #ee8d59, #f89865 10%, #e95b0c 80%, #b84000 100%);
-  animation-name: rotate;
-  animation-duration: 12s;
-  animation-iteration-count: infinite;
-  animation-timing-function: linear;
-}
-.ball:before {
-  content: "";
-  position: absolute;
-  top: 1%;
-  left: 5%;
-  width: 90%;
-  height: 90%;
-  border-radius: 50%;
-  background: radial-gradient(circle at 50% 0px, #ffffff, rgba(255, 255, 255, 0) 58%);
-  z-index: 2;
-}
-
-.ball .shadow {
-position: absolute;
-width: 100%;
-height: 100%;
-background: radial-gradient(circle at 50% 50%, rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.1) 40%, rgba(0, 0, 0, 0) 50%);
--webkit-transform: rotateX(90deg) translateZ(-150px);
--moz-transform: rotateX(90deg) translateZ(-150px);
--ms-transform: rotateX(90deg) translateZ(-150px);
--o-transform: rotateX(90deg) translateZ(-150px);
-transform: rotateX(90deg) translateZ(-150px);
-z-index: -1;
-}
-.stage {
-  width: 70px;
-  height: 70px;
-  display: inline-block;
-  margin: 20px;
-  -webkit-perspective: 1200px;
-  -moz-perspective: 1200px;
-  -ms-perspective: 1200px;
-  -o-perspective: 1200px;
-  perspective: 1200px;
-  -webkit-perspective-origin: 50% 50%;
-  -moz-perspective-origin: 50% 50%;
-  -ms-perspective-origin: 50% 50%;
-  -o-perspective-origin: 50% 50%;
-  perspective-origin: 50% 50%;
-}
-
-@keyframes rotate {
-  from {
-    background-position: 0px 0px;
-  }
-  to {
-    background-position: 610px 0px;
-  }
-}
-
-.logo {
-  margin: 20px;
-}
-
 .diagonal-box {
 	background: #008ca5;
 	transform: skewY(-8deg);
@@ -115,22 +49,114 @@ z-index: -1;
 
 @import url(https://fonts.googleapis.com/css?family=Arimo:400,400italic,700,700italic);
 
+main {
+  z-index: 2;
+  position: relative;
+  height: 100%;
+  background-color: #2D3142;
+  -webkit-transition: transform .7s ease-in-out;
+  -moz-transition: transform .7s ease-in-out;
+  -ms-transition: transform .7s ease-in-out;
+  -o-transition: transform .7s ease-in-out;
+  transition: transform .7s ease-in-out;
+}
+
 .sidebar {
   height: 100%;
-    width: 283px;
-    position: fixed;
-    top: 0;
-    z-index: 1;
-    right: -85px;
-    background-color: #EF8354;
-    transform: skewX(-12deg);
+  width: 360px;
+  position: fixed;
+  top: 0;
+  z-index: 1;
+  right: -459px;
+  background-color: #EF8354;
+  transition: transform .7s ease-in-out;
+  -moz-transition: transform .7s ease-in-out;
+  -ms-transition: transform .7s ease-in-out;
+  -o-transition: transform .7s ease-in-out;
+  transition: transform .7s ease-in-out;
+  -webkit-transform: skewX(-14deg);
+  -moz-transform: skewX(-14deg);
+  -ms-transform: skewX(-14deg);
+  -o-transform: skewX(-14deg);
+  transform: skewX(-14deg);
+}
+
+.sidebar.active { 
+  transition: transform .7s ease-in-out;
+  -moz-transition: transform .7s ease-in-out;
+  -ms-transition: transform .7s ease-in-out;
+  -o-transition: transform .7s ease-in-out;
+  -webkit-transform: skewX(-14deg) translateX(-300px);
+  -moz-transform: skewX(-14deg) translateX(-300px);
+  -ms-transform: skewX(-14deg) translateX(-300px);
+  -o-transform: skewX(-14deg) translateX(-300px);
+  transform: skewX(-14deg) translateX(-300px);
+}
+
+.filterpage {
+  display: none;
+  max-width: 250;
+  position: absolute;
+  z-index: 999;
+  bottom: 0px;
+  left: -270px;
+  flex-direction: column;
+  background-color: white;
+  padding: 20px;
+  transition: transform .7s ease-in-out;
+  -moz-transition: transform .7s ease-in-out;
+  -ms-transition: transform .7s ease-in-out;
+  -o-transition: transform .7s ease-in-out;
+  transition: transform .7s ease-in-out;
+}
+
+.filterpage.active {
+  display: flex;
+  transition: transform .7s ease-in-out;
+  -moz-transition: transform .7s ease-in-out;
+  -ms-transition: transform .7s ease-in-out;
+  -o-transition: transform .7s ease-in-out;
+  -webkit-transform: translateX(270px);
+  -moz-transform: translateX(270px);
+  -ms-transform: translateX(270px);
+  -o-transform: translateX(270px);
+  transform: translateX(270px);
+}
+
+.personal-page {
+  max-width: 250;
+  position: absolute;
+  z-index: 999;
+  bottom: 0px;
+  right:  -709px;
+  display: none;
+  flex-direction: column;
+  background-color: white;
+  transition: transform 1.5s ease-in-out;
+  -moz-transition: transform 1.5s ease-in-out;
+  -ms-transition: transform 1.5s ease-in-out;
+  -o-transition: transform 1.5s ease-in-out;
+  transition: transform 1.5s ease-in-out;
+}
+
+.personal-page.active {
+  display: flex;
+  transition: transform 1.5s ease-in-out;
+  -moz-transition: transform 1.5s ease-in-out;
+  -ms-transition: transform 1.5s ease-in-out;
+  -o-transition: transform 1.5s ease-in-out;
+  -webkit-transform: translateX(-709px);
+  -moz-transform: translateX(-709px);
+  -ms-transform: translateX(-709px);
+  -o-transform: translateX(-709px);
+  transform: translateX(-709px);
 }
 
 .bar {
   display: block;
   height: 5px;
   width: 50px;
-  background-color: white;
+  background-color: #2D3142;
   margin: 10px auto;
 }
 
@@ -206,11 +232,11 @@ z-index: -1;
 }
 
 .move-to-left {
-  -webkit-transform: translateX(-110px);
-  -moz-transform: translateX(-110px);
-  -ms-transform: translateX(-110px);
-  -o-transform: translateX(-110px);
-  transform: translateX(-110px);
+  -webkit-transform: translateX(-90px);
+  -moz-transform: translateX(-90px);
+  -ms-transform: translateX(-90px);
+  -o-transform: translateX(-90px);
+  transform: translateX(-90px);
 }
 
 nav {
@@ -222,12 +248,9 @@ nav {
   margin: 0;
   list-style: none;
   position: relative;
-  bottom: -500px;
-  right: 110px;
-  text-align: right;
-  display: flex;
-  flex-direction: column;
-  gap:20px;
+  bottom: -352px;
+  right: -29px;
+  text-align: left;
 }
 
 .sidebar-item {
@@ -338,18 +361,6 @@ nav {
   -ms-transition: all 1s ease;
   -o-transition: all 1s ease;
   transition: all 1s ease;
-}
-
-main {
-  z-index: 2;
-  position: relative;
-  height: 100%;
-  background-color: #2D3142;
-  -webkit-transition: transform .7s ease-in-out;
-  -moz-transition: transform .7s ease-in-out;
-  -ms-transition: transform .7s ease-in-out;
-  -o-transition: transform .7s ease-in-out;
-  transition: transform .7s ease-in-out;
 }
 
 @media (min-width: 480px) {

@@ -6,7 +6,7 @@ import CardMedia from '@mui/material/CardMedia';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 
-export const MovieCard = ({ movie, handleOnReadClick, handleLocationClick }) => {
+export const MovieCard = ({ movie, handleOnReadClick }) => {
   return (
     <Card sx={{ maxWidth: 345 }}>
       <CardMedia
@@ -16,10 +16,10 @@ export const MovieCard = ({ movie, handleOnReadClick, handleLocationClick }) => 
         image={movie.movie_location_still} />
       <CardContent>
         <Typography gutterBottom variant="h2" component="div" sx={{ fontSize: '2.5rem' }}>
-          {movie.title}
-        </Typography>
-        <Typography variant="body2" color="text.secondary">
           {movie.location}
+        </Typography>
+        <Typography variant="body1" color="text.secondary">
+          Film scene from <span style={{ color: 'black', fontStyle: 'italic' }}>{movie.title}</span>
         </Typography>
       </CardContent>
       <CardActions>
@@ -27,11 +27,6 @@ export const MovieCard = ({ movie, handleOnReadClick, handleLocationClick }) => 
           onClick={() => handleOnReadClick(movie)}
           size="small">
           Read more
-        </Button>
-        <Button
-          onClick={() => handleLocationClick(movie)}
-          size="small">
-          Save
         </Button>
       </CardActions>
     </Card>
