@@ -8,17 +8,18 @@ import Typography from '@mui/material/Typography';
 
 export const MovieCard = ({ movie, handleOnReadClick }) => {
   return (
-    <Card sx={{ maxWidth: 345 }}>
+    <Card sx={{ maxWidth: 301 }}>
       <CardMedia
         component="img"
         alt="location-img"
-        height="140"
+        height="160"
+        sx={{ objectFit: 'cover' }}
         image={movie.movie_location_still} />
       <CardContent>
-        <Typography gutterBottom variant="h2" component="div" sx={{ fontSize: '2.5rem' }}>
+        <Typography gutterBottom variant="h2" component="div" sx={{ fontSize: '2.2rem' }}>
           {movie.location}
         </Typography>
-        <Typography variant="body1" color="text.secondary">
+        <Typography variant="body1" color="text.secondary" sx={{ margin: '0.3em' }}>
           Film scene from <span style={{ color: 'black', fontStyle: 'italic' }}>{movie.title}</span>
         </Typography>
       </CardContent>

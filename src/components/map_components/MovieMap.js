@@ -86,7 +86,7 @@ export const MovieMap = () => {
             key={movie._id}
             // eslint-disable-next-line max-len
             position={movieCoordinates ? movieCoordinates[index] : [-33.893, 151.1988]}>
-            <Popup style={{ margin: '0px' }}>
+            <Popup style={{ margin: '0px', width: '300px' }}>
               <MovieCard movie={movie} handleOnReadClick={handleOnReadClick} />
             </Popup>
           </Marker>

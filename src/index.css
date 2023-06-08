@@ -36,7 +36,7 @@ code {
 	background: #008ca5;
 	transform: skewY(-8deg);
   position: absolute;
-  z-index: 999;
+  z-index: 996;
   top: -146px;
   width: 100%;
   height: 194px;
@@ -94,7 +94,7 @@ main {
 }
 
 .filterpage {
-  display: none;
+  display: flex;
   max-width: 250;
   position: absolute;
   z-index: 999;
@@ -111,7 +111,6 @@ main {
 }
 
 .filterpage.active {
-  display: flex;
   transition: transform .7s ease-in-out;
   -moz-transition: transform .7s ease-in-out;
   -ms-transition: transform .7s ease-in-out;
@@ -124,12 +123,13 @@ main {
 }
 
 .personal-page {
+  width: 345px;
   max-width: 250;
-  position: absolute;
+  position: fixed;
   z-index: 999;
   bottom: 0px;
-  right:  -709px;
-  display: none;
+  right:  -360px;
+  display: flex;
   flex-direction: column;
   background-color: white;
   transition: transform 1.5s ease-in-out;
@@ -140,16 +140,15 @@ main {
 }
 
 .personal-page.active {
-  display: flex;
   transition: transform 1.5s ease-in-out;
   -moz-transition: transform 1.5s ease-in-out;
   -ms-transition: transform 1.5s ease-in-out;
   -o-transition: transform 1.5s ease-in-out;
-  -webkit-transform: translateX(-709px);
-  -moz-transform: translateX(-709px);
-  -ms-transform: translateX(-709px);
-  -o-transform: translateX(-709px);
-  transform: translateX(-709px);
+  -webkit-transform: translateX(-360px);
+  -moz-transform: translateX(-360px);
+  -ms-transform: translateX(-360px);
+  -o-transform: translateX(-360px);
+  transform: translateX(-360px);
 }
 
 .bar {

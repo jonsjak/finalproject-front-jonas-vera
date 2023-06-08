@@ -20,7 +20,7 @@ export const IconMenu = () => {
   }
 
   return (
-    <menu style={{ position: 'absolute', left: '0px', bottom: '0px', zIndex: '997', display: 'flex', flexDirection: 'column', gap: '30px', margin: '30px', padding: '0px' }}>
+    <menu style={{ position: 'absolute', left: '0px', bottom: '0px', zIndex: '997', display: 'flex', flexDirection: 'column', gap: '30px', margin: '15px', padding: '0px' }}>
       <IconButton onClick={onToggleFilter}>
         <NavLink to="/filter">
           <FilterAltIcon sx={{ fontSize: '50px', color: '#2D3142' }} />
