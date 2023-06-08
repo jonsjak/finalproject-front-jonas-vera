@@ -1,6 +1,5 @@
 /* eslint-disable react/jsx-props-no-spreading */
 import React from 'react';
-import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
 import TextField from '@mui/material/TextField';
@@ -9,7 +8,6 @@ import Checkbox from '@mui/material/Checkbox';
 import Link from '@mui/material/Link';
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
-import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { ThemeProvider } from '@mui/material/styles';
@@ -51,16 +49,19 @@ export const Login = () => {
       .then((response) => response.json())
       .then((json) => {
         if (json.success) {
-          console.log(json);
-          dispatch(user.actions.setAccessToken(json.response.accessToken));
-          dispatch(user.actions.setUserName(json.response.username));
-          dispatch(user.actions.setUserId(json.response.id));
-          dispatch(user.actions.setError(data.response));
+          dispatch(user.actions.setUser({
+            userName: json.response.username,
+            userId: json.response.id,
+            accessToken: json.response.accessToken,
+            error: null
+          }))
         } else {
-          dispatch(user.actions.setAccessToken(null));
-          dispatch(user.actions.setUserName(null));
-          dispatch(user.actions.setUserId(null));
-          dispatch(user.actions.setError(data.response));
+          dispatch(user.actions.setUser({
+            userName: null,
+            userId: null,
+            accessToken: null,
+            error: json.response.message
+          }));
         }
       })
       .catch((error) => console.log(error))
@@ -77,9 +78,6 @@ export const Login = () => {
             flexDirection: 'column',
             alignItems: 'center'
           }}>
-          <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
-            <LockOutlinedIcon />
-          </Avatar>
           <Typography component="h1" variant="h5">
             Sign in
           </Typography>
@@ -115,12 +113,12 @@ export const Login = () => {
             </Button>
             <Grid container>
               <Grid item xs>
-                <Link href="#" variant="body2">
-                  Forgot password?
+                <Link href="/newpassword" variant="body2">
+                  Forgot password? {/* create resetToken and send to email */}
                 </Link>
               </Grid>
               <Grid item>
-                <Link href="#" variant="body2">
+                <Link href="/register" variant="body2">
                   Not a user? Register here...
                 </Link>
               </Grid>
