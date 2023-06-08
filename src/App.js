@@ -10,7 +10,6 @@ import { Register } from 'components/personal/Register';
 import { PersonalPage } from 'components/personal/PersonalPage';
 import { NotFound } from 'components/bars_and_navigation/NotFound';
 /* import { MovieDetails } from 'components/movie_details/MovieDetails'; */
-import ResponsiveAppBar from 'components/bars_and_navigation/Navbar'
 import About from 'components/bars_and_navigation/About';
 /* import { MovieMap } from 'components/map_components/MovieMap'; */
 import { StartPage } from 'components/map_components/StartPage';
@@ -27,7 +26,6 @@ export const App = () => {
   return (
     <Provider store={store}>
       <BrowserRouter>
-        <ResponsiveAppBar />
         <Routes>
           <Route path="/" element={<StartPage />} />
           <Route path="/register" element={<Register />} />

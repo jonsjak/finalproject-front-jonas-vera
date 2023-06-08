@@ -2,7 +2,7 @@
 /* eslint-disable */
 /* import { MovieDetails } from 'components/movie_details/MovieDetails'; */
 import React, { useEffect } from 'react';
-import { MapContainer, Marker, Popup, TileLayer, FeatureGroup } from 'react-leaflet';
+import { MapContainer, Marker, Popup, TileLayer } from 'react-leaflet';
 import { useDispatch, useSelector } from 'react-redux';
 import location from 'reducers/location';
 import { MovieCard } from '../map_components/MovieCard';
@@ -13,7 +13,7 @@ export const MovieMap = () => {
   const movieItems = useSelector((store) => store.location.movies);
   const movieCoordinates = useSelector((store) => store.location.coordinates);
   const movieUrl = process.env.REACT_APP_MOVIE_URL;
-  const isLoading = useSelector((store) => store.location.isLoading); // Add isLoading state 
+  const isLoading = useSelector((store) => store.location.isLoading); // Add isLoading state
 
   useEffect(() => {
     const fetchCoordinates = async () => {
@@ -65,10 +65,18 @@ export const MovieMap = () => {
     // Show loading spinner while fetching
   }
 
+  const outerBounds = [
+    [-90, -180],
+    [90, 180]
+  ]
+
   return (
     <div style={{ position: 'relative'}}>
-      <MapContainer center={startingPosition} zoom={2} style={{ position: 'relative' }}>
+      <MapContainer center={startingPosition} maxBounds={outerBounds} maxBoundsViscosity={1} zoom={2} scrollWheelZoom={true} minZoom={1} zoomStart={2}>
         <TileLayer
+          bounds={outerBounds}
+          noWrap={true}
+          continuousWorld={true}
           url="http://services.arcgisonline.com/arcgis/rest/services/NatGeo_World_Map/MapServer/tile/{z}/{y}/{x}"
           attribution='Tiles &copy; <a href="https://www.nationalgeographic.org/">National Geographic Society</a> | Data &copy; <a href="https://www.arcgis.com/home/item.html?id=2b93b06dc0dc4e809d3c8db5cb96ba69">Esri</a>' />
 

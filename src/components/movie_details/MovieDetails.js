@@ -11,9 +11,10 @@ import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import MoreVertIcon from '@mui/icons-material/MoreVert';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import Carousel from 'react-material-ui-carousel';
+import ClearIcon from '@mui/icons-material/Clear';
+import location from 'reducers/location';
 
 const ExpandMore = styled((props) => {
   const { expand, ...other } = props; // eslint-disable-line prefer-object-spread
@@ -27,6 +28,7 @@ const ExpandMore = styled((props) => {
 }));
 
 export const MovieDetails = () => {
+  const dispatch = useDispatch();
   const [expanded, setExpanded] = React.useState(false);
   const selectedMovie = useSelector((store) => store.location.activeMovie);
 
@@ -34,14 +36,20 @@ export const MovieDetails = () => {
     setExpanded(!expanded);
   };
 
+  const handleOnClearClick = () => {
+    dispatch(location.actions.setActiveMovie(null));
+  };
+
   return (
     <div>
       {selectedMovie && (
-        <Card sx={{ maxWidth: 345, position: 'absolute', right: '30px', top: '30px', zIndex: '999', width: '345px', maxHeight: '85vh', overflow: 'scroll' }}>
+        <Card sx={{ maxWidth: 345, position: 'absolute', right: '150px', top: '30px', zIndex: '999', width: '345px', maxHeight: '85vh', overflow: 'scroll' }}>
           <CardHeader
             action={
-              <IconButton aria-label="settings">
-                <MoreVertIcon />
+              <IconButton
+                aria-label="clear"
+                onClick={() => handleOnClearClick()}>
+                <ClearIcon />
               </IconButton>
             }
             title={selectedMovie.title}
@@ -89,16 +97,22 @@ export const MovieDetails = () => {
           </CardActions>
           <Collapse in={expanded} timeout="auto" unmountOnExit>
             <CardContent>
-              <div style={{ display: 'flex' }}>
-                <Typography variant="body2" paragraph alignLeft>Director / Writer:</Typography>
-                <Typography paragraph alignRight>{`${selectedMovie.Director} / ${selectedMovie.Writer}`}</Typography>
+              <div style={{ display: 'grid', gridTemplateColumns: '1fr 2fr' }}>
+                <Typography variant="body2" paragraph color="text.secondary">Director:</Typography>
+                <Typography variant="body2" paragraph>{selectedMovie.Director}</Typography>
+                <Typography variant="body2" paragraph color="text.secondary">Actors:</Typography>
+                <Typography variant="body2" paragraph>{selectedMovie.Actors}</Typography>
+                <Typography variant="body2" paragraph color="text.secondary">Language:</Typography>
+                <Typography variant="body2" paragraph>{selectedMovie.Language}</Typography>
+                <Typography variant="body2" paragraph color="text.secondary">Country:</Typography>
+                <Typography variant="body2" paragraph>{selectedMovie.Country}</Typography>
+                <Typography variant="body2" paragraph color="text.secondary">
+                  Synopsis:
+                </Typography>
+                <Typography variant="body2" paragraph>
+                  {selectedMovie.Plot}
+                </Typography>
               </div>
-              <Typography variant="body2" paragraph>Actors: {selectedMovie.Actors}</Typography>
-              <Typography variant="body2" paragraph>Language: {selectedMovie.Language}</Typography>
-              <Typography variant="body2" paragraph>Production Country: {selectedMovie.Country}</Typography>
-              <Typography>
-                {selectedMovie.Plot}
-              </Typography>
               <CardMedia
                 component="img"
                 height="100%"
