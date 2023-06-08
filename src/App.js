@@ -13,7 +13,9 @@ import { NotFound } from 'components/bars_and_navigation/NotFound';
 import About from 'components/bars_and_navigation/About';
 /* import { MovieMap } from 'components/map_components/MovieMap'; */
 import { StartPage } from 'components/map_components/StartPage';
+/* import { AlternativeNavBar } from 'components/bars_and_navigation/AlternativeNavBar'; */
 /* import { MovieList } from 'components/movie_details/MovieList'; */
+import { Main } from 'components/main_components/Main';
 
 const reducer = combineReducers({
   user: user.reducer,
@@ -34,7 +36,8 @@ export const App = () => {
           <Route path="/personal" element={<PersonalPage />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
+        <Main />
       </BrowserRouter>
     </Provider>
-  )
+  );
 };

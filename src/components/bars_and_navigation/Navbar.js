@@ -1,160 +1,123 @@
-import * as React from 'react';
-import AppBar from '@mui/material/AppBar';
-import Box from '@mui/material/Box';
-import Toolbar from '@mui/material/Toolbar';
-import IconButton from '@mui/material/IconButton';
-import Typography from '@mui/material/Typography';
-import Menu from '@mui/material/Menu';
-import MenuIcon from '@mui/icons-material/Menu';
-import Container from '@mui/material/Container';
-import Avatar from '@mui/material/Avatar';
-import Button from '@mui/material/Button';
-import Tooltip from '@mui/material/Tooltip';
-import MenuItem from '@mui/material/MenuItem';
-import AdbIcon from '@mui/icons-material/Adb';
-import { ThemeProvider } from 'styled-components';
-import { muiTheme } from 'MUI-styling/muiTheme';
+import React, { useState } from 'react';
+/* import { IconButton } from '@mui/material';
+import MenuIcon from '@mui/icons-material/Menu'; */
+/* import PersonAddAlt1Icon from '@mui/icons-material/PersonAddAlt1';
+import LoginIcon from '@mui/icons-material/Login';
+import logo from '../../images/globe-logo.png' */
 
-const pages = ['Products', 'Pricing', 'Blog'];
-const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
+export const NavBar = () => {
+  const [toggleSideBar, setToggleSidebar] = useState(false)
 
-const ResponsiveAppBar = () => {
-  const [anchorElNav, setAnchorElNav] = React.useState(null);
-  const [anchorElUser, setAnchorElUser] = React.useState(null);
-
-  const handleOpenNavMenu = (event) => {
-    setAnchorElNav(event.currentTarget);
-  };
-  const handleOpenUserMenu = (event) => {
-    setAnchorElUser(event.currentTarget);
-  };
-
-  const handleCloseNavMenu = () => {
-    setAnchorElNav(null);
-  };
-
-  const handleCloseUserMenu = () => {
-    setAnchorElUser(null);
-  };
+  const onToggleMenu = () => {
+    setToggleSidebar(!toggleSideBar)
+  }
 
   return (
-    <ThemeProvider theme={muiTheme}>
-      <AppBar position="static">
-        <Container maxWidth="xl">
-          <Toolbar disableGutters>
-            <AdbIcon sx={{ display: { xs: 'none', md: 'flex' }, mr: 1 }} />
-            <Typography
-              variant="h6"
-              noWrap
-              component="a"
-              href="/"
-              sx={{
-                mr: 2,
-                display: { xs: 'none', md: 'flex' },
-                fontFamily: 'monospace',
-                fontWeight: 700,
-                letterSpacing: '.3rem',
-                color: 'inherit',
-                textDecoration: 'none'
-              }}>
-              LOGO
-            </Typography>
-
-            <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
-              <IconButton
-                size="large"
-                aria-label="account of current user"
-                aria-controls="menu-appbar"
-                aria-haspopup="true"
-                onClick={handleOpenNavMenu}
-                color="inherit">
-                <MenuIcon />
-              </IconButton>
-              <Menu
-                id="menu-appbar"
-                anchorEl={anchorElNav}
-                anchorOrigin={{
-                  vertical: 'bottom',
-                  horizontal: 'left'
-                }}
-                keepMounted
-                transformOrigin={{
-                  vertical: 'top',
-                  horizontal: 'left'
-                }}
-                open={Boolean(anchorElNav)}
-                onClose={handleCloseNavMenu}
-                sx={{
-                  display: { xs: 'block', md: 'none' }
-                }}>
-                {pages.map((page) => (
-                  <MenuItem key={page} onClick={handleCloseNavMenu}>
-                    <Typography textAlign="center">{page}</Typography>
-                  </MenuItem>
-                ))}
-              </Menu>
-            </Box>
-            <AdbIcon sx={{ display: { xs: 'flex', md: 'none' }, mr: 1 }} />
-            <Typography
-              variant="h5"
-              noWrap
-              component="a"
-              href=""
-              sx={{
-                mr: 2,
-                display: { xs: 'flex', md: 'none' },
-                flexGrow: 1,
-                fontFamily: 'monospace',
-                fontWeight: 700,
-                letterSpacing: '.3rem',
-                color: 'inherit',
-                textDecoration: 'none'
-              }}>
-              LOGO
-            </Typography>
-            <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
-              {pages.map((page) => (
-                <Button
-                  key={page}
-                  onClick={handleCloseNavMenu}
-                  sx={{ my: 2, color: 'white', display: 'block' }}>
-                  {page}
-                </Button>
-              ))}
-            </Box>
-
-            <Box sx={{ flexGrow: 0 }}>
-              <Tooltip title="Open settings">
-                <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                  <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
-                </IconButton>
-              </Tooltip>
-              <Menu
-                sx={{ mt: '45px' }}
-                id="menu-appbar"
-                anchorEl={anchorElUser}
-                anchorOrigin={{
-                  vertical: 'top',
-                  horizontal: 'right'
-                }}
-                keepMounted
-                transformOrigin={{
-                  vertical: 'top',
-                  horizontal: 'right'
-                }}
-                open={Boolean(anchorElUser)}
-                onClose={handleCloseUserMenu}>
-                {settings.map((setting) => (
-                  <MenuItem key={setting} onClick={handleCloseUserMenu}>
-                    <Typography textAlign="center">{setting}</Typography>
-                  </MenuItem>
-                ))}
-              </Menu>
-            </Box>
-          </Toolbar>
-        </Container>
-      </AppBar>
-    </ThemeProvider>
+    <aside style={{ position: 'fixed', right: '0px', top: '0px', zIndex: '999'/* , display: 'flex', flexDirection: 'column' */ }}>
+      <nav>
+        {/* <IconButton
+          aria-label="clear"
+          sx={{ position: 'relative' }}>
+          <img
+            src={logo}
+            alt="logo"
+            className="logo"
+            style={{
+              width: '70px',
+              objectFit: 'cover'
+            }} />
+        </IconButton>
+        <IconButton
+          aria-label="clear"
+          sx={{ position: 'relative' }}>
+          <LoginIcon sx={{
+            position: 'absolute',
+            top: '50%',
+            left: '50%',
+            transform: 'translate(-50%, -50%)',
+            zIndex: '999',
+            fontSize: '30px'
+          }} />
+          <section className="stage">
+            <figure className="ball"><span className="shadow" /></figure>
+          </section>
+        </IconButton>
+        <IconButton
+          aria-label="clear"
+          sx={{ position: 'relative' }}>
+          <PersonAddAlt1Icon sx={{
+            position: 'absolute',
+            top: '50%',
+            left: '50%',
+            transform: 'translate(-50%, -50%)',
+            zIndex: '999',
+            fontSize: '30px'
+          }} />
+          <section className="stage">
+            <figure className="ball"><span className="shadow" /></figure>
+          </section>
+        </IconButton>
+        <IconButton
+          aria-label="clear"
+          sx={{ position: 'relative' }}>
+          <InfoIcon sx={{
+            position: 'absolute',
+            top: '50%',
+            left: '50%',
+            transform: 'translate(-50%, -50%)',
+            zIndex: '999',
+            fontSize: '30px'
+          }} />
+          <section className="stage">
+            <figure className="ball"><span className="shadow" /></figure>
+          </section>
+        </IconButton> */}
+        {/*         <IconButton
+          size="large"
+          aria-label="account of current user"
+          aria-controls="menu-appbar"
+          aria-haspopup="true"
+          color="inherit"
+          sx={{ fontSize: '50px', color: 'white' }}>
+          <MenuIcon sx={{ fontSize: '50px', color: 'white' }} />
+        </IconButton> */}
+        <div className="nav-right visible-xs">
+          <button
+            onClick={onToggleMenu}
+            type="button"
+            className="button"
+            id="btn">
+            <div className="bar top" />
+            <div className="bar middle" />
+            <div className="bar bottom" />
+          </button>
+        </div>
+        <main className={toggleSideBar ? 'move-to-left' : ''}>
+          <nav>
+            <div className="nav-right hidden-xs">
+              <button
+                onClick={onToggleMenu}
+                type="button"
+                className={toggleSideBar ? 'button active' : 'button'}
+                id="btn">
+                <div className="bar top" />
+                <div className="bar middle" />
+                <div className="bar bottom" />
+              </button>
+            </div>
+          </nav>
+        </main>
+        {toggleSideBar && (
+          <div className="sidebar">
+            <ul className="sidebar-list">
+              <li className={`sidebar-item${toggleSideBar ? 'active' : ''}`}><a href="#" className="sidebar-anchor">Log in</a></li>
+              <li className={`sidebar-item${toggleSideBar ? 'active' : ''}`}><a href="#" className="sidebar-anchor">Register</a></li>
+              <li className={`sidebar-item${toggleSideBar ? 'active' : ''}`}><a href="#" className="sidebar-anchor">About</a></li>
+              <li className={`sidebar-item${toggleSideBar ? 'active' : ''}`}><a href="#" className="sidebar-anchor">Filter</a></li>
+            </ul>
+          </div>
+        )}
+      </nav>
+    </aside>
   );
 }
-export default ResponsiveAppBar;
