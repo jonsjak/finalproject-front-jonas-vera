@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import location from 'reducers/location';
+import { getSavedMoviesFetch, deleteSavedMovieFetch } from 'reducers/location';
+/* import location from 'reducers/location'; */
 import ClearIcon from '@mui/icons-material/Clear';
 import { IconButton, CardMedia, Typography } from '@mui/material';
 
@@ -10,59 +11,13 @@ export const SavedMovieList = () => {
   const savedMoviesCollection = useSelector((store) => store.location.savedmovies);
   const userId = useSelector((store) => store.user.userId);
 
-  /*   useEffect(() => {
-    if (!accessToken) {
-      console.log('please login')
-    }
-  }, [accessToken]) */
-
   useEffect(() => {
-    const fetchSavedMovies = async () => {
-      try {
-        const options = {
-          method: 'GET',
-          headers: {
-            'Content-Type': 'application/json',
-            // eslint-disable-next-line quote-props
-            'Authorization': accessToken
-          }
-        };
-        console.log('accessToken', accessToken)
-        const response = await fetch('https://movie-globe-backend-djwdbjbdsa-lz.a.run.app/movies/savedmovies', options);
-        const data = await response.json();
-        console.log(response)
-        dispatch(location.actions.setAllSavedMovies(data.body.savedMovies))
-        console.log('data', data.body.savedMovies)
-      } catch (error) {
-        console.log(error);
-      }
-    };
-    fetchSavedMovies()
+    dispatch(getSavedMoviesFetch(accessToken));
   }, [accessToken, dispatch, savedMoviesCollection.length]);
 
-  const handleOnClearClick = async (id) => {
-    try {
-      const options = {
-        method: 'DELETE',
-        headers: {
-          'Content-Type': 'application/json',
-          // eslint-disable-next-line quote-props
-          'Authorization': accessToken
-        }
-      };
-      // eslint-disable-next-line no-underscore-dangle
-      const response = await fetch(`https://movie-globe-backend-djwdbjbdsa-lz.a.run.app/movies/${id}`, options);
-      console.log(response);
-      const data = await response.json();
-
-      if (data.success) {
-        dispatch(location.actions.clearSavedMovie(userId));
-        dispatch(location.actions.deleteSavedMovieFromList(id));
-      }
-    } catch (error) {
-      console.log('Error:', error);
-    }
-  }
+  const handleClearMovie = (_id) => {
+    dispatch(deleteSavedMovieFetch(userId, accessToken, _id, 'movie'));
+  };
 
   return (
     <div>
@@ -80,7 +35,7 @@ export const SavedMovieList = () => {
           <IconButton
             aria-label="clear"
             // eslint-disable-next-line no-underscore-dangle
-            onClick={() => handleOnClearClick(savedMovie._id)}>
+            onClick={() => handleClearMovie(savedMovie._id)}>
             <ClearIcon sx={{ fontSize: '16px' }} />
           </IconButton>
         </div>

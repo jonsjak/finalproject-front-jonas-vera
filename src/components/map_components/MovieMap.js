@@ -1,9 +1,10 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable */
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { MapContainer, Marker, Popup, TileLayer, useMapEvents } from 'react-leaflet';
 import { useDispatch, useSelector } from 'react-redux';
 import location from 'reducers/location';
+/* import { AddMovie } from './AddMovie'; */
 import { MovieCard } from '../map_components/MovieCard';
 import { Loader } from 'components/bars_and_navigation/Loader';
 
@@ -64,25 +65,21 @@ export const MovieMap = () => {
     [90, 180]
   ]
 
-  const LocationFinderDummy = () => {
+  // Add more markers to map
+ /*  const LocationFinderDummy = () => {
+    const [newMarker, setNewMarker] = useState(null);
     const map = useMapEvents({
         click(e) {
             console.log(e.latlng);
+            setNewMarker(e.latlng)
         },
     });
-    return null;
-};
-
-
-const addMarker = (e) => {
-  const {markers} = this.state
-  markers.push(e.latlng)
-  this.setState({markers})
-}
+    return (newMarker ? <Marker position={newMarker} /> : null)
+  }; */
 
   return (
     <div style={{ position: 'relative'}}>
-      <MapContainer center={startingPosition} maxBounds={outerBounds} maxBoundsViscosity={1} zoom={2} scrollWheelZoom={true} minZoom={3} zoomStart={2} onClick={addMarker}>
+      <MapContainer center={startingPosition} maxBounds={outerBounds} maxBoundsViscosity={1} zoom={2} scrollWheelZoom={true} minZoom={3} zoomStart={2}>
         <TileLayer
           bounds={outerBounds}
           noWrap={true}
@@ -100,7 +97,7 @@ const addMarker = (e) => {
             </Popup>
           </Marker>
         ))}
-        <LocationFinderDummy />
+        {/* <AddMovie /> */}
       </MapContainer>
     </div>
   );
