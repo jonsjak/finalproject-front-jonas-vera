@@ -1,24 +1,27 @@
 
 /* eslint-disable max-len */
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { Typography, IconButton } from '@mui/material';
-import InputLabel from '@mui/material/InputLabel';
-import MenuItem from '@mui/material/MenuItem';
-import FormHelperText from '@mui/material/FormHelperText';
-import FormControl from '@mui/material/FormControl';
-import Select from '@mui/material/Select';
-import FormGroup from '@mui/material/FormGroup';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import Checkbox from '@mui/material/Checkbox';
+import { useNavigate } from 'react-router-dom';
+import { Typography, IconButton, InputLabel, MenuItem, FormHelperText, FormControl, Select, FormGroup, FormControlLabel, Checkbox } from '@mui/material';
 import ClearIcon from '@mui/icons-material/Clear';
+import { SlidingCard } from 'components/styles/Cards';
 import menus from '../../reducers/menus'
 
 export const FilterSelector = () => {
   const [genre, setGenre] = useState('');
   const [continent, setContinent] = useState('');
   const filterSelected = useSelector((store) => store.menus.filter);
+  const accessToken = useSelector((store) => store.user.accessToken);
   const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (!accessToken) {
+      navigate('/user/login')
+      dispatch(menus.actions.toggleLoginPage(true));
+    }
+  }, [accessToken, dispatch, navigate]);
 
   const handleGenreChange = (event) => {
     setGenre(event.target.value);
@@ -30,10 +33,11 @@ export const FilterSelector = () => {
 
   const handleOnClearClick = () => {
     dispatch(menus.actions.toggleFilter(false));
+    navigate('/')
   };
 
   return (
-    <div className={filterSelected ? 'filterpage active' : 'filterpage'}>
+    <SlidingCard filter filterSelected={filterSelected}>
       <div style={{ display: 'flex', justifyContent: 'space-between' }}>
         <Typography gutterBottom variant="h5" component="div">
           Filter movies
@@ -41,7 +45,7 @@ export const FilterSelector = () => {
         <IconButton
           aria-label="clear"
           onClick={() => handleOnClearClick()}>
-          <ClearIcon />
+          <ClearIcon sx={{ fontSize: '16px' }} />
         </IconButton>
       </div>
       <FormControl sx={{ m: 1, minWidth: 200 }} size="small">
@@ -81,6 +85,6 @@ export const FilterSelector = () => {
       <FormGroup>
         <FormControlLabel control={<Checkbox color="secondary" size="small" />} label="Bechdel test approved" />
       </FormGroup>
-    </div>
+    </SlidingCard>
   );
 };

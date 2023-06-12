@@ -1,22 +1,20 @@
 
 /* eslint-disable max-len */
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 import { Tab, Tabs, Typography, CardMedia, CardContent, IconButton } from '@mui/material';
-import { Grade, AddComment, AddAPhoto } from '@mui/icons-material';
+import { Grade, AddComment } from '@mui/icons-material';
 import ClearIcon from '@mui/icons-material/Clear';
+import { SlidingCard } from 'components/styles/Cards';
 import Clapper from '../../images/clapboard-g163cd4bec_640.png';
 import menus from '../../reducers/menus'
+import { SavedMovieList } from './SavedMovieList';
 
 const FavoriteMoviesTab = () => {
   return (
-    <div>
-      <Typography variant="h5" component="div">
-        Favorite Movies
-      </Typography>
-      <Typography variant="body2" color="text.secondary">
-        List of all liked movies
-      </Typography>
+    <div style={{ height: '250px', overflow: 'scroll' }}>
+      <SavedMovieList />
     </div>
   );
 };
@@ -36,23 +34,20 @@ const AddCommentsTab = () => {
 
 // testing renaming
 
-const AddPhotoTab = () => {
-  return (
-    <div>
-      <Typography variant="h5" component="div">
-        Add a Photo
-      </Typography>
-      <Typography variant="body2" color="text.secondary">
-        Theese are your photos
-      </Typography>
-    </div>
-  );
-};
-
 export const PersonalPage = () => {
   const [value, setValue] = useState(0);
   const personalSelected = useSelector((store) => store.menus.personal);
+  const userName = useSelector((store) => store.user.userName);
+  const accessToken = useSelector((store) => store.user.accessToken);
   const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (!accessToken) {
+      navigate('/user/login')
+      dispatch(menus.actions.toggleLoginPage(true));
+    }
+  }, [accessToken, dispatch, navigate]);
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
@@ -64,8 +59,6 @@ export const PersonalPage = () => {
         return <FavoriteMoviesTab />;
       case 1:
         return <AddCommentsTab />;
-      case 2:
-        return <AddPhotoTab />;
       default:
         return null;
     }
@@ -73,31 +66,28 @@ export const PersonalPage = () => {
 
   const handleOnClearClick = () => {
     dispatch(menus.actions.togglePersonalPage(false));
+    navigate('/')
   };
 
   return (
-    <div className={personalSelected ? 'personal-page active' : 'personal-page'}>
+    <SlidingCard personal personalSelected={personalSelected}>
       <IconButton
-        sx={{ alignSelf: 'flex-start' }}
+        sx={{ alignSelf: 'flex-end' }}
         aria-label="clear"
         onClick={() => handleOnClearClick()}>
-        <ClearIcon />
+        <ClearIcon sx={{ fontSize: '16px' }} />
       </IconButton>
-      <CardMedia component="img" height="300" image={Clapper} alt="Clapboard" />
+      <CardMedia component="img" sx={{ width: '65%', height: '176px', alignSelf: 'center' }} image={Clapper} alt="Clapboard" />
       <CardContent>
         <Typography gutterBottom variant="h5" component="div">
-          Personal Space
-        </Typography>
-        <Typography variant="body2" color="text.secondary">
-          Welcome to your personal space! This is where you handle your watchlists, add comments and locations.
+          {userName}´s personal space
         </Typography>
         <Tabs value={value} onChange={handleChange} aria-label="icon label tabs">
-          <Tab icon={<Grade />} label="FAVORITE MOVIES" />
+          <Tab icon={<Grade />} label="SAVED MOVIES" />
           <Tab icon={<AddComment />} label="ADD COMMENTS" />
-          <Tab icon={<AddAPhoto />} label="ADD A PHOTO" />
         </Tabs>
         {renderTabContent()}
       </CardContent>
-    </div>
+    </SlidingCard>
   );
 };

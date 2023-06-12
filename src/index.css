@@ -43,7 +43,47 @@ code {
 }
 
 .leaflet-top {
-  top: 150px;
+  top: 241px;
+}
+
+.leaflet-left {
+  left: 25px;
+}
+
+.leaflet-bar a {
+  background-color: transparent;
+  border-bottom: none
+}
+
+.leaflet-bar a.leaflet-disabled {
+  color: #606060;
+  background-color: transparent;
+}
+
+.leaflet-touch .leaflet-control-zoom-out {
+  font-size: 60px;
+}
+
+.leaflet-touch .leaflet-control-zoom-in, .leaflet-touch .leaflet-control-zoom-out {
+  font-size: 60px;
+}
+
+.leaflet-bar a {
+  color:  #2d3142;
+  margin-bottom: 40px;
+}
+
+.leaflet-bar a:hover, .leaflet-bar a:focus {
+  background-color: transparent;
+  color: #EF8354;
+}
+
+.leaflet-touch .leaflet-bar {
+  border: none;
+}
+
+.leaflet-top, .leaflet-bottom {
+  z-index: 998;
 }
 
 
@@ -91,64 +131,6 @@ main {
   -ms-transform: skewX(-14deg) translateX(-300px);
   -o-transform: skewX(-14deg) translateX(-300px);
   transform: skewX(-14deg) translateX(-300px);
-}
-
-.filterpage {
-  display: flex;
-  max-width: 250;
-  position: absolute;
-  z-index: 999;
-  bottom: 0px;
-  left: -270px;
-  flex-direction: column;
-  background-color: white;
-  padding: 20px;
-  transition: transform .7s ease-in-out;
-  -moz-transition: transform .7s ease-in-out;
-  -ms-transition: transform .7s ease-in-out;
-  -o-transition: transform .7s ease-in-out;
-  transition: transform .7s ease-in-out;
-}
-
-.filterpage.active {
-  transition: transform .7s ease-in-out;
-  -moz-transition: transform .7s ease-in-out;
-  -ms-transition: transform .7s ease-in-out;
-  -o-transition: transform .7s ease-in-out;
-  -webkit-transform: translateX(270px);
-  -moz-transform: translateX(270px);
-  -ms-transform: translateX(270px);
-  -o-transform: translateX(270px);
-  transform: translateX(270px);
-}
-
-.personal-page {
-  width: 345px;
-  max-width: 250;
-  position: fixed;
-  z-index: 999;
-  bottom: 0px;
-  right:  -360px;
-  display: flex;
-  flex-direction: column;
-  background-color: white;
-  transition: transform 1.5s ease-in-out;
-  -moz-transition: transform 1.5s ease-in-out;
-  -ms-transition: transform 1.5s ease-in-out;
-  -o-transition: transform 1.5s ease-in-out;
-  transition: transform 1.5s ease-in-out;
-}
-
-.personal-page.active {
-  transition: transform 1.5s ease-in-out;
-  -moz-transition: transform 1.5s ease-in-out;
-  -ms-transition: transform 1.5s ease-in-out;
-  -o-transition: transform 1.5s ease-in-out;
-  -webkit-transform: translateX(-360px);
-  -moz-transform: translateX(-360px);
-  -ms-transform: translateX(-360px);
-  -o-transform: translateX(-360px);
-  transform: translateX(-360px);
 }
 
 .bar {

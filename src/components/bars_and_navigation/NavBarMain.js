@@ -1,11 +1,24 @@
 import React, { useState } from 'react';
 import { NavLink } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import menus from 'reducers/menus';
 
 export const NavBarMain = () => {
   const [toggleSideBar, setToggleSidebar] = useState(false)
+  const dispatch = useDispatch();
+
+  const onLoginClick = () => {
+    dispatch(menus.actions.toggleLoginPage(true));
+    setToggleSidebar(!toggleSideBar)
+  };
+
+  const onRegisterClick = () => {
+    dispatch(menus.actions.toggleRegisterPage(true));
+    setToggleSidebar(!toggleSideBar)
+  }
 
   const onToggleMenu = () => {
-    setToggleSidebar(!toggleSideBar);
+    setToggleSidebar(!toggleSideBar)
   };
 
   return (
@@ -39,8 +52,8 @@ export const NavBarMain = () => {
         </main>
         <div className={toggleSideBar ? 'sidebar active' : 'sidebar'}>
           <ul className="sidebar-list">
-            <li className={toggleSideBar ? 'sidebar-item active' : 'sidebar-item'}><NavLink className="sidebar-anchor" to="/user/login" onClick={onToggleMenu}>Login</NavLink></li>
-            <li className={toggleSideBar ? 'sidebar-item active' : 'sidebar-item'}><NavLink className="sidebar-anchor" to="/user/register" onClick={onToggleMenu}>Register</NavLink></li>
+            <li className={toggleSideBar ? 'sidebar-item active' : 'sidebar-item'}><NavLink className="sidebar-anchor" to="/user/login" onClick={onLoginClick}>Login</NavLink></li>
+            <li className={toggleSideBar ? 'sidebar-item active' : 'sidebar-item'}><NavLink className="sidebar-anchor" to="/user/register" onClick={onRegisterClick}>Register</NavLink></li>
             <li className={toggleSideBar ? 'sidebar-item active' : 'sidebar-item'}><NavLink className="sidebar-anchor" to="/about" onClick={onToggleMenu}>About</NavLink></li>
             <li className={toggleSideBar ? 'sidebar-item active' : 'sidebar-item'}><NavLink className="sidebar-anchor" to="/" onClick={onToggleMenu}>Home</NavLink></li>
           </ul>

@@ -1,8 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable */
-/* import { MovieDetails } from 'components/movie_details/MovieDetails'; */
-import React, { useEffect, useState } from 'react';
-import { MapContainer, Marker, Popup, TileLayer } from 'react-leaflet';
+import React, { useEffect } from 'react';
+import { MapContainer, Marker, Popup, TileLayer, useMapEvents } from 'react-leaflet';
 import { useDispatch, useSelector } from 'react-redux';
 import location from 'reducers/location';
 import { MovieCard } from '../map_components/MovieCard';
@@ -49,11 +48,6 @@ export const MovieMap = () => {
     fetchCoordinates()
   }, []);
 
-  const handleLocationClick = (movie) => {
-    // what happens when user clicks movie?
-    dispatch(location.actions.setMovies(movie.movie));
-  };
-
   const handleOnReadClick = (movie) => {
     console.log(movie)
     dispatch(location.actions.setActiveMovie(movie));
@@ -63,7 +57,6 @@ export const MovieMap = () => {
     return (
       <Loader />
     )
-    // Show loading spinner while fetching
   }
 
   const outerBounds = [
@@ -71,9 +64,25 @@ export const MovieMap = () => {
     [90, 180]
   ]
 
+  const LocationFinderDummy = () => {
+    const map = useMapEvents({
+        click(e) {
+            console.log(e.latlng);
+        },
+    });
+    return null;
+};
+
+
+const addMarker = (e) => {
+  const {markers} = this.state
+  markers.push(e.latlng)
+  this.setState({markers})
+}
+
   return (
     <div style={{ position: 'relative'}}>
-      <MapContainer center={startingPosition} maxBounds={outerBounds} maxBoundsViscosity={1} zoom={2} scrollWheelZoom={true} minZoom={3} zoomStart={2}>
+      <MapContainer center={startingPosition} maxBounds={outerBounds} maxBoundsViscosity={1} zoom={2} scrollWheelZoom={true} minZoom={3} zoomStart={2} onClick={addMarker}>
         <TileLayer
           bounds={outerBounds}
           noWrap={true}
@@ -91,6 +100,7 @@ export const MovieMap = () => {
             </Popup>
           </Marker>
         ))}
+        <LocationFinderDummy />
       </MapContainer>
     </div>
   );

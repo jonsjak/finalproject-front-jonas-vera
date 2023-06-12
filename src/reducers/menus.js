@@ -6,6 +6,9 @@ const menus = createSlice({
   initialState: {
     filter: false,
     personal: false,
+    login: false,
+    register: false,
+    about: false
   },
   reducers: {
     toggleFilter: (store, action) => {
@@ -13,7 +16,16 @@ const menus = createSlice({
     },
     togglePersonalPage: (store, action) => {
       store.personal = action.payload;
-      }
+      },
+    toggleLoginPage: (store, action) => {
+      store.login = action.payload;
+    },
+    toggleRegisterPage: (store, action) => {
+      store.register = action.payload;
+    },
+    toggleAboutPage: (store, action) => {
+      store.about = action.payload;
+    }
     }
   }
 );

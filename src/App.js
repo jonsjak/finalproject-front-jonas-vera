@@ -4,6 +4,7 @@ import { Provider } from 'react-redux';
 import user from 'reducers/user';
 import location from 'reducers/location';
 import menus from 'reducers/menus';
+import personalmovies from 'reducers/personalmovies';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import { Login } from 'components/personal/Login';
 import { Register } from 'components/personal/Register';
@@ -22,7 +23,8 @@ import { FilterSelector } from 'components/map_components/FilterSelector';
 const reducer = combineReducers({
   user: user.reducer,
   location: location.reducer,
-  menus: menus.reducer
+  menus: menus.reducer,
+  personalmovies: personalmovies.reducer
 });
 
 const store = configureStore({ reducer });

@@ -1,23 +1,27 @@
 /* eslint-disable react/jsx-props-no-spreading */
 import * as React from 'react';
 import Button from '@mui/material/Button';
-import CssBaseline from '@mui/material/CssBaseline';
 import TextField from '@mui/material/TextField';
 import Link from '@mui/material/Link';
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
-import Container from '@mui/material/Container';
-import { ThemeProvider } from '@mui/material/styles';
-import { muiTheme } from 'MUI-styling/muiTheme';
 import user from 'reducers/user';
-import { useDispatch } from 'react-redux';
+import ClearIcon from '@mui/icons-material/Clear';
+import { IconButton } from '@mui/material';
+import { useDispatch, useSelector } from 'react-redux';
+import { SlidingCard } from 'components/styles/Cards';
+import { useNavigate } from 'react-router-dom';
+import menus from '../../reducers/menus'
 
 export const Register = () => {
   const registerUrl = process.env.REACT_APP_REGISTER_URL;
+  const registerSelected = useSelector((store) => store.menus.register);
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const handleSubmit = (event) => {
+    navigate('/');
     event.preventDefault();
     const { username, password } = event.target.elements;
     const data = {
@@ -57,67 +61,68 @@ export const Register = () => {
       })
       .catch((error) => console.log(error));
   };
+
+  const handleOnClearClick = () => {
+    dispatch(menus.actions.toggleRegisterPage(false));
+    navigate('/');
+  }
+
   return (
-    <ThemeProvider theme={muiTheme}>
-      <Container component="main" maxWidth="xs" sx={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)', zIndex: '999', maxHeight: '423px', padding: '30px' }}>
-        <CssBaseline sx={{ marginTop: '0px' }} />
-        <Box
-          sx={{
-            marginTop: '0px',
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center'
-          }}>
-          <Typography component="h1" variant="h5">
-              Sign up
-          </Typography>
-          <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 3 }}>
-            <Grid container spacing={2}>
-              <Grid item xs={12}>
-                <TextField
-                  required
-                  fullWidth
-                  id="email"
-                  label="Email Address"
-                  name="email"
-                  autoComplete="email" />
-              </Grid>
-              <Grid item xs={12}>
-                <TextField
-                  required
-                  fullWidth
-                  id="username"
-                  label="username"
-                  name="username" />
-              </Grid>
-              <Grid item xs={12}>
-                <TextField
-                  required
-                  fullWidth
-                  name="password"
-                  label="Password"
-                  type="password"
-                  id="password"
-                  autoComplete="new-password" />
-              </Grid>
-            </Grid>
-            <Button
-              type="submit"
+    <SlidingCard loginregister loginRegisterSelected={registerSelected}>
+      <IconButton
+        aria-label="clear"
+        sx={{ alignSelf: 'flex-start' }}
+        onClick={() => handleOnClearClick()}>
+        <ClearIcon sx={{ fontSize: '16px' }} />
+      </IconButton>
+      <Typography component="h1" variant="h5" sx={{ alignSelf: 'center' }}>
+          Sign up
+      </Typography>
+      <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 3 }}>
+        <Grid container spacing={2}>
+          <Grid item xs={12}>
+            <TextField
+              required
               fullWidth
-              variant="contained"
-              sx={{ mt: 3, mb: 2 }}>
-                Sign Up
-            </Button>
-            <Grid container justifyContent="flex-end">
-              <Grid item>
-                <Link href="/login" variant="body2">
-                    Already have an account? Sign in here!
-                </Link>
-              </Grid>
-            </Grid>
-          </Box>
-        </Box>
-      </Container>
-    </ThemeProvider>
+              id="email"
+              label="Email Address"
+              name="email"
+              autoComplete="email" />
+          </Grid>
+          <Grid item xs={12}>
+            <TextField
+              required
+              fullWidth
+              id="username"
+              label="username"
+              name="username" />
+          </Grid>
+          <Grid item xs={12}>
+            <TextField
+              required
+              fullWidth
+              name="password"
+              label="Password"
+              type="password"
+              id="password"
+              autoComplete="new-password" />
+          </Grid>
+        </Grid>
+        <Button
+          type="submit"
+          fullWidth
+          variant="contained"
+          sx={{ mt: 3, mb: 2 }}>
+            Sign Up
+        </Button>
+        <Grid container justifyContent="flex-end">
+          <Grid item>
+            <Link href="/login" variant="body2">
+                Already have an account? Sign in here!
+            </Link>
+          </Grid>
+        </Grid>
+      </Box>
+    </SlidingCard>
   );
 };
