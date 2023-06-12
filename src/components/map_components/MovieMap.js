@@ -6,6 +6,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import location from 'reducers/location';
 import { MovieCard } from '../map_components/MovieCard';
 import { Loader } from 'components/bars_and_navigation/Loader';
+import { AddMovie } from './AddMovie';
 
 export const MovieMap = () => {
   const dispatch = useDispatch();
@@ -64,7 +65,7 @@ export const MovieMap = () => {
     [90, 180]
   ]
 
-  const LocationFinderDummy = () => {
+ /*  const LocationFinderDummy = () => {
     const map = useMapEvents({
         click(e) {
             console.log(e.latlng);
@@ -72,7 +73,7 @@ export const MovieMap = () => {
     });
     return null;
 };
-
+ */
 
 const addMarker = (e) => {
   const {markers} = this.state
@@ -100,7 +101,7 @@ const addMarker = (e) => {
             </Popup>
           </Marker>
         ))}
-        <LocationFinderDummy />
+        <AddMovie />
       </MapContainer>
     </div>
   );
