@@ -5,7 +5,7 @@ import { MapContainer, Marker, Popup, TileLayer, useMapEvents } from 'react-leaf
 import { fetchPublicMovies } from 'reducers/location';
 import { useDispatch, useSelector } from 'react-redux';
 import location from 'reducers/location';
-/* import { AddMovie } from './AddMovie'; */
+import { AddMovie } from './AddMovie';
 import { MovieCard } from '../map_components/MovieCard';
 import { Loader } from 'components/bars_and_navigation/Loader';
 
@@ -91,7 +91,7 @@ export const MovieMap = () => {
             </Popup>
           </Marker>
         ))}
-        {/* <AddMovie /> */}
+        <AddMovie />
       </MapContainer>
     </div>
   );
