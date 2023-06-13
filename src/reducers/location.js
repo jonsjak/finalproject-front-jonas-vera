@@ -5,15 +5,23 @@ import { batch } from 'react-redux';
 const location = createSlice({
   name: 'location',
   initialState: {
-    movies: null,
+    startmovies: [],
+    movies: [],
+    startcoordinates: [],
     coordinates: [],
     isLoading: true,
     activeMovie: null,
     savedmovies: []
   },
   reducers: {
+    setStartMovies: (store, action) => {
+      store.startmovies = action.payload
+    },
     setMovies: (store, action) => {
       store.movies = action.payload
+    },
+    setStartMovieCoordinates: (store, action) => {
+      store.startcoordinates.push(action.payload);
     },
     setMovieCoordinates: (store, action) => {
       store.coordinates.push(action.payload);
@@ -70,9 +78,70 @@ const location = createSlice({
     }
 });
 
+
+// Thunk for fetching private movies
+export const fetchPublicMovies = (movieStartCoordinates) => async (dispatch) => {
+  dispatch(location.actions.setLoading(true))
+  try {
+    const options = {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    };
+    const response = await fetch(`${process.env.REACT_APP_MOVIE_START_URL}`, options);
+    const data = await response.json();
+
+    dispatch(location.actions.setStartMovies(data.body.movieList));
+    for (const movie of data.body.movieList) {
+      if (movie) {
+        const [latitude, longitude] = movie?.coordinates;
+        dispatch(location.actions.setStartMovieCoordinates([latitude, longitude]));
+      } else {
+        console.log('no movie location');
+      }
+    }
+    setTimeout(() => dispatch(location.actions.setLoading(false)), 2000)
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+// Thunk for fetching private movies
+export const fetchPrivateMovies = (accessToken) => async (dispatch) => {
+  dispatch(location.actions.setLoading(true))
+  dispatch(location.actions.setStartMovies([]))
+  dispatch(location.actions.setStartMovieCoordinates([]));
+  try {
+
+    const options = {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: accessToken,
+      }
+    };
+    console.log(accessToken)
+    const response = await fetch(`${process.env.REACT_APP_MOVIE_URL}`, options);
+    const data = await response.json();
+    console.log(data.body.movieList)
+    dispatch(location.actions.setMovies(data.body.movieList));
+       for (const movie of data.body.movieList) {
+      if (movie) {
+        const [latitude, longitude] = movie?.coordinates;
+        dispatch(location.actions.setMovieCoordinates([latitude, longitude]));
+      } else {
+        console.log('no movie location');
+      }
+    }
+    setTimeout(() => dispatch(location.actions.setLoading(false)), 2000)
+  } catch (error) {
+    console.log(error);
+  }
+};
+
 export const getSavedMoviesFetch = (accessToken) => {
   return (dispatch) => {
- 
 
     fetch('https://movie-globe-backend-djwdbjbdsa-lz.a.run.app/movies/savedmovies', {
       method: 'GET',

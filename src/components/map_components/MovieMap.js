@@ -2,6 +2,7 @@
 /* eslint-disable */
 import React, { useEffect, useState } from 'react';
 import { MapContainer, Marker, Popup, TileLayer, useMapEvents } from 'react-leaflet';
+import { fetchPublicMovies } from 'reducers/location';
 import { useDispatch, useSelector } from 'react-redux';
 import location from 'reducers/location';
 /* import { AddMovie } from './AddMovie'; */
@@ -11,43 +12,24 @@ import { Loader } from 'components/bars_and_navigation/Loader';
 export const MovieMap = () => {
   const dispatch = useDispatch();
   const startingPosition = [10, 0];
+  const startMovieItems = useSelector((store) => store.location.startmovies);
   const movieItems = useSelector((store) => store.location.movies);
   const movieCoordinates = useSelector((store) => store.location.coordinates);
-  const movieUrl = process.env.REACT_APP_MOVIE_URL;
+  const movieStartCoordinates = useSelector((store) => store.location.startcoordinates);
+  const accessToken = useSelector((store) => store.user.accessToken);
+/*   const movieUrl = process.env.REACT_APP_MOVIE_URL;
+  const movieStartUrl = process.env.REACT_APP_MOVIE_START_URL; */
   const isLoading = useSelector((store) => store.location.isLoading); // Add isLoading state
+/*   const accessToken = useSelector((store) => store.user.accessToken); */
 
   useEffect(() => {
-    const fetchCoordinates = async () => {
-      try {
-        const options = {
-          method: 'GET',
-          headers: {
-            'Content-Type': 'application/json'
-          }
-        };
-
-        const response = await fetch(movieUrl, options);
-        const data = await response.json();
-
-        dispatch(location.actions.setMovies(data.body.movieList));
-
-        for (const movie of data.body.movieList) {
-          if (movie) {
-            const [latitude, longitude] = movie?.coordinates;
-            dispatch(location.actions.setMovieCoordinates([latitude, longitude]));
-          } else {
-            console.log('no movie location');
-          }
-        }
-        setTimeout(() => dispatch(location.actions.setLoading(false)), 2000)
-        
-      } catch (error) {
-        console.log(error);
-      }
-    };
-
-    fetchCoordinates()
+    if (accessToken) {
+      dispatch(fetchPrivateMovies(accessToken));
+    } else {
+      dispatch(fetchPublicMovies(movieStartCoordinates))
+    }
   }, []);
+  
 
   const handleOnReadClick = (movie) => {
     console.log(movie)
@@ -91,7 +73,19 @@ export const MovieMap = () => {
           <Marker
             key={movie._id}
             // eslint-disable-next-line max-len
+            
             position={movieCoordinates ? movieCoordinates[index] : [-33.893, 151.1988]}>
+            <Popup style={{ margin: '0px', width: '300px' }}>
+              <MovieCard movie={movie} handleOnReadClick={handleOnReadClick} />
+            </Popup>
+          </Marker>
+        ))}
+        {!isLoading && startMovieItems?.map((movie, index) => (
+          <Marker
+            key={movie._id}
+            // eslint-disable-next-line max-len
+            
+            position={movieStartCoordinates ? movieStartCoordinates[index] : [-33.893, 151.1988]}>
             <Popup style={{ margin: '0px', width: '300px' }}>
               <MovieCard movie={movie} handleOnReadClick={handleOnReadClick} />
             </Popup>

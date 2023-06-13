@@ -10,18 +10,17 @@ import user from 'reducers/user';
 import ClearIcon from '@mui/icons-material/Clear';
 import { IconButton } from '@mui/material';
 import { useDispatch, useSelector } from 'react-redux';
-import { SlidingCard } from 'components/styles/Cards';
+import { SlidingCardRight } from 'components/styles/Cards';
 import { useNavigate } from 'react-router-dom';
 import menus from '../../reducers/menus'
 
 export const Register = () => {
   const registerUrl = process.env.REACT_APP_REGISTER_URL;
-  const registerSelected = useSelector((store) => store.menus.register);
+  const accessToken = useSelector((store) => store.user.accessToken);
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const handleSubmit = (event) => {
-    navigate('/');
     event.preventDefault();
     const { username, password } = event.target.elements;
     const data = {
@@ -42,7 +41,7 @@ export const Register = () => {
 
     // Checks password requirements
     if (!passwordRegex.test(data.password)) {
-      console.log('Password needs to be at least 6 characters long, include one number, one UPPERCASE letter and one lowercase letter')
+      alert('Password needs to be at least 6 characters long, include one number, one UPPERCASE letter and one lowercase letter')
     }
 
     fetch(`${registerUrl}`, options)
@@ -58,6 +57,11 @@ export const Register = () => {
             error: false
           })
         );
+        if (accessToken) {
+          navigate('/user/log');
+        } else {
+          alert('failed to register')
+        }
       })
       .catch((error) => console.log(error));
   };
@@ -68,7 +72,7 @@ export const Register = () => {
   }
 
   return (
-    <SlidingCard loginregister loginRegisterSelected={registerSelected}>
+    <SlidingCardRight loginregister>
       <IconButton
         aria-label="clear"
         sx={{ alignSelf: 'flex-start' }}
@@ -123,6 +127,6 @@ export const Register = () => {
           </Grid>
         </Grid>
       </Box>
-    </SlidingCard>
+    </SlidingCardRight>
   );
 };

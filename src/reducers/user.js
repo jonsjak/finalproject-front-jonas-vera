@@ -15,6 +15,9 @@ const user = createSlice({
       store.userId = userId;
       store.accessToken = accessToken;
       store.error = error;
+    },
+    signOut: (store) => {
+      store.accessToken = null
     }
   }
 });

@@ -11,16 +11,16 @@ import Typography from '@mui/material/Typography';
 import ClearIcon from '@mui/icons-material/Clear';
 import { IconButton } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
+import { fetchPrivateMovies } from 'reducers/location';
 /* import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom'; */
 import user from 'reducers/user';
-import { SlidingCard } from 'components/styles/Cards';
+import { SlidingCardRight } from 'components/styles/Cards';
 import menus from '../../reducers/menus'
 
 export const Login = () => {
   const loginUrl = process.env.REACT_APP_LOGIN_URL;
-  const loginSelected = useSelector((store) => store.menus.login);
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -53,12 +53,15 @@ export const Login = () => {
       .then((response) => response.json())
       .then((json) => {
         if (json.success) {
+          const { accessToken } = json.response;
           dispatch(user.actions.setUser({
             userName: json.response.username,
             userId: json.response.id,
             accessToken: json.response.accessToken,
             error: null
           }))
+          console.log(accessToken)
+          dispatch(fetchPrivateMovies(accessToken));
         } else {
           dispatch(user.actions.setUser({
             userName: null,
@@ -77,7 +80,7 @@ export const Login = () => {
   }
 
   return (
-    <SlidingCard loginregister loginRegisterSelected={loginSelected}>
+    <SlidingCardRight loginregister>
       <IconButton
         aria-label="clear"
         sx={{ alignSelf: 'flex-start' }}
@@ -130,6 +133,6 @@ export const Login = () => {
           </Grid>
         </Grid>
       </Box>
-    </SlidingCard>
+    </SlidingCardRight>
   );
 }
