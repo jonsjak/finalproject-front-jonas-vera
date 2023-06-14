@@ -1,9 +1,10 @@
 /* eslint-disable */
 import React, { useState, useEffect } from 'react';
 import { Marker, Popup, useMapEvents, useMap } from 'react-leaflet';
-import { Box, List, TextField } from '@mui/material';
+import { Box, Card, IconButton, List, ListItem, TextField } from '@mui/material';
 import { useSelector, useDispatch } from 'react-redux';
 import { fetchPrivateMovies } from 'reducers/location';
+import { Add } from '@mui/icons-material';
 
 export const AddMovie = () => {
   const [markerPosition, setMarkerPosition] = useState(null);
@@ -18,12 +19,14 @@ export const AddMovie = () => {
   const dispatch = useDispatch();
   const map = useMap();
   const accessToken = useSelector((store) => store.user.accessToken);
+  const mapClickable = useSelector((store) => store.menus.isMapClickable);
   
-  // Add marker
+  // Add marker if isMapClickable
   useMapEvents({
     click(e) {
       const { lat, lng } = e.latlng;
-      setMarkerPosition([lat, lng]);
+      if (mapClickable)
+      {setMarkerPosition([lat, lng])};
     }
   });
   // 
@@ -57,6 +60,7 @@ export const AddMovie = () => {
         .then((data) => {
           setSelectedMovie(data) // returns one object - what do to with it?
           setUserInput(true)
+          setSearchResults([])
         });
     } else {
       console.log('Movie not found')
@@ -123,35 +127,49 @@ export const AddMovie = () => {
   return markerPosition && (
     <Marker position={markerPosition}>
       <Popup style={{ margin: '0px', width: '300px' }}>
-        <Box component="form" sx={{ '& .MuiTextField-root': { m: 1, width: '25ch' } }} noValidate autoComplete="off">
-          <h2>Want to add a location?</h2>
-          <TextField
-            id="standard-search"
-            label="Search movie on OMDB"
-            type="search"
-            variant="standard"
-            onChange={handleMovieSearch} />
-          {searchResults && (
-            <List>
-              {searchResults.slice(0, 5).map((result) => (
-                <button
-                  type="button"
-                  onClick={() => addMovieOnClick(result.Title)}
-                  key={result.imdbID}>
-                  {result.Title}
-                </button>
-              ))}
-            </List>
-          )}
-          {userInput && (
-            <form>
-              <input type="text" value={location} onChange={(e) => setLocation(e.target.value)} name="location" placeholder="Location" required />
-              <input type="text" value={sceneDescription} onChange={(e) => setSceneDescription(e.target.value)} name="scene_description" placeholder="Scene Description" />
-              <input type="text" value={movieStill} onChange={(e) => setMovieStill(e.target.value)} name="movie_location_still" placeholder="Movie Location Still" />
-              <input type="text" value={locationImage} onChange={(e) => setLocationImage(e.target.value)} name="location-image" placeholder="Location image" />
-              <button type="button" onClick={onSubmitMovie}>Post movie</button>
-            </form>)}
-        </Box>
+        <Card sx={{ maxWidth: 301, padding: '20px' }}>
+          <Box component="form" noValidate autoComplete="off">
+            
+            {userInput ? null : (
+              <>
+                <h2>Want to add a location?</h2>
+                <TextField
+                  id="standard-search"
+                  label="Search movie on OMDB"
+                  type="search"
+                  variant="standard"
+                  value={(searchValue)}
+                  onChange={handleMovieSearch} />
+              </>
+            )}
+
+            {searchResults.length > 0 && (
+              <List>
+                {searchResults.slice(0, 5).map((result) => (
+                  <ListItem>
+                    <IconButton
+                      type="button"
+                      onClick={() => addMovieOnClick(result.Title)}
+                      key={result.imdbID}>
+                      {result.Title}
+                      <Add/>
+                    </IconButton>
+                  </ListItem>
+                ))}
+              </List>
+            )}
+
+            {userInput && (
+              <form>
+                <h2>{selectedMovie.Title}</h2>
+                <input type="text" value={location} onChange={(e) => setLocation(e.target.value)} name="location" placeholder="Location" required />
+                <input type="text" value={sceneDescription} onChange={(e) => setSceneDescription(e.target.value)} name="scene_description" placeholder="Scene Description" />
+                <input type="text" value={movieStill} onChange={(e) => setMovieStill(e.target.value)} name="movie_location_still" placeholder="Movie Location Still" />
+                <input type="text" value={locationImage} onChange={(e) => setLocationImage(e.target.value)} name="location-image" placeholder="Location image" />
+                <button type="button" onClick={onSubmitMovie}>Post movie</button>
+              </form>)}
+          </Box>
+        </Card>
       </Popup>
     </Marker>
   );

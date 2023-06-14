@@ -8,7 +8,8 @@ const menus = createSlice({
     personal: false,
     login: false,
     register: false,
-    about: false
+    about: false,
+    isMapClickable: false
   },
   reducers: {
     toggleFilter: (store, action) => {
@@ -25,7 +26,10 @@ const menus = createSlice({
     },
     toggleAboutPage: (store, action) => {
       store.about = action.payload;
-    }
+    },
+    toggleMapClicker: (store, action) => {
+      store.isMapClickable = action.payload;
+    },
     }
   }
 );
