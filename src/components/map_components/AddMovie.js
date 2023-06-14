@@ -3,15 +3,16 @@ import React, { useState, useEffect } from 'react';
 import { Marker, Popup, useMapEvents, useMap } from 'react-leaflet';
 import { Box, List, TextField } from '@mui/material';
 import { useSelector, useDispatch } from 'react-redux';
-import { fetchPrivateMovies } from 'reducers/location';
+import location, { fetchPrivateMovies } from 'reducers/location';
 
-export const AddMovie = () => {
+export const AddMovie = ({ onNewMovieAdded }) => {
   const [markerPosition, setMarkerPosition] = useState(null);
   const [searchValue, setSearchValue] = useState('');
   const [searchResults, setSearchResults] = useState([]);
   const [selectedMovie, setSelectedMovie] = useState({});
   const [userInput, setUserInput] = useState(false);
-  const [location, setLocation] = useState('');
+  const [movieTitle, setMovieTitle] = useState('');
+  const [movieLocation, setMovieLocation] = useState('');
   const [sceneDescription, setSceneDescription] = useState('');
   const [movieStill, setMovieStill] = useState('');
   const [locationImage, setLocationImage] = useState('');
@@ -57,6 +58,8 @@ export const AddMovie = () => {
         .then((data) => {
           setSelectedMovie(data) // returns one object - what do to with it?
           setUserInput(true)
+          setMovieTitle(Title)
+          console.log('title', Title)
         });
     } else {
       console.log('Movie not found')
@@ -65,7 +68,8 @@ export const AddMovie = () => {
 
   const onSubmitMovie = async () => {
     const inputData = {
-      location: location,
+      title: movieTitle,
+      location: movieLocation,
       scene_description: sceneDescription,
       movie_location_still: movieStill,
       location_image: locationImage,
@@ -92,14 +96,27 @@ export const AddMovie = () => {
         
         if (data.success) {
           console.log('response', data.response)
+          dispatch(location.actions.addMovie(data.response))
+          dispatch(location.actions.updateMovieCoordinates(data.response._id, markerPosition));
+          console.log('apple', data.response)
           dispatch(fetchPrivateMovies(accessToken))
+          setSearchValue('');
         } else {
           console.log('data didnt fetch')
         }
       } catch (error) {
         console.log("Error:", error);
     }
-        /* fetch(`${process.env.REACT_APP_MOVIE_URL}`, options)
+    setUserInput(false)
+    setSearchResults([])
+    onNewMovieAdded();
+  }
+
+  // Dispatcha datan till store
+  // Få upp input fält
+  // Post to /movies
+
+  /* fetch(`${process.env.REACT_APP_MOVIE_URL}`, options)
         .then((response)=> { 
           response.json()
           console.log('response', response)
@@ -110,11 +127,6 @@ export const AddMovie = () => {
         .catch((error) => {
           console.log('error', error)
         }) */
-  }
-
-  // Dispatcha datan till store
-  // Få upp input fält
-  // Post to /movies
 
   const handleMovieSearch = (event) => {
     setSearchValue(event.target.value);
@@ -145,7 +157,7 @@ export const AddMovie = () => {
           )}
           {userInput && (
             <form>
-              <input type="text" value={location} onChange={(e) => setLocation(e.target.value)} name="location" placeholder="Location" required />
+              <input type="text" value={movieLocation} onChange={(e) => setMovieLocation(e.target.value)} name="location" placeholder="Location" required />
               <input type="text" value={sceneDescription} onChange={(e) => setSceneDescription(e.target.value)} name="scene_description" placeholder="Scene Description" />
               <input type="text" value={movieStill} onChange={(e) => setMovieStill(e.target.value)} name="movie_location_still" placeholder="Movie Location Still" />
               <input type="text" value={locationImage} onChange={(e) => setLocationImage(e.target.value)} name="location-image" placeholder="Location image" />

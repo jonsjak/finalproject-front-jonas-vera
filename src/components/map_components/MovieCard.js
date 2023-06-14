@@ -14,7 +14,7 @@ export const MovieCard = ({ movie, handleOnReadClick }) => {
         alt="location-img"
         height="160"
         sx={{ objectFit: 'cover' }}
-        image={movie.movie_location_still} />
+        image={movie.movie_location_still ? movie.movie_location_still : movie.Poster} />
       <CardContent>
         <Typography gutterBottom variant="h2" component="div" sx={{ fontSize: '2.2rem' }}>
           {movie.location}

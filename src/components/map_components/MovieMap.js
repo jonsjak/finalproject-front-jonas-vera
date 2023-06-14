@@ -14,6 +14,7 @@ export const MovieMap = () => {
   const startingPosition = [10, 0];
   const startMovieItems = useSelector((store) => store.location.startmovies);
   const movieItems = useSelector((store) => store.location.movies);
+  console.log('Movie Items:', movieItems);
   const movieCoordinates = useSelector((store) => store.location.coordinates);
   const movieStartCoordinates = useSelector((store) => store.location.startcoordinates);
   const accessToken = useSelector((store) => store.user.accessToken);
@@ -29,11 +30,14 @@ export const MovieMap = () => {
       dispatch(fetchPublicMovies(movieStartCoordinates))
     }
   }, []);
-  
 
   const handleOnReadClick = (movie) => {
     console.log(movie)
     dispatch(location.actions.setActiveMovie(movie));
+  };
+
+  const handleNewMovieAdded = () => {
+    alert('movie added!')
   };
 
   if (isLoading) {
@@ -47,18 +51,6 @@ export const MovieMap = () => {
     [90, 180]
   ]
 
-  // Add more markers to map
- /*  const LocationFinderDummy = () => {
-    const [newMarker, setNewMarker] = useState(null);
-    const map = useMapEvents({
-        click(e) {
-            console.log(e.latlng);
-            setNewMarker(e.latlng)
-        },
-    });
-    return (newMarker ? <Marker position={newMarker} /> : null)
-  }; */
-
   return (
     <div style={{ position: 'relative'}}>
       <MapContainer center={startingPosition} maxBounds={outerBounds} maxBoundsViscosity={1} zoom={2} scrollWheelZoom={true} minZoom={3} zoomStart={2}>
@@ -69,11 +61,10 @@ export const MovieMap = () => {
           url="http://services.arcgisonline.com/arcgis/rest/services/NatGeo_World_Map/MapServer/tile/{z}/{y}/{x}"
           attribution='Tiles &copy; <a href="https://www.nationalgeographic.org/">National Geographic Society</a> | Data &copy; <a href="https://www.arcgis.com/home/item.html?id=2b93b06dc0dc4e809d3c8db5cb96ba69">Esri</a>' />
 
-        {!isLoading && movieItems?.map((movie, index) => (
+        {!isLoading && movieItems.map((movie, index) => (
           <Marker
             key={movie._id}
             // eslint-disable-next-line max-len
-            
             position={movieCoordinates ? movieCoordinates[index] : [-33.893, 151.1988]}>
             <Popup style={{ margin: '0px', width: '300px' }}>
               <MovieCard movie={movie} handleOnReadClick={handleOnReadClick} />
@@ -84,14 +75,13 @@ export const MovieMap = () => {
           <Marker
             key={movie._id}
             // eslint-disable-next-line max-len
-            
             position={movieStartCoordinates ? movieStartCoordinates[index] : [-33.893, 151.1988]}>
             <Popup style={{ margin: '0px', width: '300px' }}>
               <MovieCard movie={movie} handleOnReadClick={handleOnReadClick} />
             </Popup>
           </Marker>
         ))}
-        <AddMovie />
+        <AddMovie onNewMovieAdded={handleNewMovieAdded} />
       </MapContainer>
     </div>
   );

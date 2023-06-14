@@ -18,13 +18,20 @@ const location = createSlice({
       store.startmovies = action.payload
     },
     setMovies: (store, action) => {
-      store.movies = action.payload
+      return {
+        ...store,
+        movies: action.payload,
+      };
     },
     setStartMovieCoordinates: (store, action) => {
       store.startcoordinates.push(action.payload);
     },
     setMovieCoordinates: (store, action) => {
-      store.coordinates.push(action.payload);
+      const movieCoordinates = [...store.coordinates, action.payload];
+      return {
+        ...store,
+        coordinates: movieCoordinates,
+      };
     },
     setLoading: (store, action) => {
       store.isLoading = action.payload;
@@ -74,8 +81,25 @@ const location = createSlice({
     deleteSavedMovieFromList: (store, action) => {
       store.savedmovies.splice(action.payload, 1);
     },
-    
+    addMovie: (store, action) => {
+      console.log('Payload:', action.payload);
+      store.movies = [...store.movies, action.payload];
+    },
+    updateMovieCoordinates: (store, action) => {
+      const { movieId, coordinates } = action.payload;
+
+      // Find the movie in the state and update its coordinates
+      const updatedMovies = store.movies.map((movie) => {
+        if (movie._id === movieId) {
+          return { ...movie, coordinates };
+        }
+        return movie;
+      });
+
+      // Update the movieCoordinates array
+      store.coordinates = updatedMovies.map((movie) => movie.coordinates);
     }
+  }
 });
 
 
