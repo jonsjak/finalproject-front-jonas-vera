@@ -8,28 +8,43 @@ import styled from 'styled-components';
 export const IconMenuBar = styled.menu`
   position: absolute;
   left: 0px;
-  bottom: 0px;
+  bottom: -19px;
   z-index: 997;
   display: flex;
   flex-direction: column;
-  gap: 30px;
-  margin: 15px;
+  justify-content: flex-end;
   padding: 0px;
+  height: 110vh;
+`
+
+export const MenuBackground = styled.div`
+  position: absolute;
+  left: -71px;
+  bottom: -19px;
+  z-index: 996;
+  padding: 0px;
+  width: 100px;
+  background:  #008ca5;
+  height: 110vh;
+  transform: rotate(-7deg);
 `
 
 export const IconMenu = () => {
   return (
-    <IconMenuBar>
-      <IconButton>
-        <NavLink to="/filter">
-          <FilterAltIcon sx={{ fontSize: '50px', color: '#2D3142' }} />
-        </NavLink>
-      </IconButton>
-      <IconButton>
-        <NavLink to="/personal">
-          <Person2Icon sx={{ fontSize: '50px', color: '#2D3142' }} />
-        </NavLink>
-      </IconButton>
-    </IconMenuBar>
+    <>
+      <MenuBackground />
+      <IconMenuBar>
+        <IconButton>
+          <NavLink to="/filter">
+            <FilterAltIcon sx={{ fontSize: '40px', color: '#2D3142' }} />
+          </NavLink>
+        </IconButton>
+        <IconButton>
+          <NavLink to="/personal">
+            <Person2Icon sx={{ fontSize: '40px', color: '#2D3142' }} />
+          </NavLink>
+        </IconButton>
+      </IconMenuBar>
+    </>
   )
 }

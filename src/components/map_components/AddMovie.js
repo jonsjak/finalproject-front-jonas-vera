@@ -1,11 +1,12 @@
 /* eslint-disable */
 import React, { useState, useEffect } from 'react';
 import { Marker, Popup, useMapEvents, useMap } from 'react-leaflet';
-import { Box, List, TextField } from '@mui/material';
+import { List, TextField, Card, CardContent, Typography, Button, FormControl, ThemeProvider } from '@mui/material';
 import { useSelector, useDispatch } from 'react-redux';
 import location, { fetchPrivateMovies } from 'reducers/location';
+import { createTheme } from '@mui/material/styles';
 
-export const AddMovie = ({ onNewMovieAdded }) => {
+export const AddMovie = () => {
   const [markerPosition, setMarkerPosition] = useState(null);
   const [searchValue, setSearchValue] = useState('');
   const [searchResults, setSearchResults] = useState([]);
@@ -109,52 +110,119 @@ export const AddMovie = ({ onNewMovieAdded }) => {
     }
     setUserInput(false)
     setSearchResults([])
-    onNewMovieAdded();
   }
 
   const handleMovieSearch = (event) => {
     setSearchValue(event.target.value);
   };
 
+  const theme = createTheme({
+    palette: {
+      primary: {
+        light: '#757ce8',
+        main: '#008ca5',
+        dark: '#002884',
+        contrastText: '#fff'
+      },
+      secondary: {
+        light: '#ff7961',
+        main: '#f44336',
+        dark: '#ba000d',
+        contrastText: '#000'
+      }
+    }
+  });
+
   return markerPosition && (
-    <Marker position={markerPosition}>
-      <Popup style={{ margin: '0px', width: '300px' }}>
-        <Box component="form" sx={{ '& .MuiTextField-root': { m: 1, width: '25ch' } }} noValidate autoComplete="off">
-          {userInput ? null : (
-              <>
-                <h2>Want to add a location?</h2>
-                <TextField
-                  id="standard-search"
-                  label="Search movie on OMDB"
-                  type="search"
-                  variant="standard"
-                  value={(searchValue)}
-                  onChange={handleMovieSearch} />
-              </>
-            )}
-          {searchResults.length > 0 && (
-            <List>
-              {searchResults.slice(0, 5).map((result) => (
-                <button
-                  type="button"
-                  onClick={() => addMovieOnClick(result.Title)}
-                  key={result.imdbID}>
-                  {result.Title}
-                </button>
-              ))}
-            </List>
-          )}
-          {userInput && (
-            <form>
-              <h2>{selectedMovie.Title}</h2>
-              <input type="text" value={movieLocation} onChange={(e) => setMovieLocation(e.target.value)} name="location" placeholder="Location" required />
-              <input type="text" value={sceneDescription} onChange={(e) => setSceneDescription(e.target.value)} name="scene_description" placeholder="Scene Description" />
-              <input type="text" value={movieStill} onChange={(e) => setMovieStill(e.target.value)} name="movie_location_still" placeholder="Movie Location Still" />
-              <input type="text" value={locationImage} onChange={(e) => setLocationImage(e.target.value)} name="location-image" placeholder="Location image" />
-              <button type="button" onClick={onSubmitMovie}>Post movie</button>
-            </form>)}
-        </Box>
-      </Popup>
-    </Marker>
+    <ThemeProvider theme={theme}>
+      <Marker position={markerPosition}>
+        <Popup style={{ margin: '0px', width: '300px' }}>
+          <Card sx={{ width: 301 }}>
+            <CardContent>
+              {userInput ? null : (
+                  <>
+                    <Typography gutterBottom variant="h2" component="div" sx={{ fontSize: '2.2rem' }}>
+                      Want to add a location?
+                    </Typography>
+                    <TextField
+                      id="standard-search"
+                      label="Search movie on OMDB"
+                      type="search"
+                      variant="standard"
+                      sx={{ width: '70%' }}
+                      value={(searchValue)}
+                      onChange={handleMovieSearch} />
+                  </>
+                )}
+              {searchResults.length > 0 && !userInput && (
+                <List sx={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', width: '100%' }}>
+                  {searchResults.slice(0, 5).map((result) => (
+                    <Button
+                      type="button"
+                      sx={{ textAlign: 'left' }}
+                      onClick={() => addMovieOnClick(result.Title)}
+                      key={result.imdbID}>
+                      {result.Title}
+                    </Button>
+                  ))}
+                </List>
+              )}
+              {userInput && (
+                <>
+                  <Typography gutterBottom variant="h4" component="div" sx={{ fontSize: '1.8rem' }}>
+                    Add <span style={{ fontStyle: 'italic' }}>{selectedMovie.Title}</span>
+                  </Typography>
+                  <FormControl sx={{ m: 1, minWidth: 200 }} size="small">
+                    <TextField
+                      helperText="Name of movie location"
+                      id="outlined-size-small margin-none"
+                      label="Location"
+                      variant="outlined"
+                      size="small"
+                      value={movieLocation}
+                      onChange={(e) => setMovieLocation(e.target.value)}/>
+                    <TextField
+                      helperText="Describe the scene from the film taking place here"
+                      id="outlined-multiline-static margin-none"
+                      label="Scene description"
+                      multiline
+                      rows={3}
+                      size="small"
+                      value={sceneDescription}
+                      onChange={(e) => setSceneDescription(e.target.value)}/>
+                    <TextField
+                      helperText="Paste in an URL of a still image from the film scene"
+                      id="outlined-basic margin-none"
+                      label="Movie still image"
+                      variant="outlined"
+                      size="small"
+                      value={movieStill}
+                      onChange={(e) => setMovieStill(e.target.value)}/>
+                    <TextField
+                      helperText="Paste in an URL to an image of the place"
+                      id="outlined-basic margin-none"
+                      label="Image of the place"
+                      variant="outlined"
+                      size="small"
+                      value={locationImage}
+                      onChange={(e) => setLocationImage(e.target.value)}/>
+                    <Button
+                      type="button"
+                      onClick={onSubmitMovie}
+                      variant="contained"
+                      sx={{
+                        width: '180px',
+                        alignSelf: 'center',
+                        fontWeight: 700
+                      }} size="large">
+                        Add movie
+                    </Button>
+                  </FormControl>
+                </>)}
+            </CardContent>
+          </Card>
+        </Popup>
+      </Marker>
+    </ThemeProvider>
   );
 };

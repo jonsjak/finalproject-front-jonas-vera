@@ -8,7 +8,7 @@ import Typography from '@mui/material/Typography';
 
 export const MovieCard = ({ movie, handleOnReadClick }) => {
   return (
-    <Card sx={{ maxWidth: 301 }}>
+    <Card sx={{ width: 301 }}>
       <CardMedia
         component="img"
         alt="location-img"

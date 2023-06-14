@@ -3,31 +3,31 @@
 import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import { Tab, Tabs, Typography, CardMedia, CardContent, IconButton } from '@mui/material';
-import { Grade, AddComment } from '@mui/icons-material';
+import { Tab, Tabs, Typography, CardMedia, CardContent, IconButton, ThemeProvider } from '@mui/material';
 import ClearIcon from '@mui/icons-material/Clear';
 import { SlidingCard } from 'components/styles/Cards';
+import { createTheme } from '@mui/material/styles';
 import Clapper from '../../images/clapboard-g163cd4bec_640.png';
 import menus from '../../reducers/menus'
 import { SavedMovieList } from './SavedMovieList';
 
-const FavoriteMoviesTab = () => {
+const SavedMoviesTab = () => {
   return (
-    <div style={{ height: '250px', overflow: 'scroll' }}>
+    <div style={{ height: '460px', overflow: 'scroll' }}>
       <SavedMovieList />
     </div>
   );
 };
 
-const AddCommentsTab = () => {
+const PersonalInfoTab = () => {
+  const userName = useSelector((store) => store.user.userName);
   return (
-    <div>
-      <Typography variant="h5" component="div">
-        Add Comments
+    <div style={{ height: '460px', overflow: 'scroll', paddingTop: '30px', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'flex-start' }}>
+      <Typography gutterBottom variant="h5" component="div">
+        {userName}´s personal space
       </Typography>
-      <Typography variant="body2" color="text.secondary">
-        Theese are your comments
-      </Typography>
+      <CardMedia component="img" sx={{ width: '80%', margin: '20px' }} image={Clapper} alt="Clapboard" />
+      <Typography variant="body2" paragraph>Username: {userName}</Typography>
     </div>
   );
 };
@@ -37,7 +37,6 @@ const AddCommentsTab = () => {
 export const PersonalPage = () => {
   const [value, setValue] = useState(0);
   const personalSelected = useSelector((store) => store.menus.personal);
-  const userName = useSelector((store) => store.user.userName);
   const accessToken = useSelector((store) => store.user.accessToken);
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -56,9 +55,9 @@ export const PersonalPage = () => {
   const renderTabContent = () => {
     switch (value) {
       case 0:
-        return <FavoriteMoviesTab />;
+        return <SavedMoviesTab />;
       case 1:
-        return <AddCommentsTab />;
+        return <PersonalInfoTab />;
       default:
         return null;
     }
@@ -69,25 +68,40 @@ export const PersonalPage = () => {
     navigate('/')
   };
 
+  const theme = createTheme({
+    palette: {
+      primary: {
+        light: '#757ce8',
+        main: '#008ca5',
+        dark: '#002884',
+        contrastText: '#fff'
+      },
+      secondary: {
+        light: '#ff7961',
+        main: '#f44336',
+        dark: '#ba000d',
+        contrastText: '#000'
+      }
+    }
+  });
+
   return (
     <SlidingCard personal personalSelected={personalSelected}>
-      <IconButton
-        sx={{ alignSelf: 'flex-end' }}
-        aria-label="clear"
-        onClick={() => handleOnClearClick()}>
-        <ClearIcon sx={{ fontSize: '16px' }} />
-      </IconButton>
-      <CardMedia component="img" sx={{ width: '65%', height: '176px', alignSelf: 'center' }} image={Clapper} alt="Clapboard" />
-      <CardContent>
-        <Typography gutterBottom variant="h5" component="div">
-          {userName}´s personal space
-        </Typography>
-        <Tabs value={value} onChange={handleChange} aria-label="icon label tabs">
-          <Tab icon={<Grade />} label="SAVED MOVIES" />
-          <Tab icon={<AddComment />} label="ADD COMMENTS" />
-        </Tabs>
-        {renderTabContent()}
-      </CardContent>
+      <ThemeProvider theme={theme}>
+        <IconButton
+          sx={{ alignSelf: 'flex-end' }}
+          aria-label="clear"
+          onClick={() => handleOnClearClick()}>
+          <ClearIcon sx={{ fontSize: '16px' }} />
+        </IconButton>
+        <CardContent sx={{ paddingTop: '0px' }}>
+          <Tabs value={value} onChange={handleChange} aria-label="icon label tabs">
+            <Tab label="SAVED MOVIES" />
+            <Tab label="PERSONAL INFO" />
+          </Tabs>
+          {renderTabContent()}
+        </CardContent>
+      </ThemeProvider>
     </SlidingCard>
   );
 };

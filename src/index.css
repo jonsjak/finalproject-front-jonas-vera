@@ -32,6 +32,10 @@ code {
   padding: 0px;
 }
 
+.leaflet-popup-content p {
+  margin-top: 0px;
+}
+
 .diagonal-box {
 	background: #008ca5;
 	transform: skewY(-8deg);
@@ -43,11 +47,11 @@ code {
 }
 
 .leaflet-top {
-  top: 241px;
+  top: 561px;
 }
 
 .leaflet-left {
-  left: 25px;
+  left: 5px;
 }
 
 .leaflet-bar a {
@@ -61,11 +65,11 @@ code {
 }
 
 .leaflet-touch .leaflet-control-zoom-out {
-  font-size: 60px;
+  font-size: 50px;
 }
 
 .leaflet-touch .leaflet-control-zoom-in, .leaflet-touch .leaflet-control-zoom-out {
-  font-size: 60px;
+  font-size: 50px;
 }
 
 .leaflet-bar a {

@@ -17,7 +17,7 @@ export const DiagonalBox = styled.div`
   background: #008ca5;
   transform: skewY(-8deg);
   position: absolute;
-  z-index: 996;
+  z-index: 997;
   top: -146px;
   width: 100%;
   height: 194px;

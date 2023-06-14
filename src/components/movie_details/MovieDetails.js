@@ -58,23 +58,40 @@ export const MovieDetails = () => {
           <Typography variant="body2" color="text.secondary" sx={{ padding: '16px', paddingTop: '0px', fontStyle: 'italic', fontSize: '1rem' }}>
             {selectedMovie.Genre}
           </Typography>
-          <Carousel
-            animation="fade">
-            <CardMedia
-              component="img"
-              height="184.645px"
-              width="100%"
-              sx={{ objectFit: 'cover' }}
-              image={selectedMovie.location_image}
-              alt={`Image from ${selectedMovie.title}`} />
-            <CardMedia
-              component="img"
-              height="184.645px"
-              width="100%"
-              sx={{ objectFit: 'cover' }}
-              image={selectedMovie.movie_location_still}
-              alt={`Image from ${selectedMovie.title}`} />
-          </Carousel>
+          {selectedMovie.location_image || selectedMovie.movie_location_still
+            ? (
+              <Carousel
+                animation="fade">
+                <CardMedia
+                  component="img"
+                  height="184.645px"
+                  width="100%"
+                  sx={{ objectFit: 'cover' }}
+                  image={
+                    selectedMovie.location_image
+                      ? selectedMovie.location_image : selectedMovie.Poster
+                  }
+                  alt={`Image from ${selectedMovie.title}`} />
+                <CardMedia
+                  component="img"
+                  height="184.645px"
+                  width="100%"
+                  sx={{ objectFit: 'cover' }}
+                  image={
+                    selectedMovie.movie_location_still
+                      ? selectedMovie.movie_location_still : selectedMovie.Poster
+                  }
+                  alt={`Image from ${selectedMovie.title}`} />
+              </Carousel>
+            ) : (
+              <CardMedia
+                component="img"
+                height="184.645px"
+                width="100%"
+                sx={{ objectFit: 'cover' }}
+                image={selectedMovie.Poster}
+                alt={`Poster for ${selectedMovie.title}`} />
+            )}
           <CardContent>
             <Typography variant="body1" color="text.primary" paragraph>
               {selectedMovie.location}

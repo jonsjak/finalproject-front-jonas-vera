@@ -1,7 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable */
-import React, { useEffect, useState } from 'react';
-import { MapContainer, Marker, Popup, TileLayer, useMapEvents } from 'react-leaflet';
+import React, { useEffect } from 'react';
+import { MapContainer, Marker, Popup, TileLayer } from 'react-leaflet';
 import { fetchPublicMovies } from 'reducers/location';
 import { useDispatch, useSelector } from 'react-redux';
 import location from 'reducers/location';
@@ -34,10 +34,6 @@ export const MovieMap = () => {
   const handleOnReadClick = (movie) => {
     console.log(movie)
     dispatch(location.actions.setActiveMovie(movie));
-  };
-
-  const handleNewMovieAdded = () => {
-    alert('movie added!')
   };
 
   if (isLoading) {
@@ -81,7 +77,7 @@ export const MovieMap = () => {
             </Popup>
           </Marker>
         ))}
-        <AddMovie onNewMovieAdded={handleNewMovieAdded} />
+        <AddMovie />
       </MapContainer>
     </div>
   );
