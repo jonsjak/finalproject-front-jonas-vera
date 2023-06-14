@@ -65,7 +65,7 @@ export const NavBarMain = () => {
           <ul className="sidebar-list">
             {accessToken
               ? (
-                <li className={toggleSideBar ? 'sidebar-item active' : 'sidebar-item'}><NavLink className="sidebar-anchor" to="/user/login" onClick={onLogOutClick}>Log out</NavLink></li>
+                <li className={toggleSideBar ? 'sidebar-item active' : 'sidebar-item'}><NavLink className="sidebar-anchor" to="/" onClick={onLogOutClick}>Log out</NavLink></li>
               ) : (
                 <>
                   <li className={toggleSideBar ? 'sidebar-item active' : 'sidebar-item'}><NavLink className="sidebar-anchor" to="/user/login" onClick={onToggleMenu}>Log in</NavLink></li>

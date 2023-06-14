@@ -3,16 +3,16 @@ import React, { useState, useEffect } from 'react';
 import { Marker, Popup, useMapEvents, useMap } from 'react-leaflet';
 import { Box, Card, IconButton, List, ListItem, TextField } from '@mui/material';
 import { useSelector, useDispatch } from 'react-redux';
-import { fetchPrivateMovies } from 'reducers/location';
-import { Add } from '@mui/icons-material';
+import location, { fetchPrivateMovies } from 'reducers/location';
 
-export const AddMovie = () => {
+export const AddMovie = ({ onNewMovieAdded }) => {
   const [markerPosition, setMarkerPosition] = useState(null);
   const [searchValue, setSearchValue] = useState('');
   const [searchResults, setSearchResults] = useState([]);
   const [selectedMovie, setSelectedMovie] = useState({});
   const [userInput, setUserInput] = useState(false);
-  const [location, setLocation] = useState('');
+  const [movieTitle, setMovieTitle] = useState('');
+  const [movieLocation, setMovieLocation] = useState('');
   const [sceneDescription, setSceneDescription] = useState('');
   const [movieStill, setMovieStill] = useState('');
   const [locationImage, setLocationImage] = useState('');
@@ -60,6 +60,8 @@ export const AddMovie = () => {
         .then((data) => {
           setSelectedMovie(data) // returns one object - what do to with it?
           setUserInput(true)
+          setMovieTitle(Title)
+          console.log('title', Title)
           setSearchResults([])
         });
     } else {
@@ -69,7 +71,8 @@ export const AddMovie = () => {
 
   const onSubmitMovie = async () => {
     const inputData = {
-      location: location,
+      title: movieTitle,
+      location: movieLocation,
       scene_description: sceneDescription,
       movie_location_still: movieStill,
       location_image: locationImage,
@@ -95,30 +98,21 @@ export const AddMovie = () => {
         const data = await response.json();
         
         if (data.success) {
-          console.log('response', data.response)
+          dispatch(location.actions.addMovie(data.response))
+          dispatch(location.actions.updateMovieCoordinates(data.response._id, markerPosition));
           dispatch(fetchPrivateMovies(accessToken))
+          setSearchValue('');
+          setMarkerPosition(null)
         } else {
           console.log('data didnt fetch')
         }
       } catch (error) {
         console.log("Error:", error);
     }
-        /* fetch(`${process.env.REACT_APP_MOVIE_URL}`, options)
-        .then((response)=> { 
-          response.json()
-          console.log('response', response)
-          console.log(response.json())
-          dispatch(fetchPrivateMovies(accessToken))
-        })
-        .then(json => console.log('json', json))
-        .catch((error) => {
-          console.log('error', error)
-        }) */
+    setUserInput(false)
+    setSearchResults([])
+    onNewMovieAdded();
   }
-
-  // Dispatcha datan till store
-  // Få upp input fält
-  // Post to /movies
 
   const handleMovieSearch = (event) => {
     setSearchValue(event.target.value);
@@ -127,10 +121,8 @@ export const AddMovie = () => {
   return markerPosition && (
     <Marker position={markerPosition}>
       <Popup style={{ margin: '0px', width: '300px' }}>
-        <Card sx={{ maxWidth: 301, padding: '20px' }}>
-          <Box component="form" noValidate autoComplete="off">
-            
-            {userInput ? null : (
+        <Box component="form" sx={{ '& .MuiTextField-root': { m: 1, width: '25ch' } }} noValidate autoComplete="off">
+          {userInput ? null : (
               <>
                 <h2>Want to add a location?</h2>
                 <TextField
@@ -142,34 +134,28 @@ export const AddMovie = () => {
                   onChange={handleMovieSearch} />
               </>
             )}
-
-            {searchResults.length > 0 && (
-              <List>
-                {searchResults.slice(0, 5).map((result) => (
-                  <ListItem>
-                    <IconButton
-                      type="button"
-                      onClick={() => addMovieOnClick(result.Title)}
-                      key={result.imdbID}>
-                      {result.Title}
-                      <Add/>
-                    </IconButton>
-                  </ListItem>
-                ))}
-              </List>
-            )}
-
-            {userInput && (
-              <form>
-                <h2>{selectedMovie.Title}</h2>
-                <input type="text" value={location} onChange={(e) => setLocation(e.target.value)} name="location" placeholder="Location" required />
-                <input type="text" value={sceneDescription} onChange={(e) => setSceneDescription(e.target.value)} name="scene_description" placeholder="Scene Description" />
-                <input type="text" value={movieStill} onChange={(e) => setMovieStill(e.target.value)} name="movie_location_still" placeholder="Movie Location Still" />
-                <input type="text" value={locationImage} onChange={(e) => setLocationImage(e.target.value)} name="location-image" placeholder="Location image" />
-                <button type="button" onClick={onSubmitMovie}>Post movie</button>
-              </form>)}
-          </Box>
-        </Card>
+          {searchResults.length > 0 && (
+            <List>
+              {searchResults.slice(0, 5).map((result) => (
+                <button
+                  type="button"
+                  onClick={() => addMovieOnClick(result.Title)}
+                  key={result.imdbID}>
+                  {result.Title}
+                </button>
+              ))}
+            </List>
+          )}
+          {userInput && (
+            <form>
+              <h2>{selectedMovie.Title}</h2>
+              <input type="text" value={movieLocation} onChange={(e) => setMovieLocation(e.target.value)} name="location" placeholder="Location" required />
+              <input type="text" value={sceneDescription} onChange={(e) => setSceneDescription(e.target.value)} name="scene_description" placeholder="Scene Description" />
+              <input type="text" value={movieStill} onChange={(e) => setMovieStill(e.target.value)} name="movie_location_still" placeholder="Movie Location Still" />
+              <input type="text" value={locationImage} onChange={(e) => setLocationImage(e.target.value)} name="location-image" placeholder="Location image" />
+              <button type="button" onClick={onSubmitMovie}>Post movie</button>
+            </form>)}
+        </Box>
       </Popup>
     </Marker>
   );
