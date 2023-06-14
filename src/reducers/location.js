@@ -9,7 +9,7 @@ const location = createSlice({
     movies: [],
     startcoordinates: [],
     coordinates: [],
-    isLoading: true,
+    isLoading: false,
     activeMovie: null,
     savedmovies: []
   },
@@ -133,7 +133,6 @@ export const fetchPublicMovies = (movieStartCoordinates) => async (dispatch) => 
 
 // Thunk for fetching private movies
 export const fetchPrivateMovies = (accessToken) => async (dispatch) => {
-  dispatch(location.actions.setLoading(true))
   dispatch(location.actions.setStartMovies([]))
   dispatch(location.actions.setStartMovieCoordinates([]));
   try {
@@ -158,7 +157,7 @@ export const fetchPrivateMovies = (accessToken) => async (dispatch) => {
         console.log('no movie location');
       }
     }
-    setTimeout(() => dispatch(location.actions.setLoading(false)), 2000)
+/*     setTimeout(() => dispatch(location.actions.setLoading(false)), 2000) */
   } catch (error) {
     console.log(error);
   }

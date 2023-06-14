@@ -60,6 +60,7 @@ export const AddMovie = ({ onNewMovieAdded }) => {
           setUserInput(true)
           setMovieTitle(Title)
           console.log('title', Title)
+          setSearchResults([])
         });
     } else {
       console.log('Movie not found')
@@ -95,12 +96,11 @@ export const AddMovie = ({ onNewMovieAdded }) => {
         const data = await response.json();
         
         if (data.success) {
-          console.log('response', data.response)
           dispatch(location.actions.addMovie(data.response))
           dispatch(location.actions.updateMovieCoordinates(data.response._id, markerPosition));
-          console.log('apple', data.response)
           dispatch(fetchPrivateMovies(accessToken))
           setSearchValue('');
+          setMarkerPosition(null)
         } else {
           console.log('data didnt fetch')
         }
@@ -112,22 +112,6 @@ export const AddMovie = ({ onNewMovieAdded }) => {
     onNewMovieAdded();
   }
 
-  // Dispatcha datan till store
-  // Få upp input fält
-  // Post to /movies
-
-  /* fetch(`${process.env.REACT_APP_MOVIE_URL}`, options)
-        .then((response)=> { 
-          response.json()
-          console.log('response', response)
-          console.log(response.json())
-          dispatch(fetchPrivateMovies(accessToken))
-        })
-        .then(json => console.log('json', json))
-        .catch((error) => {
-          console.log('error', error)
-        }) */
-
   const handleMovieSearch = (event) => {
     setSearchValue(event.target.value);
   };
@@ -136,14 +120,19 @@ export const AddMovie = ({ onNewMovieAdded }) => {
     <Marker position={markerPosition}>
       <Popup style={{ margin: '0px', width: '300px' }}>
         <Box component="form" sx={{ '& .MuiTextField-root': { m: 1, width: '25ch' } }} noValidate autoComplete="off">
-          <h2>Want to add a location?</h2>
-          <TextField
-            id="standard-search"
-            label="Search movie on OMDB"
-            type="search"
-            variant="standard"
-            onChange={handleMovieSearch} />
-          {searchResults && (
+          {userInput ? null : (
+              <>
+                <h2>Want to add a location?</h2>
+                <TextField
+                  id="standard-search"
+                  label="Search movie on OMDB"
+                  type="search"
+                  variant="standard"
+                  value={(searchValue)}
+                  onChange={handleMovieSearch} />
+              </>
+            )}
+          {searchResults.length > 0 && (
             <List>
               {searchResults.slice(0, 5).map((result) => (
                 <button
@@ -157,6 +146,7 @@ export const AddMovie = ({ onNewMovieAdded }) => {
           )}
           {userInput && (
             <form>
+              <h2>{selectedMovie.Title}</h2>
               <input type="text" value={movieLocation} onChange={(e) => setMovieLocation(e.target.value)} name="location" placeholder="Location" required />
               <input type="text" value={sceneDescription} onChange={(e) => setSceneDescription(e.target.value)} name="scene_description" placeholder="Scene Description" />
               <input type="text" value={movieStill} onChange={(e) => setMovieStill(e.target.value)} name="movie_location_still" placeholder="Movie Location Still" />
