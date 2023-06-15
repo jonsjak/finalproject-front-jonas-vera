@@ -38,8 +38,12 @@ export const Header = () => {
     <HeaderContainer>
       <DiagonalBox />
       <Link to="/">
-        <CameraLogo src={logo} alt="logo" />
-        <GlobeLoader src={globe} alt="globe loader" />
+        <CameraLogo
+          src={logo}
+          alt="logo" />
+        <GlobeLoader
+          src={globe}
+          alt="globe loader" />
       </Link>
     </HeaderContainer>
   );

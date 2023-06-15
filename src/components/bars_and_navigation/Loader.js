@@ -19,7 +19,9 @@ const GlobeLoader = styled.img`
 export const Loader = () => {
   return (
     <LoaderBackground>
-      <GlobeLoader src={globe} alt="globe loader" />
+      <GlobeLoader
+        src={globe}
+        alt="globe loader" />
     </LoaderBackground>
   );
 }

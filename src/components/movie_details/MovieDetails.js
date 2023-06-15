@@ -54,7 +54,7 @@ export const MovieDetails = () => {
     try {
       // eslint-disable-next-line no-underscore-dangle
       const response = await fetch(`https://movie-globe-backend-djwdbjbdsa-lz.a.run.app/movies/${selectedMovie._id}/addcomment`, options);
-      const data = await response.json();
+      const data = await response.json(); // fix line above?
 
       if (data.success) {
         // eslint-disable-next-line no-underscore-dangle
@@ -71,7 +71,17 @@ export const MovieDetails = () => {
   return (
     <div>
       {selectedMovie && (
-        <Card sx={{ maxWidth: 345, position: 'absolute', right: '20px', top: '30px', zIndex: '999', width: '345px', maxHeight: '85vh', overflow: 'scroll' }}>
+        <Card
+          sx={{
+            maxWidth: 345,
+            position: 'absolute',
+            right: '20px',
+            top: '30px',
+            zIndex: '999',
+            width: '345px',
+            maxHeight: '85vh',
+            overflow: 'scroll'
+          }}>
           <CardHeader
             action={
               <IconButton
@@ -83,7 +93,15 @@ export const MovieDetails = () => {
             title={selectedMovie.title}
             subheader={`(${selectedMovie.Year}), ${selectedMovie.Country}`}
             sx={{ paddingBottom: '0px' }} />
-          <Typography variant="body2" color="text.secondary" sx={{ padding: '16px', paddingTop: '0px', fontStyle: 'italic', fontSize: '1rem' }}>
+          <Typography
+            variant="body2"
+            color="text.secondary"
+            sx={{
+              padding: '16px',
+              paddingTop: '0px',
+              fontStyle: 'italic',
+              fontSize: '1rem'
+            }}>
             {selectedMovie.Genre}
           </Typography>
           {selectedMovie.location_image || selectedMovie.movie_location_still
@@ -121,10 +139,15 @@ export const MovieDetails = () => {
                 alt={`Poster for ${selectedMovie.title}`} />
             )}
           <CardContent>
-            <Typography variant="body1" color="text.primary" paragraph>
+            <Typography
+              variant="body1"
+              color="text.primary"
+              paragraph>
               {selectedMovie.location}
             </Typography>
-            <Typography variant="body2" color="text.secondary">
+            <Typography
+              variant="body2"
+              color="text.secondary">
               {selectedMovie.scene_description
                 ? selectedMovie.scene_description : selectedMovie.Plot}
             </Typography>
@@ -146,24 +169,73 @@ export const MovieDetails = () => {
               <ExpandMoreIcon />
             </ExpandMore>
           </CardActions>
-          <Collapse in={expandedDetails} timeout="auto" unmountOnExit>
+          <Collapse
+            in={expandedDetails}
+            timeout="auto"
+            unmountOnExit>
             <CardContent>
-              <div style={{ display: 'grid', gridTemplateColumns: '1fr 2fr' }}>
-                <Typography variant="body2" paragraph color="text.secondary">Director:</Typography>
-                <Typography variant="body2" paragraph>{selectedMovie.Director}</Typography>
-                <Typography variant="body2" paragraph color="text.secondary">Actors:</Typography>
-                <Typography variant="body2" paragraph>{selectedMovie.Actors}</Typography>
-                <Typography variant="body2" paragraph color="text.secondary">Language:</Typography>
-                <Typography variant="body2" paragraph>{selectedMovie.Language}</Typography>
-                <Typography variant="body2" paragraph color="text.secondary">Country:</Typography>
-                <Typography variant="body2" paragraph>{selectedMovie.Country}</Typography>
-                <Typography variant="body2" paragraph color="text.secondary">
-                  Synopsis:
+              <div
+                style={{
+                  display: 'grid',
+                  gridTemplateColumns: '1fr 2fr'
+                }}>
+                <Typography
+                  variant="body2"
+                  paragraph
+                  color="text.secondary">
+                    Director:
                 </Typography>
-                <Typography variant="body2" paragraph>
+                <Typography
+                  variant="body2"
+                  paragraph>
+                  {selectedMovie.Director}
+                </Typography>
+                <Typography
+                  variant="body2"
+                  paragraph
+                  color="text.secondary">
+                    Actors:
+                </Typography>
+                <Typography
+                  variant="body2"
+                  paragraph>
+                  {selectedMovie.Actors}
+                </Typography>
+                <Typography
+                  variant="body2"
+                  paragraph
+                  color="text.secondary">
+                    Language:
+                </Typography>
+                <Typography
+                  variant="body2"
+                  paragraph>
+                  {selectedMovie.Language}
+                </Typography>
+                <Typography
+                  variant="body2"
+                  paragraph
+                  color="text.secondary">
+                    Country:
+                </Typography>
+                <Typography
+                  variant="body2"
+                  paragraph>
+                  {selectedMovie.Country}
+                </Typography>
+                <Typography
+                  variant="body2"
+                  paragraph
+                  color="text.secondary">
+                    Synopsis:
+                </Typography>
+                <Typography
+                  variant="body2"
+                  paragraph>
                   {selectedMovie.Plot}
                 </Typography>
               </div>
+
               <CardMedia
                 component="img"
                 height="100%"
@@ -173,14 +245,20 @@ export const MovieDetails = () => {
                 alt={`Poster for ${selectedMovie.title}`} />
             </CardContent>
           </Collapse>
-          <Collapse in={expandedComments} timeout="auto" unmountOnExit>
+
+          <Collapse
+            in={expandedComments}
+            timeout="auto"
+            unmountOnExit>
             {selectedMovie.Comments && selectedMovie.Comments.map((comment) => (
               <>
                 <p>{comment.message}</p>
                 <p>{comment.userName}</p>
               </>
             ))}
-            <FormControl sx={{ m: 1, minWidth: 200 }} size="small">
+            <FormControl
+              sx={{ m: 1, minWidth: 200 }}
+              size="small">
               <TextField
                 id="outlined-multiline-static margin-none"
                 label="Write your comment or review here..."

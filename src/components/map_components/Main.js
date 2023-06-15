@@ -3,7 +3,7 @@ import { Header } from 'components/bars_and_navigation/Header';
 import { NavBarMain } from 'components/bars_and_navigation/NavBarMain';
 import { IconMenu } from 'components/bars_and_navigation/IconMenu';
 import { MovieDetails } from '../movie_details/MovieDetails';
-import { MovieMap } from '../map_components/MovieMap';
+import { MovieMap } from './MovieMap';
 
 export const Main = () => {
   return (

@@ -7,10 +7,22 @@ import { Tab, Tabs, Typography, CardMedia, CardContent, IconButton, ThemeProvide
 import ClearIcon from '@mui/icons-material/Clear';
 import { SlidingCard } from 'components/styles/Cards';
 import { createTheme } from '@mui/material/styles';
+import styled from 'styled-components';
 import Clapper from '../../images/clapboard-g163cd4bec_640.png';
 import menus from '../../reducers/menus'
 import { SavedMovieList } from './SavedMovieList';
 
+export const PersonalWrapper = styled.div`
+  height: 460px; 
+  overflow: scroll; 
+  padding-top: 30px; 
+  display: flex; 
+  flex-direction: column;
+  align-items: center; 
+  justify-content: flex-start;
+`
+
+// Saved Movies Tab
 const SavedMoviesTab = () => {
   return (
     <div style={{ height: '460px', overflow: 'scroll' }}>
@@ -19,20 +31,30 @@ const SavedMoviesTab = () => {
   );
 };
 
+// Personal Info Tab
 const PersonalInfoTab = () => {
   const userName = useSelector((store) => store.user.userName);
   return (
-    <div style={{ height: '460px', overflow: 'scroll', paddingTop: '30px', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'flex-start' }}>
-      <Typography gutterBottom variant="h5" component="div">
+    <PersonalWrapper>
+      <Typography
+        gutterBottom
+        variant="h5"
+        component="div">
         {userName}´s personal space
       </Typography>
-      <CardMedia component="img" sx={{ width: '80%', margin: '20px' }} image={Clapper} alt="Clapboard" />
-      <Typography variant="body2" paragraph>Username: {userName}</Typography>
-    </div>
+      <CardMedia
+        component="img"
+        sx={{ width: '80%', margin: '20px' }}
+        image={Clapper}
+        alt="Clapboard" />
+      <Typography
+        variant="body2"
+        paragraph>
+          Username: {userName}
+      </Typography>
+    </PersonalWrapper>
   );
 };
-
-// testing renaming
 
 export const PersonalPage = () => {
   const [value, setValue] = useState(0);
@@ -86,7 +108,9 @@ export const PersonalPage = () => {
   });
 
   return (
-    <SlidingCard personal personalSelected={personalSelected}>
+    <SlidingCard
+      personal
+      personalSelected={personalSelected}>
       <ThemeProvider theme={theme}>
         <IconButton
           sx={{ alignSelf: 'flex-end' }}

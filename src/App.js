@@ -17,8 +17,7 @@ import About from 'components/bars_and_navigation/About';
 import { StartPage } from 'components/map_components/StartPage';
 /* import { AlternativeNavBar } from 'components/bars_and_navigation/AlternativeNavBar'; */
 /* import { MovieList } from 'components/movie_details/MovieList'; */
-import { Main } from 'components/main_components/Main';
-import { FilterSelector } from 'components/map_components/FilterSelector';
+import { Main } from 'components/map_components/Main';
 
 const reducer = combineReducers({
   user: user.reducer,
@@ -40,7 +39,6 @@ export const App = () => {
             <Route path="/user/login" element={<Login />} />
             <Route path="/about" element={<About />} />
             <Route path="/personal" element={<PersonalPage />} />
-            <Route path="/filter" element={<FilterSelector />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
           <Main />

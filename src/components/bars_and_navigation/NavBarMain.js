@@ -19,6 +19,7 @@ export const NavBarMain = () => {
     setToggleSidebar(!toggleSideBar)
   };
 
+  // Signing out and resetting state
   const onLogOutClick = () => {
     dispatch(user.actions.signOut())
     dispatch(location.actions.setMovies([]));
@@ -28,26 +29,35 @@ export const NavBarMain = () => {
   };
 
   return (
-    <aside style={{ position: 'fixed', right: '0px', top: '0px', zIndex: '997' }}>
+    <aside
+      style={{
+        position: 'fixed',
+        right: '0px',
+        top: '0px',
+        zIndex: '997'
+      }}>
       <nav>
         <div className="nav-right visible-xs">
           <button
             onClick={onToggleMenu}
             type="button"
-            className={toggleSideBar ? 'button active' : 'button'}
+            className={toggleSideBar
+              ? 'button active' : 'button'}
             id="btn">
             <div className="bar top" />
             <div className="bar middle" />
             <div className="bar bottom" />
           </button>
         </div>
-        <main className={toggleSideBar ? 'move-to-left' : ''}>
+        <main className={toggleSideBar
+          ? 'move-to-left' : ''}>
           <nav>
             <div className="nav-right hidden-xs">
               <button
                 onClick={onToggleMenu}
                 type="button"
-                className={toggleSideBar ? 'button active' : 'button'}
+                className={toggleSideBar
+                  ? 'button active' : 'button'}
                 id="btn">
                 <div className="bar top" />
                 <div className="bar middle" />
@@ -56,7 +66,8 @@ export const NavBarMain = () => {
             </div>
           </nav>
         </main>
-        <div className={toggleSideBar ? 'sidebar active' : 'sidebar'}>
+        <div className={toggleSideBar
+          ? 'sidebar active' : 'sidebar'}>
           <ul className="sidebar-list">
             {accessToken
               ? (

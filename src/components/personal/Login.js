@@ -56,7 +56,7 @@ export const Login = () => {
       }
       return isValid;
     };
-      // fetches and dispatches data to store
+    // fetches and dispatches data to store
     if (validateFields(true)) {
       fetch(loginUrl, options)
         .then((response) => response.json())
@@ -116,13 +116,21 @@ export const Login = () => {
           aria-label="clear"
           sx={{ alignSelf: 'flex-start' }}
           onClick={() => handleOnClearClick()}>
-          <ClearIcon sx={{ fontSize: '16px' }} />
+          <ClearIcon
+            sx={{ fontSize: '16px' }} />
         </IconButton>
-        <Typography component="h1" variant="h5" sx={{ alignSelf: 'center' }}>
+        <Typography
+          component="h1"
+          variant="h5"
+          sx={{ alignSelf: 'center' }}>
           Sign in
         </Typography>
 
-        <Box component="form" onSubmit={handleLoginSubmit} noValidate sx={{ mt: 1 }}>
+        <Box
+          component="form"
+          onSubmit={handleLoginSubmit}
+          noValidate
+          sx={{ mt: 1 }}>
           <TextField
             margin="normal"
             required
@@ -146,23 +154,27 @@ export const Login = () => {
             helperText={passwordErrorText}
             autoComplete="current-password" />
           <FormControlLabel
-            control={<Checkbox value="remember" color="primary" />}
+            control={
+              <Checkbox
+                value="remember"
+                color="primary" />
+            }
             label="Remember me" />
           <Button
             type="submit"
             fullWidth
             variant="contained"
-            sx={{ mt: 3, mb: 2 }}>
+            sx={{
+              mt: 3,
+              mb: 2
+            }}>
             Sign In
           </Button>
           <Grid container>
-            {/* <Grid item xs>
-              <Link href="/user/newpassword" variant="body2">
-                Forgot password?
-              </Link>
-            </Grid> */}
             <Grid item>
-              <Link href="/user/register" variant="body2">
+              <Link
+                href="/user/register"
+                variant="body2">
                 Not a user? Register here...
               </Link>
             </Grid>

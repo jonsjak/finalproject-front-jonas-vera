@@ -49,7 +49,12 @@ const About = () => {
   return (
     <ThemeProvider theme={theme}>
       <AboutCard>
-        <Card sx={{ padding: '20px', overflow: 'scroll', height: '600px' }}>
+        <Card
+          sx={{
+            padding: '20px',
+            overflow: 'scroll',
+            height: '600px'
+          }}>
           <CardHeader
             action={
               <Link
@@ -62,7 +67,9 @@ const About = () => {
             }
             title="Welcome to The Movie Globe!"
             subheader="a project by Jonas Jakobson and Vera Sjunnesson"
-            sx={{ paddingBottom: '0px' }} />
+            sx={{
+              paddingBottom: '0px'
+            }} />
           <CardContent>
             <Carousel
               animation="fade">

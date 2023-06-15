@@ -28,14 +28,33 @@ export const MovieCard = ({ movie, handleOnReadClick }) => {
           alt="location-img"
           height="160"
           sx={{ objectFit: 'cover' }}
-          image={movie.movie_location_still ? movie.movie_location_still : movie.Poster} />
+          image={movie.movie_location_still
+            ? movie.movie_location_still : movie.Poster} />
         <CardContent>
-          <Typography gutterBottom variant="h2" component="div" sx={{ fontSize: '2.2rem' }}>
+          <Typography
+            gutterBottom
+            variant="h2"
+            component="div"
+            sx={{ fontSize: '2.2rem' }}>
             {movie.location}
           </Typography>
-          <Link href={`https://www.imdb.com/title/${movie.imdbID}/?ref_=nv_sr_srsg_0`} target="_blank" rel="noreferrer" sx={{ textDecoration: 'none' }}>
-            <Typography variant="body1" color="text.secondary" sx={{ margin: '0.3em' }}>
-              Film scene from <span style={{ color: 'black', fontStyle: 'italic' }}>{movie.title}</span>
+          <Link
+            href={`https://www.imdb.com/title/${movie.imdbID}/?ref_=nv_sr_srsg_0`}
+            target="_blank"
+            rel="noreferrer"
+            sx={{ textDecoration: 'none' }}>
+            <Typography
+              variant="body1"
+              color="text.secondary"
+              sx={{ margin: '0.3em' }}>
+              Film scene from
+              <span
+                style={{
+                  color: 'black',
+                  fontStyle: 'italic'
+                }}>
+                {movie.title}
+              </span>
             </Typography>
           </Link>
         </CardContent>

@@ -1,9 +1,8 @@
 import React, { useState } from 'react';
 import { NavLink } from 'react-router-dom';
-import Person2Icon from '@mui/icons-material/Person2';
 import IconButton from '@mui/material/IconButton';
 import styled from 'styled-components';
-import { AddLocation, LocationOff } from '@mui/icons-material';
+import { AddLocation, LocationOff, Person2 } from '@mui/icons-material';
 import menus from 'reducers/menus';
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -50,15 +49,27 @@ export const IconMenu = () => {
         {accessToken && (
           <IconButton onClick={locationToggler}>
             {!isLocationAdderActive ? (
-              <LocationOff sx={{ fontSize: '50px', color: '#2D3142' }} />
+              <LocationOff
+                sx={{
+                  fontSize: '50px',
+                  color: '#2D3142'
+                }} />
             ) : (
-              <AddLocation sx={{ fontSize: '50px', color: '#2D3142' }} />
+              <AddLocation
+                sx={{
+                  fontSize: '50px',
+                  color: '#2D3142'
+                }} />
             )}
           </IconButton>
         )}
         <IconButton>
           <NavLink to="/personal">
-            <Person2Icon sx={{ fontSize: '50px', color: '#2D3142' }} />
+            <Person2
+              sx={{
+                fontSize: '50px',
+                color: '#2D3142'
+              }} />
           </NavLink>
         </IconButton>
       </IconMenuBar>

@@ -22,7 +22,7 @@ const NotFoundCard = styled.div`
   transform: translate(-50%, -50%);
   display: flex;
   flex-direction: column;
-  aign-items: center;
+  align-items: center;
   text-align: center;
   gap: 20px;
 `;
@@ -44,11 +44,20 @@ export const NotFound = () => {
       }
     }
   });
+
   return (
     <NotFoundBackground>
       <ThemeProvider theme={theme}>
         <NotFoundCard>
-          <Typography gutterBottom variant="h2" component="div" sx={{ margin: '0px', fontSize: '2.2rem', color: 'white' }}>
+          <Typography
+            gutterBottom
+            variant="h2"
+            component="div"
+            sx={{
+              margin: '0px',
+              fontSize: '2.2rem',
+              color: 'white'
+            }}>
               Page not found
           </Typography>
           <Link to="/">
