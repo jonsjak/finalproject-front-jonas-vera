@@ -24,7 +24,7 @@ const NotFoundCard = styled.div`
   flex-direction: column;
   aign-items: center;
   text-align: center;
-  gap: 10px;
+  gap: 20px;
 `;
 
 export const NotFound = () => {
@@ -50,9 +50,6 @@ export const NotFound = () => {
         <NotFoundCard>
           <Typography gutterBottom variant="h2" component="div" sx={{ margin: '0px', fontSize: '2.2rem', color: 'white' }}>
               Page not found
-          </Typography>
-          <Typography variant="body1" sx={{ color: 'white', marginBottom: '20px' }}>
-              Go back to home
           </Typography>
           <Link to="/">
             <Button
