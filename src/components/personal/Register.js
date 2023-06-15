@@ -120,12 +120,23 @@ export const Register = () => {
           onClick={() => handleOnClearClick()}>
           <ClearIcon sx={{ fontSize: '16px' }} />
         </IconButton>
-        <Typography component="h1" variant="h5" sx={{ alignSelf: 'center' }}>
+        <Typography
+          component="h1"
+          variant="h5"
+          sx={{ alignSelf: 'center' }}>
           Sign up
         </Typography>
-        <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 3 }}>
-          <Grid container spacing={2}>
-            <Grid item xs={12}>
+        <Box
+          component="form"
+          noValidate
+          onSubmit={handleSubmit}
+          sx={{ mt: 3 }}>
+          <Grid
+            container
+            spacing={2}>
+            <Grid
+              item
+              xs={12}>
               <TextField
                 required
                 fullWidth
@@ -136,7 +147,9 @@ export const Register = () => {
                 error={emailError}
                 helperText="Email is required" />
             </Grid>
-            <Grid item xs={12}>
+            <Grid
+              item
+              xs={12}>
               <TextField
                 required
                 fullWidth
@@ -146,7 +159,9 @@ export const Register = () => {
                 error={usernameError}
                 helperText="Username is required" />
             </Grid>
-            <Grid item xs={12}>
+            <Grid
+              item
+              xs={12}>
               <TextField
                 required
                 fullWidth
@@ -162,12 +177,19 @@ export const Register = () => {
             type="submit"
             fullWidth
             variant="contained"
-            sx={{ mt: 3, mb: 2 }}>
+            sx={{
+              mt: 3,
+              mb: 2
+            }}>
             Sign Up
           </Button>
-          <Grid container justifyContent="flex-end">
+          <Grid
+            container
+            justifyContent="flex-end">
             <Grid item>
-              <Link href="/login" variant="body2">
+              <Link
+                href="/login"
+                variant="body2">
                 Already have an account? Sign in here!
               </Link>
             </Grid>

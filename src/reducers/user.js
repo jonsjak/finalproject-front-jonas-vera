@@ -23,5 +23,3 @@ const user = createSlice({
 });
 
 export default user;
-
-// Add: Logout reducer

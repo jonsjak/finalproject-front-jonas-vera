@@ -9,7 +9,6 @@ import { useNavigate } from 'react-router-dom';
 import { savedMovieFetch } from '../../reducers/location'
 
 export const SaveMovie = () => {
-/*   const [toggleSave, setToggleSave] = useState(false) */
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const activeMovie = useSelector((store) => store.location.activeMovie);
@@ -17,7 +16,7 @@ export const SaveMovie = () => {
   const userId = useSelector((store) => store.user.userId);
   const likedBy = activeMovie?.LikedBy || [];
 
-
+  // If logged in movie is saved in the store and database
   const handleSaveMovie = async () => {
     if (accessToken) {
       dispatch(savedMovieFetch(userId, accessToken, activeMovie))
@@ -26,6 +25,7 @@ export const SaveMovie = () => {
     }
   };
 
+  // If logged in movie is deleted from the store and database
   const handleClearMovie = () => {
     if (accessToken) {
       const { _id } = activeMovie;
@@ -35,19 +35,21 @@ export const SaveMovie = () => {
     }
   };
 
-  console.log(likedBy)
   const isLiked = likedBy.some((id) => id === userId);
-  console.log(isLiked)
 
   return (
     <div>
       {!isLiked 
         ? (
-        <IconButton onClick={handleSaveMovie} aria-label="add to favorites">
+        <IconButton
+          onClick={handleSaveMovie}
+          aria-label="add to favorites">
           <FavoriteBorderIcon />
         </IconButton>
         ) : (
-        <IconButton onClick={handleClearMovie} aria-label="add to favorites">
+        <IconButton
+          onClick={handleClearMovie}
+          aria-label="add to favorites">
           <FavoriteIcon />
         </IconButton>
       )}

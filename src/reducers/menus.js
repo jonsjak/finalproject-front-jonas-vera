@@ -13,9 +13,11 @@ const menus = createSlice({
     movieCardHidden: false
   },
   reducers: {
+    // Not used
     toggleFilter: (store, action) => {
       store.filter = action.payload;
     },
+    // Not used
     togglePersonalPage: (store, action) => {
       store.personal = action.payload;
       },

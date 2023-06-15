@@ -1,12 +1,12 @@
 import styled, { keyframes } from 'styled-components';
 
 const GoRight = keyframes`
-0% {
-  transform: translateX(-400px;);
-}
-100% {
-  transform: translateX(400px);
-}
+  0% {
+    transform: translateX(-400px);
+  }
+  100% {
+    transform: translateX(400px);
+  }
 `;
 
 export const SlidingCard = styled.div`
@@ -27,15 +27,14 @@ export const SlidingCard = styled.div`
 `
 
 const GoLeft = keyframes`
-0% {
-  transform: translateX(300px;);
-}
-100% {
-  transform: translateX(-300px);
-}
-`;
+  0% {
+    transform: translateX(300px);
+  }
+  100% {
+    transform: translateX(-300px);
+  }
+  `;
 
 export const SlidingCardRight = styled(SlidingCard)`
   animation: ${GoLeft} 2.5s ease forwards;
 `
-

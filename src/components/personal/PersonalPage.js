@@ -1,7 +1,7 @@
 
 /* eslint-disable max-len */
 import React, { useState, useEffect } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { Tab, Tabs, Typography, CardMedia, CardContent, IconButton, ThemeProvider } from '@mui/material';
 import ClearIcon from '@mui/icons-material/Clear';
@@ -9,7 +9,6 @@ import { SlidingCard } from 'components/styles/Cards';
 import { createTheme } from '@mui/material/styles';
 import styled from 'styled-components';
 import Clapper from '../../images/clapboard-g163cd4bec_640.png';
-import menus from '../../reducers/menus'
 import { SavedMovieList } from './SavedMovieList';
 
 export const PersonalWrapper = styled.div`
@@ -22,12 +21,17 @@ export const PersonalWrapper = styled.div`
   justify-content: flex-start;
 `
 
+export const SavedMoviesWrapper = styled.div`
+  height: 460px;
+  overflow: scroll;
+`
+
 // Saved Movies Tab
 const SavedMoviesTab = () => {
   return (
-    <div style={{ height: '460px', overflow: 'scroll' }}>
+    <SavedMoviesWrapper>
       <SavedMovieList />
-    </div>
+    </SavedMoviesWrapper>
   );
 };
 
@@ -44,7 +48,10 @@ const PersonalInfoTab = () => {
       </Typography>
       <CardMedia
         component="img"
-        sx={{ width: '80%', margin: '20px' }}
+        sx={{
+          width: '80%',
+          margin: '20px'
+        }}
         image={Clapper}
         alt="Clapboard" />
       <Typography
@@ -60,15 +67,14 @@ export const PersonalPage = () => {
   const [value, setValue] = useState(0);
   const personalSelected = useSelector((store) => store.menus.personal);
   const accessToken = useSelector((store) => store.user.accessToken);
-  const dispatch = useDispatch();
   const navigate = useNavigate();
 
+  // If not logged in personal page can't be accessed
   useEffect(() => {
     if (!accessToken) {
       navigate('/user/login')
-      dispatch(menus.actions.toggleLoginPage(true));
     }
-  }, [accessToken, dispatch, navigate]);
+  }, [accessToken, navigate]);
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
@@ -86,7 +92,6 @@ export const PersonalPage = () => {
   };
 
   const handleOnClearClick = () => {
-    dispatch(menus.actions.togglePersonalPage(false));
     navigate('/')
   };
 
@@ -119,7 +124,10 @@ export const PersonalPage = () => {
           <ClearIcon sx={{ fontSize: '16px' }} />
         </IconButton>
         <CardContent sx={{ paddingTop: '0px' }}>
-          <Tabs value={value} onChange={handleChange} aria-label="icon label tabs">
+          <Tabs
+            value={value}
+            onChange={handleChange}
+            aria-label="icon label tabs">
             <Tab label="SAVED MOVIES" />
             <Tab label="PERSONAL INFO" />
           </Tabs>
