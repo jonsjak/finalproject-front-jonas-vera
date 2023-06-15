@@ -5,7 +5,7 @@ import ClearIcon from '@mui/icons-material/Clear';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { fetchPrivateMovies } from 'reducers/location';
-import { createTheme } from '@mui/material/styles';
+import { theme } from 'components/styles/muiTheme';
 import user from 'reducers/user';
 import { SlidingCardRight } from 'components/styles/Cards';
 import menus from '../../reducers/menus'
@@ -69,7 +69,6 @@ export const Login = () => {
               accessToken: json.response.accessToken,
               error: null
             }))
-            console.log(accessToken)
             dispatch(fetchPrivateMovies(accessToken));
             navigate('/');
           } else {
@@ -91,23 +90,6 @@ export const Login = () => {
     dispatch(menus.actions.toggleLoginPage(false));
     navigate('/');
   }
-
-  const theme = createTheme({
-    palette: {
-      primary: {
-        light: '#757ce8',
-        main: '#008ca5',
-        dark: '#037588',
-        contrastText: '#fff'
-      },
-      secondary: {
-        light: '#ff7961',
-        main: '#035f6f',
-        dark: '#ba000d',
-        contrastText: '#000'
-      }
-    }
-  });
 
   return (
     <SlidingCardRight loginregister>

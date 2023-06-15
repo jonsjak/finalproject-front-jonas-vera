@@ -7,7 +7,6 @@ export const StartPage = () => {
   const isLoggedIn = useSelector((store) => store.user.accessToken)
 
   useEffect(() => {
-    console.log(isLoggedIn);
     if (!isLoggedIn) {
       const showDelay = 5000; // Delay
       const hideDelay = 4000; // Duration

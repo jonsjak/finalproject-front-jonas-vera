@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import { Link, Box, Typography, Grid, TextField, Button, IconButton, ThemeProvider } from '@mui/material';
 import user from 'reducers/user';
 import ClearIcon from '@mui/icons-material/Clear';
-import { createTheme } from '@mui/material/styles';
+import { theme } from 'components/styles/muiTheme';
 import { useDispatch, useSelector } from 'react-redux';
 import { SlidingCardRight } from 'components/styles/Cards';
 import { useNavigate } from 'react-router-dom';
@@ -70,7 +70,6 @@ export const Register = () => {
       fetch(registerUrl, options)
         .then((response) => response.json())
         .then((json) => {
-          console.log(json);
           dispatch(
             user.actions.setUser({
               userName: json.response.username,
@@ -93,23 +92,6 @@ export const Register = () => {
     dispatch(menus.actions.toggleRegisterPage(false));
     navigate('/');
   };
-
-  const theme = createTheme({
-    palette: {
-      primary: {
-        light: '#757ce8',
-        main: '#008ca5',
-        dark: '#037588',
-        contrastText: '#fff'
-      },
-      secondary: {
-        light: '#ff7961',
-        main: '#035f6f',
-        dark: '#ba000d',
-        contrastText: '#000'
-      }
-    }
-  });
 
   return (
     <SlidingCardRight loginregister>

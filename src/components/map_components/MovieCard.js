@@ -1,25 +1,9 @@
 import * as React from 'react';
-import { createTheme } from '@mui/material/styles';
+import { theme } from 'components/styles/muiTheme';
 import { CardContent, Typography, CardMedia, Button, CardActions, Card, ThemeProvider, Link } from '@mui/material';
+import { MovieTitleHeader } from 'components/styles/Text';
 
 export const MovieCard = ({ movie, handleOnReadClick }) => {
-  const theme = createTheme({
-    palette: {
-      primary: {
-        light: '#757ce8',
-        main: '#008ca5',
-        dark: '#037588',
-        contrastText: '#fff'
-      },
-      secondary: {
-        light: '#ff7961',
-        main: '#035f6f',
-        dark: '#ba000d',
-        contrastText: '#000'
-      }
-    }
-  });
-
   return (
     <ThemeProvider theme={theme}>
       <Card sx={{ width: 301 }}>
@@ -47,14 +31,10 @@ export const MovieCard = ({ movie, handleOnReadClick }) => {
               variant="body1"
               color="text.secondary"
               sx={{ margin: '0.3em' }}>
-              Film scene from
-              <span
-                style={{
-                  color: 'black',
-                  fontStyle: 'italic'
-                }}>
+              Film scene from&nbsp;
+              <MovieTitleHeader>
                 {movie.title}
-              </span>
+              </MovieTitleHeader>
             </Typography>
           </Link>
         </CardContent>

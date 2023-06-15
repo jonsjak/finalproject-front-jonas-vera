@@ -1,33 +1,11 @@
 import React, { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import styled from 'styled-components';
+import { MovieDetailCard, NoMoviesCard } from 'components/styles/Cards';
 import { getSavedMoviesFetch, deleteSavedMovieFetch } from 'reducers/location';
 import ClearIcon from '@mui/icons-material/Clear';
 import { IconButton, CardMedia, Typography } from '@mui/material';
 import { Player } from '@lottiefiles/react-lottie-player';
-
-export const SavedMoviesContainer = styled.div`
-  display: flex; 
-  height: 120px;
-  overflow: scroll;
-  justify-content: space-between;
-  background: #e8e8e8; 
-  margin-top: 15px;
-  box-shadow: 0px 2px 1px -1px rgba(0,0,0,0.2);
-  border-radius: 4px;
-`
-export const MovieDetailCard = styled.div`
-  padding: 8px;
-  display: flex;
-  flex-direction: column;
-  width: 100%;
-`
-export const NoMoviesCard = styled.div`
-  display: flex;
-  flex-direction: column;
-  padding: 20px;
-  align-items: center;
-`
+import { SavedMoviesContainer } from 'components/styles/Containers';
 
 export const SavedMovieList = () => {
   const dispatch = useDispatch();
@@ -48,13 +26,15 @@ export const SavedMovieList = () => {
   return (
     <div>
       {savedMoviesCollection.length ? savedMoviesCollection.map((savedMovie) => (
-        <SavedMoviesContainer>
+        <SavedMoviesContainer
+          // eslint-disable-next-line no-underscore-dangle
+          key={savedMovie.imdbID}>
           <CardMedia
             component="img"
             height="120px"
             sx={{
               objectFit: 'cover',
-              width: '81px'
+              width: '90px'
             }}
             image={
               savedMovie.movie_location_still

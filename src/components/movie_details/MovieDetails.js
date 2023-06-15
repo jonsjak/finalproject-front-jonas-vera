@@ -68,20 +68,27 @@ export const MovieDetails = () => {
     setMessage('')
   };
 
+  const styles = {
+    cardStyle: {
+      maxWidth: 345,
+      position: 'absolute',
+      right: '20px',
+      top: '30px',
+      zIndex: '999',
+      maxHeight: '85vh',
+      overflow: 'scroll',
+      '@media (max-width: 780px)': {
+        right: '0px',
+        top: '118px'
+      }
+    }
+  }
+
   return (
     <div>
       {selectedMovie && (
         <Card
-          sx={{
-            maxWidth: 345,
-            position: 'absolute',
-            right: '20px',
-            top: '30px',
-            zIndex: '999',
-            width: '345px',
-            maxHeight: '85vh',
-            overflow: 'scroll'
-          }}>
+          sx={styles.cardStyle}>
           <CardHeader
             action={
               <IconButton
@@ -162,6 +169,7 @@ export const MovieDetails = () => {
               <ExpandMoreIcon />
             </ExpandMore>
             <ExpandMore
+              sx={{ display: 'none' }}
               expand={expandedDetails}
               onClick={handleExpandDetailsClick}
               aria-expanded={expandedDetails}

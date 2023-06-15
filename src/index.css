@@ -363,3 +363,17 @@ nav {
   }
 }
 
+@media (max-width: 768px) {
+  .button {
+    top: 16px;
+    right: -17px;
+  }
+  .leaflet-top {
+    top: 89px;
+  }
+  
+  .leaflet-left {
+    left: -1px;
+  }
+}
+

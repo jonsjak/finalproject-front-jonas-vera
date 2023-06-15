@@ -1,10 +1,10 @@
 /* eslint-disable react/no-unescaped-entities */
 /* eslint-disable max-len */
 import React from 'react';
-import styled from 'styled-components';
+import { AboutCard } from 'components/styles/Cards';
 import ClearIcon from '@mui/icons-material/Clear';
 import { IconButton, ThemeProvider, Typography, CardHeader, Card, CardContent, CardMedia } from '@mui/material';
-import { createTheme } from '@mui/material/styles';
+import { theme } from 'components/styles/muiTheme';
 import { Link } from 'react-router-dom';
 import Carousel from 'react-material-ui-carousel';
 import Slide1 from '../../images/slide1.png'
@@ -12,40 +12,7 @@ import Slide2 from '../../images/slide2.png'
 import Slide3 from '../../images/slide3.png'
 import Slide4 from '../../images/slide4.png'
 
-export const AboutCard = styled.div`
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  box-shadow: rgba(0, 0, 0, 0.2) 0px 2px 1px -1px;
-  z-index: 999;
-  max-height: 600px;
-  overflow: scroll;
-  border-radius: 4px;
-  width: 800px;
-  background: white;
-  display: flex;
-  flex-direction: column;
-`;
-
 const About = () => {
-  const theme = createTheme({
-    palette: {
-      primary: {
-        light: '#757ce8',
-        main: '#008ca5',
-        dark: '#037588',
-        contrastText: '#fff'
-      },
-      secondary: {
-        light: '#ff7961',
-        main: '#035f6f',
-        dark: '#ba000d',
-        contrastText: '#000'
-      }
-    }
-
-  });
   return (
     <ThemeProvider theme={theme}>
       <AboutCard>
@@ -72,6 +39,7 @@ const About = () => {
             }} />
           <CardContent>
             <Carousel
+              sx={{ marginBottom: '20px' }}
               animation="fade">
               <CardMedia
                 component="img"

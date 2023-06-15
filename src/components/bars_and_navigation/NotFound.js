@@ -1,50 +1,11 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import styled from 'styled-components';
+import { NotFoundBackground } from 'components/styles/Containers';
 import { Typography, Button, ThemeProvider } from '@mui/material';
-import { createTheme } from '@mui/material/styles';
-
-const NotFoundBackground = styled.div`
-  background: #2D3142; 
-  margin-top: 0px;
-  height: 100vh;
-  width: 100%;
-  top: 0px;
-  left: 0px;
-  position: absolute;
-  z-index: 997;
-`;
-
-const NotFoundCard = styled.div`
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  text-align: center;
-  gap: 20px;
-`;
+import { theme } from 'components/styles/muiTheme';
+import { NotFoundCard } from 'components/styles/Cards';
 
 export const NotFound = () => {
-  const theme = createTheme({
-    palette: {
-      primary: {
-        light: '#757ce8',
-        main: '#008ca5',
-        dark: '#037588',
-        contrastText: '#fff'
-      },
-      secondary: {
-        light: '#ff7961',
-        main: '#035f6f',
-        dark: '#ba000d',
-        contrastText: '#000'
-      }
-    }
-  });
-
   return (
     <NotFoundBackground>
       <ThemeProvider theme={theme}>

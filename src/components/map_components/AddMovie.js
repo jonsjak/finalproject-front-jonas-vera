@@ -3,8 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { Marker, Popup, useMapEvents, useMap } from 'react-leaflet';
 import { List, TextField, ThemeProvider, Card, CardContent, Typography, Button  } from '@mui/material';
 import { useSelector } from 'react-redux';
-import location, { fetchPrivateMovies } from 'reducers/location';
-import { createTheme } from '@mui/material/styles';
+import { theme } from 'components/styles/muiTheme';
 import filmIcon from '../../images/movie-marker5-01-01.png'
 import { AddMovieForm } from './AddMovieForm';
 
@@ -34,7 +33,6 @@ export const AddMovie = () => {
   // 
   useEffect(() => {
     if (markerPosition) {
-      console.log(markerPosition);
       map.flyTo(markerPosition, 6)
     }
   }, [markerPosition, map]);
@@ -63,7 +61,6 @@ export const AddMovie = () => {
           setSelectedMovie(data)
           setUserInput(true)
           setMovieTitle(Title)
-          console.log('title', Title)
           setSearchResults([])
         });
     } else {
@@ -74,23 +71,6 @@ export const AddMovie = () => {
   const handleMovieSearch = (event) => {
     setSearchValue(event.target.value);
   };
-
-  const theme = createTheme({
-    palette: {
-      primary: {
-        light: '#757ce8',
-        main: '#008ca5',
-        dark: '#037588',
-        contrastText: '#fff'
-      },
-      secondary: {
-        light: '#ff7961',
-        main: '#035f6f',
-        dark: '#ba000d',
-        contrastText: '#000'
-      }
-    }
-  });
 
   return markerPosition && (
     <ThemeProvider theme={theme}>

@@ -14,18 +14,22 @@ const location = createSlice({
     savedmovies: []
   },
   reducers: {
+    // Show public movies
     setStartMovies: (store, action) => {
       store.startmovies = action.payload
     },
+    // Show private movies
     setMovies: (store, action) => {
       return {
         ...store,
         movies: action.payload,
       };
     },
+    // Get coordinates for public movies
     setStartMovieCoordinates: (store, action) => {
       store.startcoordinates.push(action.payload);
     },
+    // Get coordinates for private movies
     setMovieCoordinates: (store, action) => {
       const movieCoordinates = [...store.coordinates, action.payload];
       return {
@@ -36,9 +40,12 @@ const location = createSlice({
     setLoading: (store, action) => {
       store.isLoading = action.payload;
     },
+    // Get movie which is selected from marker
     setActiveMovie: (store, action) => {
       store.activeMovie = action.payload;
     },
+    // Add a userId to LikedBy property array in a movie
+    // - both in activeMovie corresponding movie in movies
     saveMovie: (store, action) => {
       const { movieId, userId } = action.payload;
     
@@ -55,22 +62,8 @@ const location = createSlice({
       store.movies = updatedMovies;
       store.activeMovie = updatedActiveMovie;
     },
-    addComment: (store, action) => {
-      const { movieId, message } = action.payload;
-    
-      const updatedMovies = store.movies.map((movie) => {
-        if (movie._id === movieId) {
-          const newComments = [...movie.Comments, message];
-          return { ...movie, Comments: newComments };
-        }
-        return movie;
-      });
-    
-      const updatedActiveMovie = { ...store.activeMovie, Comments: [...store.activeMovie.Comments, message] };
-    
-      store.movies = updatedMovies;
-      store.activeMovie = updatedActiveMovie;
-    },
+    // Remove a userId in LikedBy property array in a movie
+    // - both in activeMovie corresponding movie in movies
     removeSavedMovie: (store, action) => {
       const userIdRemove = action.payload;
       const updatedMovies = store.movies.map((movie) => {
@@ -90,21 +83,23 @@ const location = createSlice({
       }
     
       store.movies = updatedMovies;
-    },       
+    },
+    // Show all saved movies in the savedmovies array in store      
     setAllSavedMovies: (store, action) => {
       store.savedmovies = action.payload;
     },
+    // delete a movie from the saved movie list
     deleteSavedMovieFromList: (store, action) => {
       store.savedmovies.splice(action.payload, 1);
     },
+    // Add new movie to the movies array
     addMovie: (store, action) => {
-      console.log('Payload:', action.payload);
       store.movies = [...store.movies, action.payload];
     },
+    // Update coordinates array in the store with the new movie's coordinates
     updateMovieCoordinates: (store, action) => {
       const { movieId, coordinates } = action.payload;
 
-      // Find the movie in the state and update its coordinates
       const updatedMovies = store.movies.map((movie) => {
         if (movie._id === movieId) {
           return { ...movie, coordinates };
@@ -112,14 +107,30 @@ const location = createSlice({
         return movie;
       });
 
-      // Update the movieCoordinates array
       store.coordinates = updatedMovies.map((movie) => movie.coordinates);
-    }
+    },
+    // Work in progress - add a comment to the Comments property array in a movie
+    addComment: (store, action) => {
+      const { movieId, message } = action.payload;
+    
+      const updatedMovies = store.movies.map((movie) => {
+        if (movie._id === movieId) {
+          const newComments = [...movie.Comments, message];
+          return { ...movie, Comments: newComments };
+        }
+        return movie;
+      });
+    
+      const updatedActiveMovie = { ...store.activeMovie, Comments: [...store.activeMovie.Comments, message] };
+    
+      store.movies = updatedMovies;
+      store.activeMovie = updatedActiveMovie;
+    },
   }
 });
 
 
-// Thunk for fetching private movies
+// Thunk for fetching PUBLIC movies
 export const fetchPublicMovies = (movieStartCoordinates) => async (dispatch) => {
   dispatch(location.actions.setLoading(true))
   try {
@@ -129,9 +140,10 @@ export const fetchPublicMovies = (movieStartCoordinates) => async (dispatch) => 
         'Content-Type': 'application/json'
       }
     };
+    //Fetching public movies
     const response = await fetch(`${process.env.REACT_APP_MOVIE_START_URL}`, options);
     const data = await response.json();
-
+    //Dispatching data from fetch into startmovies array
     dispatch(location.actions.setStartMovies(data.body.movieList));
     for (const movie of data.body.movieList) {
       if (movie) {
@@ -147,8 +159,9 @@ export const fetchPublicMovies = (movieStartCoordinates) => async (dispatch) => 
   }
 };
 
-// Thunk for fetching private movies
+// Thunk for fetching PRIVATE movies
 export const fetchPrivateMovies = (accessToken) => async (dispatch) => {
+  //Emptying public movies array in order for it to be replaces by private movies array
   dispatch(location.actions.setStartMovies([]))
   dispatch(location.actions.setStartMovieCoordinates([]));
   try {
@@ -160,10 +173,9 @@ export const fetchPrivateMovies = (accessToken) => async (dispatch) => {
         Authorization: accessToken,
       }
     };
-    console.log(accessToken)
+    // fetching new private movies with accessToken
     const response = await fetch(`${process.env.REACT_APP_MOVIE_URL}`, options);
     const data = await response.json();
-    console.log(data.body.movieList)
     dispatch(location.actions.setMovies(data.body.movieList));
        for (const movie of data.body.movieList) {
       if (movie) {
@@ -173,12 +185,13 @@ export const fetchPrivateMovies = (accessToken) => async (dispatch) => {
         console.log('no movie location');
       }
     }
-/*     setTimeout(() => dispatch(location.actions.setLoading(false)), 2000) */
   } catch (error) {
     console.log(error);
   }
 };
 
+// Thunk for fetching saved movies in saved movies array in store
+//All movies which has the user's id in the LikedBy property
 export const getSavedMoviesFetch = (accessToken) => {
   return (dispatch) => {
 
@@ -193,12 +206,13 @@ export const getSavedMoviesFetch = (accessToken) => {
       .then((data) => {
         batch(() => {
           dispatch(location.actions.setAllSavedMovies(data.body.savedMovies));
-          console.log('banana', data.body.savedMovies)
         });
       })
   };
 };
 
+// Thunk for saving a movie
+//Updating a movie by adding the user's id into the LikedBy property
 export const savedMovieFetch = (userId, accessToken, activeMovie) => {
   return (dispatch, getState) => {
     const updatedMovie = { ...activeMovie, LikedBy: [...activeMovie.LikedBy, userId] };
@@ -236,6 +250,8 @@ export const savedMovieFetch = (userId, accessToken, activeMovie) => {
   };
 };
 
+// Thunk for deleting a saved movie
+//Deleting a user's id from the LikedBy property in a movie
 export const deleteSavedMovieFetch = (userId, accessToken, _id, source) => {
   return (dispatch, getState) => {
 

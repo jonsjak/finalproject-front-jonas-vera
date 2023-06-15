@@ -6,25 +6,10 @@ import { useNavigate } from 'react-router-dom';
 import { Tab, Tabs, Typography, CardMedia, CardContent, IconButton, ThemeProvider } from '@mui/material';
 import ClearIcon from '@mui/icons-material/Clear';
 import { SlidingCard } from 'components/styles/Cards';
-import { createTheme } from '@mui/material/styles';
-import styled from 'styled-components';
+import { theme } from 'components/styles/muiTheme';
+import { PersonalWrapper, SavedMoviesWrapper } from 'components/styles/Containers';
 import Clapper from '../../images/clapboard-g163cd4bec_640.png';
 import { SavedMovieList } from './SavedMovieList';
-
-export const PersonalWrapper = styled.div`
-  height: 460px; 
-  overflow: scroll; 
-  padding-top: 30px; 
-  display: flex; 
-  flex-direction: column;
-  align-items: center; 
-  justify-content: flex-start;
-`
-
-export const SavedMoviesWrapper = styled.div`
-  height: 460px;
-  overflow: scroll;
-`
 
 // Saved Movies Tab
 const SavedMoviesTab = () => {
@@ -95,23 +80,6 @@ export const PersonalPage = () => {
     navigate('/')
   };
 
-  const theme = createTheme({
-    palette: {
-      primary: {
-        light: '#757ce8',
-        main: '#008ca5',
-        dark: '#002884',
-        contrastText: '#fff'
-      },
-      secondary: {
-        light: '#ff7961',
-        main: '#f44336',
-        dark: '#ba000d',
-        contrastText: '#000'
-      }
-    }
-  });
-
   return (
     <SlidingCard
       personal
@@ -123,7 +91,7 @@ export const PersonalPage = () => {
           onClick={() => handleOnClearClick()}>
           <ClearIcon sx={{ fontSize: '16px' }} />
         </IconButton>
-        <CardContent sx={{ paddingTop: '0px' }}>
+        <CardContent sx={{ paddingTop: '0px', height: '460px' }}>
           <Tabs
             value={value}
             onChange={handleChange}

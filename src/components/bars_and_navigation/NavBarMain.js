@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import location, { fetchPublicMovies } from 'reducers/location';
 import menus from 'reducers/menus';
 import user from 'reducers/user';
+import { NavBarContainer } from 'components/styles/Containers';
 
 export const NavBarMain = () => {
   const dispatch = useDispatch();
@@ -29,13 +30,7 @@ export const NavBarMain = () => {
   };
 
   return (
-    <aside
-      style={{
-        position: 'fixed',
-        right: '0px',
-        top: '0px',
-        zIndex: '997'
-      }}>
+    <NavBarContainer>
       <nav>
         <div className="nav-right visible-xs">
           <button
@@ -129,7 +124,7 @@ export const NavBarMain = () => {
           </ul>
         </div>
       </nav>
-    </aside>
+    </NavBarContainer>
   );
 }
 

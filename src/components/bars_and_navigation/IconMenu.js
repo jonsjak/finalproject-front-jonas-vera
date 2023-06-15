@@ -1,36 +1,10 @@
 import React, { useState } from 'react';
 import { NavLink } from 'react-router-dom';
 import IconButton from '@mui/material/IconButton';
-import styled from 'styled-components';
+import { IconMenuBar, MenuBackground } from 'components/styles/Containers';
 import { AddLocation, LocationOff, Person2 } from '@mui/icons-material';
 import menus from 'reducers/menus';
 import { useDispatch, useSelector } from 'react-redux';
-
-export const IconMenuBar = styled.menu`
-  position: absolute;
-  left: -19px;
-  bottom: -8px;
-  z-index: 997;
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-  margin: 15px;
-  justify-content: flex-end;
-  padding: 0px;
-  height: 110vh;
-`
-
-export const MenuBackground = styled.div`
-  position: absolute;
-  left: -81px;
-  bottom: -19px;
-  z-index: 996;
-  padding: 0px;
-  width: 100px;
-  background: linear-gradient(to right, #68a0d6 0%,#008ca5 100%); 
-  height: 110vh;
-  transform: rotate(-7deg);
-`
 
 export const IconMenu = () => {
   const dispatch = useDispatch();
