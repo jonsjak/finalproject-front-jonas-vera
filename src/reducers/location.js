@@ -55,6 +55,22 @@ const location = createSlice({
       store.movies = updatedMovies;
       store.activeMovie = updatedActiveMovie;
     },
+    addComment: (store, action) => {
+      const { movieId, message } = action.payload;
+    
+      const updatedMovies = store.movies.map((movie) => {
+        if (movie._id === movieId) {
+          const newComments = [...movie.Comments, message];
+          return { ...movie, Comments: newComments };
+        }
+        return movie;
+      });
+    
+      const updatedActiveMovie = { ...store.activeMovie, Comments: [...store.activeMovie.Comments, message] };
+    
+      store.movies = updatedMovies;
+      store.activeMovie = updatedActiveMovie;
+    },
     removeSavedMovie: (store, action) => {
       const userIdRemove = action.payload;
       const updatedMovies = store.movies.map((movie) => {

@@ -1,7 +1,7 @@
 /* eslint-disable react/jsx-props-no-spreading */
-import React from 'react';
+import React, { useState } from 'react';
 import { styled } from '@mui/material/styles';
-import { CardContent, Typography, CardMedia, CardActions, Card, CardHeader, Collapse, IconButton } from '@mui/material';
+import { CardContent, Typography, CardMedia, CardActions, Card, CardHeader, Collapse, IconButton, FormControl, TextField, Button } from '@mui/material';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { useSelector, useDispatch } from 'react-redux';
 import Carousel from 'react-material-ui-carousel';
@@ -22,15 +22,48 @@ const ExpandMore = styled((props) => {
 
 export const MovieDetails = () => {
   const dispatch = useDispatch();
-  const [expanded, setExpanded] = React.useState(false);
+  const [expandedDetails, setExpandedDetails] = useState(false);
+  const [expandedComments, setExpandedComments] = useState(false);
+  const [message, setMessage] = useState('');
   const selectedMovie = useSelector((store) => store.location.activeMovie);
+  const accessToken = useSelector((store) => store.user.accessToken);
 
-  const handleExpandClick = () => {
-    setExpanded(!expanded);
+  const handleExpandDetailsClick = () => {
+    setExpandedDetails(!expandedDetails);
+  };
+
+  const handleExpandCommentsClick = () => {
+    setExpandedComments(!expandedComments);
   };
 
   const handleOnClearClick = () => {
     dispatch(location.actions.setActiveMovie(null));
+  };
+
+  const handleSubmit = async () => {
+    const options = {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: accessToken
+      },
+      body: JSON.stringify({ message })
+    };
+    try {
+      // eslint-disable-next-line no-underscore-dangle
+      const response = await fetch(`https://movie-globe-backend-djwdbjbdsa-lz.a.run.app/movies/${selectedMovie._id}/addcomment`, options);
+      const data = await response.json();
+
+      if (data.success) {
+        // eslint-disable-next-line no-underscore-dangle
+        dispatch(location.actions.addComment({ movieId: selectedMovie._id, message }));
+      } else {
+        console.log('comment not posted')
+      }
+    } catch (error) {
+      console.log('Error:', error);
+    }
+    setMessage('')
   };
 
   return (
@@ -97,14 +130,21 @@ export const MovieDetails = () => {
           <CardActions disableSpacing>
             <SaveMovie />
             <ExpandMore
-              expand={expanded}
-              onClick={handleExpandClick}
-              aria-expanded={expanded}
+              expand={expandedComments}
+              onClick={handleExpandCommentsClick}
+              aria-expanded={expandedComments}
+              aria-label="show more">
+              <ExpandMoreIcon />
+            </ExpandMore>
+            <ExpandMore
+              expand={expandedDetails}
+              onClick={handleExpandDetailsClick}
+              aria-expanded={expandedDetails}
               aria-label="show more">
               <ExpandMoreIcon />
             </ExpandMore>
           </CardActions>
-          <Collapse in={expanded} timeout="auto" unmountOnExit>
+          <Collapse in={expandedDetails} timeout="auto" unmountOnExit>
             <CardContent>
               <div style={{ display: 'grid', gridTemplateColumns: '1fr 2fr' }}>
                 <Typography variant="body2" paragraph color="text.secondary">Director:</Typography>
@@ -130,6 +170,36 @@ export const MovieDetails = () => {
                 image={selectedMovie.Poster}
                 alt={`Poster for ${selectedMovie.title}`} />
             </CardContent>
+          </Collapse>
+          <Collapse in={expandedComments} timeout="auto" unmountOnExit>
+            {selectedMovie.Comments && selectedMovie.Comments.map((comment) => (
+              <>
+                <p>{comment.message}</p>
+                <p>{comment.userName}</p>
+              </>
+            ))}
+            <FormControl sx={{ m: 1, minWidth: 200 }} size="small">
+              <TextField
+                id="outlined-multiline-static margin-none"
+                label="Write your comment or review here..."
+                multiline
+                rows={3}
+                size="small"
+                value={message}
+                onChange={(e) => setMessage(e.target.value)} />
+              <Button
+                type="button"
+                onClick={handleSubmit}
+                variant="contained"
+                sx={{
+                  width: '180px',
+                  alignSelf: 'center',
+                  fontWeight: 700
+                }}
+                size="large">
+                  Post Comment
+              </Button>
+            </FormControl>
           </Collapse>
         </Card>
       )}

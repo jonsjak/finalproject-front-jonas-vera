@@ -12,6 +12,8 @@ const GoRight = keyframes`
 export const SlidingCard = styled.div`
   display: flex;
   width: ${(props) => (props.personal ? '345px' : '250px')};
+  height: ${(props) => (props.personal && '600px')};
+  border-radius: ${(props) => (props.personal && '4px')};
   position: fixed;
   z-index: 1000;
   bottom: 0px;

@@ -1,14 +1,9 @@
 /* eslint-disable react/jsx-props-no-spreading */
 import React, { useState } from 'react';
-import Button from '@mui/material/Button';
-import TextField from '@mui/material/TextField';
-import Link from '@mui/material/Link';
-import Grid from '@mui/material/Grid';
-import Box from '@mui/material/Box';
-import Typography from '@mui/material/Typography';
+import { Link, Box, Typography, Grid, TextField, Button, IconButton, ThemeProvider } from '@mui/material';
 import user from 'reducers/user';
 import ClearIcon from '@mui/icons-material/Clear';
-import { IconButton } from '@mui/material';
+import { createTheme } from '@mui/material/styles';
 import { useDispatch, useSelector } from 'react-redux';
 import { SlidingCardRight } from 'components/styles/Cards';
 import { useNavigate } from 'react-router-dom';
@@ -99,67 +94,86 @@ export const Register = () => {
     navigate('/');
   };
 
+  const theme = createTheme({
+    palette: {
+      primary: {
+        light: '#757ce8',
+        main: '#008ca5',
+        dark: '#037588',
+        contrastText: '#fff'
+      },
+      secondary: {
+        light: '#ff7961',
+        main: '#035f6f',
+        dark: '#ba000d',
+        contrastText: '#000'
+      }
+    }
+  });
+
   return (
     <SlidingCardRight loginregister>
-      <IconButton
-        aria-label="clear"
-        sx={{ alignSelf: 'flex-start' }}
-        onClick={() => handleOnClearClick()}>
-        <ClearIcon sx={{ fontSize: '16px' }} />
-      </IconButton>
-      <Typography component="h1" variant="h5" sx={{ alignSelf: 'center' }}>
-        Sign up
-      </Typography>
-      <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 3 }}>
-        <Grid container spacing={2}>
-          <Grid item xs={12}>
-            <TextField
-              required
-              fullWidth
-              id="email"
-              label="Email Address"
-              name="email"
-              autoComplete="email"
-              error={emailError}
-              helperText="Email is required" />
+      <ThemeProvider theme={theme}>
+        <IconButton
+          aria-label="clear"
+          sx={{ alignSelf: 'flex-start' }}
+          onClick={() => handleOnClearClick()}>
+          <ClearIcon sx={{ fontSize: '16px' }} />
+        </IconButton>
+        <Typography component="h1" variant="h5" sx={{ alignSelf: 'center' }}>
+          Sign up
+        </Typography>
+        <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 3 }}>
+          <Grid container spacing={2}>
+            <Grid item xs={12}>
+              <TextField
+                required
+                fullWidth
+                id="email"
+                label="Email Address"
+                name="email"
+                autoComplete="email"
+                error={emailError}
+                helperText="Email is required" />
+            </Grid>
+            <Grid item xs={12}>
+              <TextField
+                required
+                fullWidth
+                id="username"
+                label="Username"
+                name="username"
+                error={usernameError}
+                helperText="Username is required" />
+            </Grid>
+            <Grid item xs={12}>
+              <TextField
+                required
+                fullWidth
+                name="password"
+                label="Password"
+                type="password"
+                id="password"
+                error={passwordError}
+                helperText={passwordErrorText} />
+            </Grid>
           </Grid>
-          <Grid item xs={12}>
-            <TextField
-              required
-              fullWidth
-              id="username"
-              label="Username"
-              name="username"
-              error={usernameError}
-              helperText="Username is required" />
+          <Button
+            type="submit"
+            fullWidth
+            variant="contained"
+            sx={{ mt: 3, mb: 2 }}>
+            Sign Up
+          </Button>
+          <Grid container justifyContent="flex-end">
+            <Grid item>
+              <Link href="/login" variant="body2">
+                Already have an account? Sign in here!
+              </Link>
+            </Grid>
           </Grid>
-          <Grid item xs={12}>
-            <TextField
-              required
-              fullWidth
-              name="password"
-              label="Password"
-              type="password"
-              id="password"
-              error={passwordError}
-              helperText={passwordErrorText} />
-          </Grid>
-        </Grid>
-        <Button
-          type="submit"
-          fullWidth
-          variant="contained"
-          sx={{ mt: 3, mb: 2 }}>
-          Sign Up
-        </Button>
-        <Grid container justifyContent="flex-end">
-          <Grid item>
-            <Link href="/login" variant="body2">
-              Already have an account? Sign in here!
-            </Link>
-          </Grid>
-        </Grid>
-      </Box>
+        </Box>
+      </ThemeProvider>
     </SlidingCardRight>
   );
 };
