@@ -1,5 +1,5 @@
 /* eslint-disable react/jsx-props-no-spreading */
-import * as React from 'react';
+import React, { useState } from 'react';
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
 import Link from '@mui/material/Link';
@@ -12,64 +12,92 @@ import { IconButton } from '@mui/material';
 import { useDispatch, useSelector } from 'react-redux';
 import { SlidingCardRight } from 'components/styles/Cards';
 import { useNavigate } from 'react-router-dom';
-import menus from '../../reducers/menus'
+import menus from '../../reducers/menus';
 
 export const Register = () => {
   const registerUrl = process.env.REACT_APP_REGISTER_URL;
   const accessToken = useSelector((store) => store.user.accessToken);
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const [emailError, setEmailError] = useState(false);
+  const [passwordError, setPasswordError] = useState(false);
+  const [usernameError, setUsernameError] = useState(false);
+  const [passwordErrorText, setPasswordErrorText] = useState('');
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    const { username, password } = event.target.elements;
+    const { email, username, password } = event.target.elements;
     const data = {
+      email: email.value,
       username: username.value,
       password: password.value
-      // add email address here and to backend
     };
-    const passwordRegex = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,}$/;
 
     const options = {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
       },
-      // eslint-disable-next-line object-shorthand
       body: JSON.stringify(data)
     };
 
-    // Checks password requirements
-    if (!passwordRegex.test(data.password)) {
-      alert('Password needs to be at least 6 characters long, include one number, one UPPERCASE letter and one lowercase letter')
-    }
+    const validateFields = () => {
+      let isValid = true;
+      const passwordRegex = /(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,}/;
 
-    fetch(`${registerUrl}`, options)
-      .then((response) => response.json())
-      .then((json) => {
-        console.log(json);
-        // what to do more with the recived data? Redirect to...
-        dispatch(
-          user.actions.setUser({
-            userName: json.response.username,
-            userId: json.response.id,
-            accessToken: json.response.accessToken,
-            error: false
-          })
-        );
-        if (accessToken) {
-          navigate('/user/log');
-        } else {
-          alert('failed to register')
-        }
-      })
-      .catch((error) => console.log(error));
+      if (!data.email) {
+        setEmailError(true);
+        isValid = false;
+      } else {
+        setEmailError(false);
+      }
+
+      if (!data.username) {
+        setUsernameError(true);
+        isValid = false;
+      } else {
+        setUsernameError(false);
+      }
+
+      if (!passwordRegex.test(data.password)) {
+        setPasswordError(true);
+        setPasswordErrorText('Password must be at least 6 characters long and contain at least one lowercase letter, one uppercase letter, and one number.');
+        isValid = false;
+      } else {
+        setPasswordError(false);
+        setPasswordErrorText('');
+      }
+
+      return isValid;
+    };
+
+    if (validateFields()) {
+      fetch(registerUrl, options)
+        .then((response) => response.json())
+        .then((json) => {
+          console.log(json);
+          dispatch(
+            user.actions.setUser({
+              userName: json.response.username,
+              userId: json.response.id,
+              accessToken: json.response.accessToken,
+              error: false
+            })
+          );
+          if (accessToken) {
+            navigate('/user/log');
+          } else {
+            alert('failed to register');
+          }
+        })
+        .catch((error) => console.log(error));
+    }
   };
 
   const handleOnClearClick = () => {
     dispatch(menus.actions.toggleRegisterPage(false));
     navigate('/');
-  }
+  };
 
   return (
     <SlidingCardRight loginregister>
@@ -80,7 +108,7 @@ export const Register = () => {
         <ClearIcon sx={{ fontSize: '16px' }} />
       </IconButton>
       <Typography component="h1" variant="h5" sx={{ alignSelf: 'center' }}>
-          Sign up
+        Sign up
       </Typography>
       <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 3 }}>
         <Grid container spacing={2}>
@@ -91,15 +119,19 @@ export const Register = () => {
               id="email"
               label="Email Address"
               name="email"
-              autoComplete="email" />
+              autoComplete="email"
+              error={emailError}
+              helperText="Email is required" />
           </Grid>
           <Grid item xs={12}>
             <TextField
               required
               fullWidth
               id="username"
-              label="username"
-              name="username" />
+              label="Username"
+              name="username"
+              error={usernameError}
+              helperText="Username is required" />
           </Grid>
           <Grid item xs={12}>
             <TextField
@@ -109,7 +141,8 @@ export const Register = () => {
               label="Password"
               type="password"
               id="password"
-              autoComplete="new-password" />
+              error={passwordError}
+              helperText={passwordErrorText} />
           </Grid>
         </Grid>
         <Button
@@ -117,12 +150,12 @@ export const Register = () => {
           fullWidth
           variant="contained"
           sx={{ mt: 3, mb: 2 }}>
-            Sign Up
+          Sign Up
         </Button>
         <Grid container justifyContent="flex-end">
           <Grid item>
             <Link href="/login" variant="body2">
-                Already have an account? Sign in here!
+              Already have an account? Sign in here!
             </Link>
           </Grid>
         </Grid>

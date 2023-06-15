@@ -1,5 +1,5 @@
 /* eslint-disable react/jsx-props-no-spreading */
-import React from 'react';
+import React, { useState } from 'react';
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
 import FormControlLabel from '@mui/material/FormControlLabel';
@@ -23,6 +23,9 @@ export const Login = () => {
   const loginUrl = process.env.REACT_APP_LOGIN_URL;
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const [passwordError, setPasswordError] = useState(false);
+  const [usernameError, setUsernameError] = useState(false);
+  const [passwordErrorText, setPasswordErrorText] = useState('');
 
   // Redirect to personal page or personalized map
   /* useEffect(() => {
@@ -33,7 +36,6 @@ export const Login = () => {
 
   // Login-handler
   const handleLoginSubmit = (event) => {
-    navigate('/');
     event.preventDefault();
     const { username, password } = event.target.elements;
     const data = {
@@ -48,31 +50,58 @@ export const Login = () => {
       },
       body: JSON.stringify(data)
     };
-    // fetches and dispatches data to store
-    fetch(loginUrl, options)
-      .then((response) => response.json())
-      .then((json) => {
-        if (json.success) {
-          const { accessToken } = json.response;
-          dispatch(user.actions.setUser({
-            userName: json.response.username,
-            userId: json.response.id,
-            accessToken: json.response.accessToken,
-            error: null
-          }))
-          console.log(accessToken)
-          dispatch(fetchPrivateMovies(accessToken));
-        } else {
-          dispatch(user.actions.setUser({
-            userName: null,
-            userId: null,
-            accessToken: null,
-            error: json.response.message
-          }));
-        }
-      })
-      .catch((error) => console.log(error))
-  };
+
+    // Form validation
+    const validateFields = () => {
+      let isValid = true;
+
+      if (!data.username) {
+        setUsernameError(true);
+        isValid = false;
+      } else {
+        setUsernameError(false);
+      }
+
+      if (!data.password) {
+        setPasswordError(true);
+        setPasswordErrorText('Password is required');
+        isValid = false;
+      } else {
+        setPasswordError(false);
+        setPasswordErrorText('');
+      }
+      return isValid;
+    };
+      // fetches and dispatches data to store
+    if (validateFields(true)) {
+      fetch(loginUrl, options)
+        .then((response) => response.json())
+        .then((json) => {
+          if (json.success) {
+            const { accessToken } = json.response;
+            dispatch(user.actions.setUser({
+              userName: json.response.username,
+              userId: json.response.id,
+              accessToken: json.response.accessToken,
+              error: null
+            }))
+            console.log(accessToken)
+            dispatch(fetchPrivateMovies(accessToken));
+            navigate('/');
+          } else {
+            dispatch(user.actions.setUser({
+              userName: null,
+              userId: null,
+              accessToken: null,
+              error: json.response.message
+            }));
+            setPasswordError(true);
+            setPasswordErrorText('Incorrect username or password');
+          }
+        })
+        .catch((error) => console.log(error));
+    }
+  }
 
   const handleOnClearClick = () => {
     dispatch(menus.actions.toggleLoginPage(false));
@@ -100,6 +129,8 @@ export const Login = () => {
           label="Username"
           name="username"
           autoComplete="username"
+          error={usernameError}
+          helperText="Username is required"
           autoFocus />
         <TextField
           margin="normal"
@@ -109,6 +140,8 @@ export const Login = () => {
           label="Password"
           type="password"
           id="password"
+          error={passwordError}
+          helperText={passwordErrorText}
           autoComplete="current-password" />
         <FormControlLabel
           control={<Checkbox value="remember" color="primary" />}
