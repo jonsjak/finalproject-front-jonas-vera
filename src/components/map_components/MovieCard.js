@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { createTheme } from '@mui/material/styles';
-import { CardContent, Typography, CardMedia, Button, CardActions, Card, ThemeProvider } from '@mui/material';
+import { CardContent, Typography, CardMedia, Button, CardActions, Card, ThemeProvider, Link } from '@mui/material';
 
 export const MovieCard = ({ movie, handleOnReadClick }) => {
   const theme = createTheme({
@@ -33,9 +33,11 @@ export const MovieCard = ({ movie, handleOnReadClick }) => {
           <Typography gutterBottom variant="h2" component="div" sx={{ fontSize: '2.2rem' }}>
             {movie.location}
           </Typography>
-          <Typography variant="body1" color="text.secondary" sx={{ margin: '0.3em' }}>
-            Film scene from <span style={{ color: 'black', fontStyle: 'italic' }}>{movie.title}</span>
-          </Typography>
+          <Link href={`https://www.imdb.com/title/${movie.imdbID}/?ref_=nv_sr_srsg_0`} target="_blank" rel="noreferrer" sx={{ textDecoration: 'none' }}>
+            <Typography variant="body1" color="text.secondary" sx={{ margin: '0.3em' }}>
+              Film scene from <span style={{ color: 'black', fontStyle: 'italic' }}>{movie.title}</span>
+            </Typography>
+          </Link>
         </CardContent>
         <CardActions>
           <Button

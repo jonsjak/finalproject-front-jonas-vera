@@ -9,7 +9,8 @@ const menus = createSlice({
     login: false,
     register: false,
     about: false,
-    isMapClickable: false
+    isMapClickable: false,
+    movieCardHidden: false
   },
   reducers: {
     toggleFilter: (store, action) => {
@@ -29,6 +30,9 @@ const menus = createSlice({
     },
     toggleMapClicker: (store, action) => {
       store.isMapClickable = action.payload;
+    },
+    toggleMoviePopup: (store, action) => {
+      store.movieCardHidden = action.payload;
     },
     }
   }

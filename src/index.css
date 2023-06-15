@@ -16,7 +16,7 @@ code {
 .leaflet-container {
   width: 100%;
   height: 100vh;
-  background: linear-gradient(to bottom, #82addb 0%,#ebb2b1 100%);
+  background: #2D3142;
 }
 
 .leaflet-control-attribution.leaflet-control {
@@ -32,22 +32,16 @@ code {
   padding: 0px;
 }
 
-.diagonal-box {
-	background: #008ca5;
-	transform: skewY(-8deg);
-  position: absolute;
-  z-index: 996;
-  top: -146px;
-  width: 100%;
-  height: 194px;
+.leaflet-popup-content p {
+  margin-top: 0px;
 }
 
 .leaflet-top {
-  top: 241px;
+  top: 142px;
 }
 
 .leaflet-left {
-  left: 25px;
+  left: 9px;
 }
 
 .leaflet-bar a {
@@ -61,21 +55,20 @@ code {
 }
 
 .leaflet-touch .leaflet-control-zoom-out {
-  font-size: 60px;
+  font-size: 50px;
 }
 
 .leaflet-touch .leaflet-control-zoom-in, .leaflet-touch .leaflet-control-zoom-out {
-  font-size: 60px;
+  font-size: 50px;
 }
 
 .leaflet-bar a {
   color:  #2d3142;
-  margin-bottom: 40px;
 }
 
 .leaflet-bar a:hover, .leaflet-bar a:focus {
   background-color: transparent;
-  color: #EF8354;
+  color: #008ca5;
 }
 
 .leaflet-touch .leaflet-bar {
@@ -84,6 +77,14 @@ code {
 
 .leaflet-top, .leaflet-bottom {
   z-index: 998;
+}
+
+.leaflet-touch .leaflet-bar a {
+  width: 39px;
+  height: 36px;
+  line-height: 30px;
+  background: rgb(220, 220, 220);
+  padding: 5px 5px 10px 5px;
 }
 
 

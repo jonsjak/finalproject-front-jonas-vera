@@ -7,6 +7,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import Carousel from 'react-material-ui-carousel';
 import ClearIcon from '@mui/icons-material/Clear';
 import location from 'reducers/location';
+import menus from 'reducers/menus';
 import { SaveMovie } from 'components/personal/SaveMovie';
 
 const ExpandMore = styled((props) => {
@@ -38,6 +39,7 @@ export const MovieDetails = () => {
 
   const handleOnClearClick = () => {
     dispatch(location.actions.setActiveMovie(null));
+    dispatch(menus.actions.toggleMoviePopup(false));
   };
 
   const handleSubmit = async () => {

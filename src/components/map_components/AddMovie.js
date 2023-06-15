@@ -163,7 +163,7 @@ export const AddMovie = () => {
                   onChange={handleMovieSearch} />
                 </>
                 )}
-              {searchResults.length > 0 && (
+              {searchResults && (
                 <List>
                   {searchResults.slice(0, 5).map((result) => (
                     <Button

@@ -5,6 +5,7 @@ import { MapContainer, Marker, Popup, TileLayer, useMapEvents } from 'react-leaf
 import { fetchPublicMovies } from 'reducers/location';
 import { useDispatch, useSelector } from 'react-redux';
 import location from 'reducers/location';
+import menus from 'reducers/menus'
 import { AddMovie } from './AddMovie';
 import { MovieCard } from '../map_components/MovieCard';
 import { Loader } from 'components/bars_and_navigation/Loader';
@@ -18,10 +19,8 @@ export const MovieMap = () => {
   const movieCoordinates = useSelector((store) => store.location.coordinates);
   const movieStartCoordinates = useSelector((store) => store.location.startcoordinates);
   const accessToken = useSelector((store) => store.user.accessToken);
-/*   const movieUrl = process.env.REACT_APP_MOVIE_URL;
-  const movieStartUrl = process.env.REACT_APP_MOVIE_START_URL; */
   const isLoading = useSelector((store) => store.location.isLoading); // Add isLoading state
-/*   const accessToken = useSelector((store) => store.user.accessToken); */
+  const popupHidden = useSelector((store) => store.menus.movieCardHidden);
 
   const filmMarker = new L.Icon({
     iconUrl: filmIcon,
@@ -38,6 +37,7 @@ export const MovieMap = () => {
 
   const handleOnReadClick = (movie) => {
     dispatch(location.actions.setActiveMovie(movie));
+    dispatch(menus.actions.toggleMoviePopup(true));
   };
 
   if (isLoading) {
@@ -67,9 +67,11 @@ export const MovieMap = () => {
             icon={filmMarker}
             // eslint-disable-next-line max-len
             position={movieCoordinates ? movieCoordinates[index] : [-33.893, 151.1988]}>
-            <Popup style={{ margin: '0px', width: '300px' }}>
-              <MovieCard movie={movie} handleOnReadClick={handleOnReadClick} />
-            </Popup>
+            {!popupHidden && (
+              <Popup style={{ margin: '0px', width: '300px' }}>
+                <MovieCard movie={movie} handleOnReadClick={handleOnReadClick} />
+              </Popup>
+            )}
           </Marker>
         ))}
         {!isLoading && startMovieItems?.map((movie, index) => (
@@ -78,9 +80,11 @@ export const MovieMap = () => {
             key={movie._id}
             // eslint-disable-next-line max-len
             position={movieStartCoordinates ? movieStartCoordinates[index] : [-33.893, 151.1988]}>
-            <Popup style={{ margin: '0px', width: '300px' }}>
+            {!popupHidden && (
+              <Popup style={{ margin: '0px', width: '300px' }}>
               <MovieCard movie={movie} handleOnReadClick={handleOnReadClick} />
-            </Popup>
+              </Popup>
+            )}
           </Marker>
         ))}
         <AddMovie />
