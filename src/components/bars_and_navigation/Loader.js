@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import globe from '../../images/173986775earth-spinning-rotating-animation-15-2.gif'
 
 const LoaderBackground = styled.div`
-  background: linear-gradient(to bottom, #90dffe 0%,#38a3d1 100%); 
+  background: #2D3142; 
   margin-top: 0px;
   height: 100vh;
   position: relative;

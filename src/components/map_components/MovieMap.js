@@ -8,13 +8,13 @@ import location from 'reducers/location';
 import { AddMovie } from './AddMovie';
 import { MovieCard } from '../map_components/MovieCard';
 import { Loader } from 'components/bars_and_navigation/Loader';
+import filmIcon from '../../images/movie-marker5-01-01.png'
 
 export const MovieMap = () => {
   const dispatch = useDispatch();
   const startingPosition = [10, 0];
   const startMovieItems = useSelector((store) => store.location.startmovies);
   const movieItems = useSelector((store) => store.location.movies);
-  console.log('Movie Items:', movieItems);
   const movieCoordinates = useSelector((store) => store.location.coordinates);
   const movieStartCoordinates = useSelector((store) => store.location.startcoordinates);
   const accessToken = useSelector((store) => store.user.accessToken);
@@ -22,6 +22,11 @@ export const MovieMap = () => {
   const movieStartUrl = process.env.REACT_APP_MOVIE_START_URL; */
   const isLoading = useSelector((store) => store.location.isLoading); // Add isLoading state
 /*   const accessToken = useSelector((store) => store.user.accessToken); */
+
+  const filmMarker = new L.Icon({
+    iconUrl: filmIcon,
+    iconSize: [40, 40]
+  });
 
   useEffect(() => {
     if (accessToken) {
@@ -32,12 +37,7 @@ export const MovieMap = () => {
   }, []);
 
   const handleOnReadClick = (movie) => {
-    console.log(movie)
     dispatch(location.actions.setActiveMovie(movie));
-  };
-
-  const handleNewMovieAdded = () => {
-    alert('movie added!')
   };
 
   if (isLoading) {
@@ -64,6 +64,7 @@ export const MovieMap = () => {
         {!isLoading && movieItems.map((movie, index) => (
           <Marker
             key={movie._id}
+            icon={filmMarker}
             // eslint-disable-next-line max-len
             position={movieCoordinates ? movieCoordinates[index] : [-33.893, 151.1988]}>
             <Popup style={{ margin: '0px', width: '300px' }}>
@@ -73,6 +74,7 @@ export const MovieMap = () => {
         ))}
         {!isLoading && startMovieItems?.map((movie, index) => (
           <Marker
+            icon={filmMarker}
             key={movie._id}
             // eslint-disable-next-line max-len
             position={movieStartCoordinates ? movieStartCoordinates[index] : [-33.893, 151.1988]}>
@@ -81,7 +83,7 @@ export const MovieMap = () => {
             </Popup>
           </Marker>
         ))}
-        <AddMovie onNewMovieAdded={handleNewMovieAdded} />
+        <AddMovie />
       </MapContainer>
     </div>
   );

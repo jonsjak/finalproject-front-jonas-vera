@@ -1,14 +1,7 @@
 /* eslint-disable react/jsx-props-no-spreading */
 import React from 'react';
 import { styled } from '@mui/material/styles';
-import Card from '@mui/material/Card';
-import CardHeader from '@mui/material/CardHeader';
-import CardMedia from '@mui/material/CardMedia';
-import CardContent from '@mui/material/CardContent';
-import CardActions from '@mui/material/CardActions';
-import Collapse from '@mui/material/Collapse';
-import IconButton from '@mui/material/IconButton';
-import Typography from '@mui/material/Typography';
+import { CardContent, Typography, CardMedia, CardActions, Card, CardHeader, Collapse, IconButton } from '@mui/material';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { useSelector, useDispatch } from 'react-redux';
 import Carousel from 'react-material-ui-carousel';
@@ -58,29 +51,47 @@ export const MovieDetails = () => {
           <Typography variant="body2" color="text.secondary" sx={{ padding: '16px', paddingTop: '0px', fontStyle: 'italic', fontSize: '1rem' }}>
             {selectedMovie.Genre}
           </Typography>
-          <Carousel
-            animation="fade">
-            <CardMedia
-              component="img"
-              height="184.645px"
-              width="100%"
-              sx={{ objectFit: 'cover' }}
-              image={selectedMovie.location_image}
-              alt={`Image from ${selectedMovie.title}`} />
-            <CardMedia
-              component="img"
-              height="184.645px"
-              width="100%"
-              sx={{ objectFit: 'cover' }}
-              image={selectedMovie.movie_location_still}
-              alt={`Image from ${selectedMovie.title}`} />
-          </Carousel>
+          {selectedMovie.location_image || selectedMovie.movie_location_still
+            ? (
+              <Carousel
+                animation="fade">
+                <CardMedia
+                  component="img"
+                  height="184.645px"
+                  width="100%"
+                  sx={{ objectFit: 'cover' }}
+                  image={
+                    selectedMovie.location_image
+                      ? selectedMovie.location_image : selectedMovie.Poster
+                  }
+                  alt={`Image from ${selectedMovie.title}`} />
+                <CardMedia
+                  component="img"
+                  height="184.645px"
+                  width="100%"
+                  sx={{ objectFit: 'cover' }}
+                  image={
+                    selectedMovie.movie_location_still
+                      ? selectedMovie.movie_location_still : selectedMovie.Poster
+                  }
+                  alt={`Image from ${selectedMovie.title}`} />
+              </Carousel>
+            ) : (
+              <CardMedia
+                component="img"
+                height="184.645px"
+                width="100%"
+                sx={{ objectFit: 'cover' }}
+                image={selectedMovie.Poster}
+                alt={`Poster for ${selectedMovie.title}`} />
+            )}
           <CardContent>
             <Typography variant="body1" color="text.primary" paragraph>
               {selectedMovie.location}
             </Typography>
             <Typography variant="body2" color="text.secondary">
-              {selectedMovie.scene_description}
+              {selectedMovie.scene_description
+                ? selectedMovie.scene_description : selectedMovie.Plot}
             </Typography>
           </CardContent>
           <CardActions disableSpacing>

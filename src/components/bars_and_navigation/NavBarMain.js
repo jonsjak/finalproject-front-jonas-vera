@@ -10,11 +10,6 @@ export const NavBarMain = () => {
   const [toggleSideBar, setToggleSidebar] = useState(false)
   const accessToken = useSelector((store) => store.user.accessToken);
 
-  /*   const onLoginClick = () => {
-    dispatch(menus.actions.toggleLoginPage(true));
-    setToggleSidebar(!toggleSideBar)
-  }; */
-
   const onRegisterClick = () => {
     dispatch(menus.actions.toggleRegisterPage(true));
     setToggleSidebar(!toggleSideBar)
@@ -65,15 +60,61 @@ export const NavBarMain = () => {
           <ul className="sidebar-list">
             {accessToken
               ? (
-                <li className={toggleSideBar ? 'sidebar-item active' : 'sidebar-item'}><NavLink className="sidebar-anchor" to="/" onClick={onLogOutClick}>Log out</NavLink></li>
+                <li
+                  className={toggleSideBar
+                    ? 'sidebar-item active'
+                    : 'sidebar-item'}>
+                  <NavLink
+                    className="sidebar-anchor"
+                    to="/"
+                    onClick={onLogOutClick}>
+                      Log out
+                  </NavLink>
+                </li>
               ) : (
                 <>
-                  <li className={toggleSideBar ? 'sidebar-item active' : 'sidebar-item'}><NavLink className="sidebar-anchor" to="/user/login" onClick={onToggleMenu}>Log in</NavLink></li>
-                  <li className={toggleSideBar ? 'sidebar-item active' : 'sidebar-item'}><NavLink className="sidebar-anchor" to="/user/register" onClick={onRegisterClick}>Register</NavLink></li>
+                  <li
+                    className={toggleSideBar
+                      ? 'sidebar-item active' : 'sidebar-item'}>
+                    <NavLink
+                      className="sidebar-anchor"
+                      to="/user/login"
+                      onClick={onToggleMenu}>
+                        Log in
+                    </NavLink>
+                  </li>
+                  <li
+                    className={toggleSideBar
+                      ? 'sidebar-item active' : 'sidebar-item'}>
+                    <NavLink
+                      className="sidebar-anchor"
+                      to="/user/register"
+                      onClick={onRegisterClick}>
+                        Register
+                    </NavLink>
+                  </li>
                 </>
               )}
-            <li className={toggleSideBar ? 'sidebar-item active' : 'sidebar-item'}><NavLink className="sidebar-anchor" to="/about" onClick={onToggleMenu}>About</NavLink></li>
-            <li className={toggleSideBar ? 'sidebar-item active' : 'sidebar-item'}><NavLink className="sidebar-anchor" to="/" onClick={onToggleMenu}>Home</NavLink></li>
+            <li
+              className={toggleSideBar
+                ? 'sidebar-item active' : 'sidebar-item'}>
+              <NavLink
+                className="sidebar-anchor"
+                to="/about"
+                onClick={onToggleMenu}>
+                  About
+              </NavLink>
+            </li>
+            <li
+              className={toggleSideBar
+                ? 'sidebar-item active' : 'sidebar-item'}>
+              <NavLink
+                className="sidebar-anchor"
+                to="/"
+                onClick={onToggleMenu}>
+                  Home
+              </NavLink>
+            </li>
           </ul>
         </div>
       </nav>

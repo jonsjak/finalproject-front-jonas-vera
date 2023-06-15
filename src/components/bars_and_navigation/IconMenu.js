@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { NavLink } from 'react-router-dom';
 import Person2Icon from '@mui/icons-material/Person2';
 import IconButton from '@mui/material/IconButton';
-import FilterAltIcon from '@mui/icons-material/FilterAlt';
 import styled from 'styled-components';
 import { AddLocation, LocationOff } from '@mui/icons-material';
 import menus from 'reducers/menus';
@@ -10,14 +9,28 @@ import { useDispatch, useSelector } from 'react-redux';
 
 export const IconMenuBar = styled.menu`
   position: absolute;
-  left: 0px;
-  bottom: 0px;
+  left: -19px;
+  bottom: -8px;
   z-index: 997;
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  gap: 12px;
   margin: 15px;
+  justify-content: flex-end;
   padding: 0px;
+  height: 110vh;
+`
+
+export const MenuBackground = styled.div`
+  position: absolute;
+  left: -81px;
+  bottom: -19px;
+  z-index: 996;
+  padding: 0px;
+  width: 100px;
+  background: linear-gradient(to right, #68a0d6 0%,#008ca5 100%); 
+  height: 110vh;
+  transform: rotate(-7deg);
 `
 
 export const IconMenu = () => {
@@ -31,26 +44,24 @@ export const IconMenu = () => {
   };
 
   return (
-    <IconMenuBar>
-      <IconButton>
-        <NavLink to="/filter">
-          <FilterAltIcon sx={{ fontSize: '50px', color: '#2D3142' }} />
-        </NavLink>
-      </IconButton>
-      {accessToken && (
-        <IconButton onClick={locationToggler}>
-          {!isLocationAdderActive ? (
-            <LocationOff sx={{ fontSize: '50px', color: '#2D3142' }} />
-          ) : (
-            <AddLocation sx={{ fontSize: '50px', color: '#2D3142' }} />
-          )}
+    <>
+      <MenuBackground />
+      <IconMenuBar>
+        {accessToken && (
+          <IconButton onClick={locationToggler}>
+            {!isLocationAdderActive ? (
+              <LocationOff sx={{ fontSize: '50px', color: '#2D3142' }} />
+            ) : (
+              <AddLocation sx={{ fontSize: '50px', color: '#2D3142' }} />
+            )}
+          </IconButton>
+        )}
+        <IconButton>
+          <NavLink to="/personal">
+            <Person2Icon sx={{ fontSize: '50px', color: '#2D3142' }} />
+          </NavLink>
         </IconButton>
-      )}
-      <IconButton>
-        <NavLink to="/personal">
-          <Person2Icon sx={{ fontSize: '50px', color: '#2D3142' }} />
-        </NavLink>
-      </IconButton>
-    </IconMenuBar>
+      </IconMenuBar>
+    </>
   )
 }
