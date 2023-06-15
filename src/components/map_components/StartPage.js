@@ -30,7 +30,7 @@ export const StartPage = () => {
     <div
       style={{
         position: 'absolute',
-        zIndex: 444,
+        zIndex: 999,
         left: '5%',
         bottom: '5%'
       }}>
