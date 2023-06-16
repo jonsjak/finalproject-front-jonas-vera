@@ -168,7 +168,6 @@ export const MovieDetails = () => {
               <ExpandMoreIcon />
             </ExpandMore>
             <ExpandMore
-              sx={{ display: 'none' }}
               expand={expandedDetails}
               onClick={handleExpandDetailsClick}
               aria-expanded={expandedDetails}
