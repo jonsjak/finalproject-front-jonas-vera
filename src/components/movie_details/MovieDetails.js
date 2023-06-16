@@ -78,8 +78,7 @@ export const MovieDetails = () => {
       maxHeight: '85vh',
       overflow: 'scroll',
       '@media (max-width: 780px)': {
-        right: '0px',
-        top: '118px'
+        right: '0px'
       }
     }
   }
