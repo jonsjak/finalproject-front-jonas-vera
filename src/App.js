@@ -10,7 +10,7 @@ import { Register } from 'components/personal/Register';
 import { PersonalPage } from 'components/personal/PersonalPage';
 import { NotFound } from 'components/bars_and_navigation/NotFound';
 import About from 'components/bars_and_navigation/About';
-import { StartPage } from 'components/map_components/StartPage';
+import { LoginPopUp } from 'components/map_components/LoginPopUp';
 import { Main } from 'components/map_components/Main';
 
 const reducer = combineReducers({
@@ -27,7 +27,7 @@ export const App = () => {
       <BrowserRouter>
         <main style={{ position: 'relative' }}>
           <Routes>
-            <Route path="/" element={<StartPage />} />
+            <Route path="/" element={<LoginPopUp />} />
             <Route path="/user/register" element={<Register />} />
             <Route path="/user/login" element={<Login />} />
             <Route path="/about" element={<About />} />
