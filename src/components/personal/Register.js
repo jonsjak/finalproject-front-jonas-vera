@@ -4,6 +4,7 @@ import { Link, Box, Typography, Grid, TextField, Button, IconButton, ThemeProvid
 import user from 'reducers/user';
 import ClearIcon from '@mui/icons-material/Clear';
 import { theme } from 'components/styles/muiTheme';
+import { fetchPrivateMovies } from 'reducers/location';
 import { useDispatch } from 'react-redux';
 import { SlidingCardRight } from 'components/styles/Cards';
 import { useNavigate } from 'react-router-dom';
@@ -85,7 +86,9 @@ export const Register = () => {
         );
         // If user is successfully created
         if (json.response.accessToken) {
-          navigate('/user/log'); // NEEDS TO BE REDIRECTED ELSEWHERE
+          dispatch(fetchPrivateMovies(json.response.accessToken));
+          navigate('/');
+          // NEEDS TO BE REDIRECTED ELSEWHERE - WILL THIS DO IT?
         } else {
           alert('failed to register');
         }
