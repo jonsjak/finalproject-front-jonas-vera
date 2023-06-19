@@ -15,11 +15,12 @@ export const Login = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [passwordError, setPasswordError] = useState(false);
+  const [passwordErrorText, setPasswordErrorText] = useState('')
   const [usernameError, setUsernameError] = useState(false);
-  const [passwordErrorText, setPasswordErrorText] = useState('');
+  const [usernameErrorText, setUsernameErrorText] = useState('');
 
   // Login-handler
-  const handleLoginSubmit = (event) => {
+  const handleLoginSubmit = async (event) => {
     event.preventDefault();
     const { username, password } = event.target.elements;
     const data = {
@@ -39,13 +40,15 @@ export const Login = () => {
     const validateFields = () => {
       let isValid = true;
 
+      // checks username
       if (!data.username) {
         setUsernameError(true);
+        setUsernameErrorText('Username is required')
         isValid = false;
       } else {
         setUsernameError(false);
       }
-
+      // checks password
       if (!data.password) {
         setPasswordError(true);
         setPasswordErrorText('Password is required');
@@ -56,35 +59,41 @@ export const Login = () => {
       }
       return isValid;
     };
+
     // fetches and dispatches data to store
     if (validateFields(true)) {
-      fetch(loginUrl, options)
-        .then((response) => response.json())
-        .then((json) => {
-          if (json.success) {
-            const { accessToken } = json.response;
-            dispatch(user.actions.setUser({
-              userName: json.response.username,
-              userId: json.response.id,
-              accessToken: json.response.accessToken,
-              error: null
-            }))
-            dispatch(fetchPrivateMovies(accessToken));
-            navigate('/');
-          } else {
-            dispatch(user.actions.setUser({
-              userName: null,
-              userId: null,
-              accessToken: null,
-              error: json.response.message
-            }));
-            setPasswordError(true);
-            setPasswordErrorText('Incorrect username or password');
-          }
-        })
-        .catch((error) => console.log(error));
+      try {
+        const response = await fetch(loginUrl, options);
+        const json = await response.json();
+
+        // checks if response is a success else
+        if (json.success) {
+          const { accessToken } = json.response;
+          dispatch(user.actions.setUser({
+            userName: json.response.username,
+            userId: json.response.id,
+            accessToken: json.response.accessToken,
+            error: null
+          }))
+          dispatch(fetchPrivateMovies(accessToken));
+          navigate('/');
+        } else {
+          dispatch(user.actions.setUser({
+            userName: null,
+            userId: null,
+            accessToken: null,
+            error: json.response.message
+          }));
+          setPasswordError(true);
+          setPasswordErrorText('Credentials do not match');
+          setUsernameError(true);
+          setUsernameErrorText('Credentials do not match');
+        }
+      } catch (error) {
+        console.log(error)
+      }
     }
-  }
+  };
 
   const handleOnClearClick = () => {
     dispatch(menus.actions.toggleLoginPage(false));
@@ -122,7 +131,7 @@ export const Login = () => {
             name="username"
             autoComplete="username"
             error={usernameError}
-            helperText="Username is required"
+            helperText={usernameErrorText}
             autoFocus />
           <TextField
             margin="normal"

@@ -4,22 +4,24 @@ import { Link, Box, Typography, Grid, TextField, Button, IconButton, ThemeProvid
 import user from 'reducers/user';
 import ClearIcon from '@mui/icons-material/Clear';
 import { theme } from 'components/styles/muiTheme';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { SlidingCardRight } from 'components/styles/Cards';
 import { useNavigate } from 'react-router-dom';
 import menus from '../../reducers/menus';
 
 export const Register = () => {
   const registerUrl = process.env.REACT_APP_REGISTER_URL;
-  const accessToken = useSelector((store) => store.user.accessToken);
+  /* const accessToken = useSelector((store) => store.user.accessToken); */
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [emailError, setEmailError] = useState(false);
+  const [emailErrorText, setEmailErrorText] = useState('');
   const [passwordError, setPasswordError] = useState(false);
+  const [passwordErrorText, setPasswordErrorText] = useState('')
   const [usernameError, setUsernameError] = useState(false);
-  const [passwordErrorText, setPasswordErrorText] = useState('');
+  const [usernameErrorText, setUsernameErrorText] = useState('');
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
     const { email, username, password } = event.target.elements;
     const data = {
@@ -42,6 +44,7 @@ export const Register = () => {
 
       if (!data.email) {
         setEmailError(true);
+        setEmailErrorText('Email is required')
         isValid = false;
       } else {
         setEmailError(false);
@@ -49,6 +52,7 @@ export const Register = () => {
 
       if (!data.username) {
         setUsernameError(true);
+        setUsernameErrorText('Username is required')
         isValid = false;
       } else {
         setUsernameError(false);
@@ -67,24 +71,27 @@ export const Register = () => {
     };
 
     if (validateFields()) {
-      fetch(registerUrl, options)
-        .then((response) => response.json())
-        .then((json) => {
-          dispatch(
-            user.actions.setUser({
-              userName: json.response.username,
-              userId: json.response.id,
-              accessToken: json.response.accessToken,
-              error: false
-            })
-          );
-          if (accessToken) {
-            navigate('/user/log');
-          } else {
-            alert('failed to register');
-          }
-        })
-        .catch((error) => console.log(error));
+      try {
+        const response = await fetch(registerUrl, options);
+        const json = await response.json();
+
+        dispatch(
+          user.actions.setUser({
+            userName: json.response.username,
+            userId: json.response.id,
+            accessToken: json.response.accessToken,
+            error: false
+          })
+        );
+        // If user is successfully created
+        if (json.response.accessToken) {
+          navigate('/user/log'); // NEEDS TO BE REDIRECTED ELSEWHERE
+        } else {
+          alert('failed to register');
+        }
+      } catch (error) {
+        console.log(error);
+      }
     }
   };
 
@@ -127,7 +134,7 @@ export const Register = () => {
                 name="email"
                 autoComplete="email"
                 error={emailError}
-                helperText="Email is required" />
+                helperText={emailErrorText} />
             </Grid>
             <Grid
               item
@@ -139,7 +146,7 @@ export const Register = () => {
                 label="Username"
                 name="username"
                 error={usernameError}
-                helperText="Username is required" />
+                helperText={usernameErrorText} />
             </Grid>
             <Grid
               item
