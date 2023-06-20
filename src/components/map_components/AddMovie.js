@@ -40,7 +40,7 @@ export const AddMovie = () => {
   useEffect(() => {
     const timer = setTimeout(() => {
       if (searchValue) {
-        fetch(`http://www.omdbapi.com/?apikey=${process.env.REACT_APP_API_KEY}&s=${searchValue}`)
+        fetch(`https://www.omdbapi.com/?apikey=${process.env.REACT_APP_API_KEY}&s=${searchValue}`)
           .then((response) => response.json())
           .then((json) => {
             setSearchResults(json.Search)
