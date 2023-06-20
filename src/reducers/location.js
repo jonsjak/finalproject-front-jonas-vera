@@ -51,16 +51,19 @@ const location = createSlice({
     
       const updatedMovies = store.movies.map((movie) => {
         if (movie._id === movieId) {
-          const newLikedBy = [...movie.LikedBy, userId];
-          return { ...movie, LikedBy: newLikedBy };
+          return { ...movie, LikedBy: [...movie.LikedBy, userId] };
         }
         return movie;
       });
     
+      const activeMovieIndex = updatedMovies.findIndex((movie) => movie._id === store.activeMovie._id);
       const updatedActiveMovie = { ...store.activeMovie, LikedBy: [...store.activeMovie.LikedBy, userId] };
     
-      store.movies = updatedMovies;
-      store.activeMovie = updatedActiveMovie;
+      return {
+        ...store,
+        movies: updatedMovies,
+        activeMovie: activeMovieIndex !== -1 ? updatedActiveMovie : store.activeMovie
+      };
     },
     // Remove a userId in LikedBy property array in a movie
     // - both in activeMovie corresponding movie in movies
@@ -214,39 +217,30 @@ export const getSavedMoviesFetch = (accessToken) => {
 // Thunk for saving a movie
 //Updating a movie by adding the user's id into the LikedBy property
 export const savedMovieFetch = (userId, accessToken, activeMovie) => {
-  return (dispatch, getState) => {
+  return (dispatch) => {
     const updatedMovie = { ...activeMovie, LikedBy: [...activeMovie.LikedBy, userId] };
 
-    setTimeout(() => {
-      const updatedMovies = getState().location.movies.map((movie) => {
-        if (movie._id === activeMovie._id) {
-          return { ...movie, LikedBy: [...movie.LikedBy, userId] };
-        }
-        return movie;
-      });
+    const requestPayload = {
+      activeMovie: updatedMovie
+    };
 
-      const requestPayload = {
-        activeMovie: updatedMovie,
-        movies: updatedMovies
-      };
-
-      fetch(`https://movie-globe-backend-djwdbjbdsa-lz.a.run.app/movies/${activeMovie._id}`, {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: accessToken
-        },
-        body: JSON.stringify(requestPayload)
+    fetch(`https://movie-globe-backend-djwdbjbdsa-lz.a.run.app/movies/${activeMovie._id}`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: accessToken
+      },
+      body: JSON.stringify(requestPayload)
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        dispatch(location.actions.saveMovie({ movieId: activeMovie._id, userId }));
+        dispatch(getSavedMoviesFetch(accessToken));
       })
-        .then((res) => res.json())
-        .then((data) => {
-          batch(() => {
-            dispatch(location.actions.saveMovie({ movieId: activeMovie._id, userId }));
-            dispatch(getSavedMoviesFetch(accessToken));
-          });
-        });
-    }, 2000);
-
+      .catch((error) => {
+        // Handle error if any
+        console.error('Error updating movie:', error);
+      });
   };
 };
 
