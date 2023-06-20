@@ -1,15 +1,24 @@
 import React, { useState, useEffect } from 'react';
 import { Alert } from '@mui/material';
 import { useSelector } from 'react-redux';
+import styled from 'styled-components';
 
-export const StartPage = () => {
+// Alert popup styling
+const PopUp = styled.div`
+  position: absolute;
+  z-index: 999;
+  left: 5%;
+  bottom: 3%;
+`;
+
+export const LoginPopUp = () => {
   const [showAlert, setShowAlert] = useState(false);
-  const isLoggedIn = useSelector((store) => store.user.accessToken)
+  const isLoggedIn = useSelector((store) => store.user.accessToken);
 
   useEffect(() => {
     if (!isLoggedIn) {
       const showDelay = 5000; // Delay
-      const hideDelay = 4000; // Duration
+      const hideDelay = 5000; // Duration
 
       const showTimer = setTimeout(() => {
         setShowAlert(true);
@@ -27,19 +36,12 @@ export const StartPage = () => {
   }, [isLoggedIn]);
 
   return (
-    <div
-      style={{
-        position: 'absolute',
-        zIndex: 999,
-        left: '5%',
-        bottom: '5%'
-      }}>
+    <PopUp>
       {showAlert && (
-        <Alert
-          severity="info">
-          You need to log in to explore all features.
+        <Alert severity="info">
+          Log in for more locations and features.
         </Alert>
       )}
-    </div>
+    </PopUp>
   );
 };
