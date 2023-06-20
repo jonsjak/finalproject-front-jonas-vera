@@ -68,20 +68,22 @@ const location = createSlice({
     // Remove a userId in LikedBy property array in a movie
     // - both in activeMovie corresponding movie in movies
     removeSavedMovie: (store, action) => {
-      const userIdRemove = action.payload;
+      const userIdRemove = action.payload.userIdRemove;
+      const _id = action.payload._id;
+    
       const updatedMovies = store.movies.map((movie) => {
-        if (movie === store.activeMovie) {
+        if (movie._id === _id) {
           const newLikedBy = movie.LikedBy.filter((id) => id !== userIdRemove);
           return { ...movie, LikedBy: newLikedBy };
         }
         return movie;
       });
     
-      if (store.activeMovie) {
-        const updatedActiveMovie = { ...store.activeMovie };
-        updatedActiveMovie.LikedBy = updatedActiveMovie.LikedBy.filter(
-          (id) => id !== userIdRemove
-        );
+      if (store.activeMovie && store.activeMovie._id === _id) {
+        const updatedActiveMovie = {
+          ...store.activeMovie,
+          LikedBy: store.activeMovie.LikedBy.filter((id) => id !== userIdRemove),
+        };
         store.activeMovie = updatedActiveMovie;
       }
     
@@ -92,8 +94,9 @@ const location = createSlice({
       store.savedmovies = action.payload;
     },
     // delete a movie from the saved movie list
-    deleteSavedMovieFromList: (store, action) => {
-      store.savedmovies.splice(action.payload, 1);
+    deleteHeart: (store, action) => {
+      store.activeMovie.splice(action.payload, 1);
+      store.activeMovie.LikedBy = store.activeMovie.LikedBy.filter(id => id !== userId);
     },
     // Add new movie to the movies array
     addMovie: (store, action) => {
@@ -131,7 +134,6 @@ const location = createSlice({
     },
   }
 });
-
 
 // Thunk for fetching PUBLIC movies
 export const fetchPublicMovies = (movieStartCoordinates) => async (dispatch) => {
@@ -248,31 +250,38 @@ export const savedMovieFetch = (userId, accessToken, activeMovie) => {
 //Deleting a user's id from the LikedBy property in a movie
 export const deleteSavedMovieFetch = (userId, accessToken, _id, source) => {
   return (dispatch, getState) => {
+    fetch(`https://movie-globe-backend-djwdbjbdsa-lz.a.run.app/movies/${_id}`, {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: accessToken
+      }
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        batch(() => {
+          dispatch(location.actions.removeSavedMovie(userId));
 
-
-      fetch(`https://movie-globe-backend-djwdbjbdsa-lz.a.run.app/movies/${_id}`, {
-        method: 'DELETE',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: accessToken
-        }
-      })
-        .then((res) => res.json())
-        .then((data) => {
-          batch(() => {
-            dispatch(location.actions.removeSavedMovie({ userIdRemove: userId, _id }));
-
-            if (source === 'activeMovie') {
-              const updatedActiveMovie = { ...getState().location.activeMovie };
-              updatedActiveMovie.LikedBy = updatedActiveMovie.LikedBy.filter(id => id !== userId);
-              dispatch(location.actions.setActiveMovie(updatedActiveMovie));
-            }
-
-            dispatch(getSavedMoviesFetch(accessToken));
-          });
+          if (source === 'activeMovie') {
+            const { activeMovie } = getState().location;
+            const updatedActiveMovie = {
+              ...activeMovie,
+              LikedBy: activeMovie.LikedBy.filter((id) => id !== userId),
+            };
+            dispatch(location.actions.deleteHeart());
+            dispatch(location.actions.setActiveMovie(updatedActiveMovie));
+          }
+          
+          dispatch(getSavedMoviesFetch(accessToken));
         });
-    };
+      })
+      .catch((error) => {
+        // Handle error if any
+        console.error('Error deleting saved movie:', error);
+      });
   };
+};
+
 
 
 
