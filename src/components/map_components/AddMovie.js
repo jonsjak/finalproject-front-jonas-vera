@@ -55,7 +55,7 @@ export const AddMovie = () => {
 
   const addMovieOnClick = (Title) => {
     if (Title) {
-      fetch(`http://www.omdbapi.com/?apikey=${process.env.REACT_APP_API_KEY}&t=${Title}`)
+      fetch(`https://www.omdbapi.com/?apikey=${process.env.REACT_APP_API_KEY}&t=${Title}`)
         .then((response) => response.json())
         .then((data) => {
           setSelectedMovie(data)
