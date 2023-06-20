@@ -93,11 +93,6 @@ const location = createSlice({
     setAllSavedMovies: (store, action) => {
       store.savedmovies = action.payload;
     },
-    // delete a movie from the saved movie list
-    deleteHeart: (store, action) => {
-      store.activeMovie.splice(action.payload, 1);
-      store.activeMovie.LikedBy = store.activeMovie.LikedBy.filter(id => id !== userId);
-    },
     // Add new movie to the movies array
     addMovie: (store, action) => {
       store.movies = [...store.movies, action.payload];
@@ -248,7 +243,7 @@ export const savedMovieFetch = (userId, accessToken, activeMovie) => {
 
 // Thunk for deleting a saved movie
 //Deleting a user's id from the LikedBy property in a movie
-export const deleteSavedMovieFetch = (userId, accessToken, _id, source) => {
+export const deleteSavedMovieFetch = (userId, accessToken, _id) => {
   return (dispatch, getState) => {
     fetch(`https://movie-globe-backend-djwdbjbdsa-lz.a.run.app/movies/${_id}`, {
       method: 'DELETE',
@@ -261,16 +256,13 @@ export const deleteSavedMovieFetch = (userId, accessToken, _id, source) => {
       .then((data) => {
         batch(() => {
           dispatch(location.actions.removeSavedMovie(userId));
-
-          if (source === 'activeMovie') {
+          
             const { activeMovie } = getState().location;
             const updatedActiveMovie = {
               ...activeMovie,
               LikedBy: activeMovie.LikedBy.filter((id) => id !== userId),
             };
-            dispatch(location.actions.deleteHeart());
             dispatch(location.actions.setActiveMovie(updatedActiveMovie));
-          }
           
           dispatch(getSavedMoviesFetch(accessToken));
         });
