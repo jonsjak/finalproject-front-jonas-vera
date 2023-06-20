@@ -75,7 +75,7 @@ export const AddMovie = () => {
   return markerPosition && (
     <ThemeProvider theme={theme}>
       <Marker position={markerPosition} icon={filmMarker}>
-        <Popup style={{ margin: '0px', width: '300px' }}>
+        <Popup>
           <Card sx={{ width: 301 }}>
             <CardContent>
               {userInput ? null : (

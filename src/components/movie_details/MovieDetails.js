@@ -1,7 +1,7 @@
 /* eslint-disable react/jsx-props-no-spreading */
 import React, { useState } from 'react';
 import { styled } from '@mui/material/styles';
-import { CardContent, Typography, CardMedia, CardActions, Card, CardHeader, Collapse, IconButton, FormControl, TextField, Button } from '@mui/material';
+import { CardContent, Typography, CardMedia, CardActions, Card, CardHeader, Collapse, IconButton, FormControl, TextField, Button, ThemeProvider, createTheme } from '@mui/material';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { useSelector, useDispatch } from 'react-redux';
 import Carousel from 'react-material-ui-carousel';
@@ -14,12 +14,29 @@ const ExpandMore = styled((props) => {
   const { expand, ...other } = props; // eslint-disable-line prefer-object-spread
   return <IconButton {...other} />;
 })(({ theme, expand }) => ({
-  transform: !expand ? 'rotate(0deg)' : 'rotate(180deg)',
+  transform: expand && expand !== 'comments' ? 'rotate(180deg)' : 'rotate(0deg)',
   marginLeft: 'auto',
   transition: theme.transitions.create('transform', {
     duration: theme.transitions.duration.shortest
   })
 }));
+
+export const colorTheme = createTheme({
+  palette: {
+    primary: {
+      light: '#757ce8',
+      main: '#008ca5',
+      dark: '#037588',
+      contrastText: '#fff'
+    },
+    secondary: {
+      light: '#ff7961',
+      main: '#035f6f',
+      dark: '#ba000d',
+      contrastText: '#000'
+    }
+  }
+});
 
 export const MovieDetails = () => {
   const dispatch = useDispatch();
@@ -76,15 +93,27 @@ export const MovieDetails = () => {
       top: '30px',
       zIndex: '999',
       maxHeight: '85vh',
-      overflow: 'scroll',
+      overflowY: 'scroll',
       '@media (max-width: 780px)': {
         right: '0px'
+      }
+    },
+    expandStyle: {
+      borderRadius: '6px',
+      '&:hover': {
+        background: '#008ca50a'
+      },
+      '&:active': {
+        backgroundColor: 'transparent'
+      },
+      '.MuiTouchRipple-child': {
+        backgroundColor: '#008ca559'
       }
     }
   }
 
   return (
-    <div>
+    <ThemeProvider theme={colorTheme}>
       {selectedMovie && (
         <Card
           sx={styles.cardStyle}>
@@ -161,13 +190,25 @@ export const MovieDetails = () => {
           <CardActions disableSpacing>
             <SaveMovie />
             <ExpandMore
-              expand={expandedComments}
+              expand={expandedComments ? 'comments' : ''}
               onClick={handleExpandCommentsClick}
               aria-expanded={expandedComments}
+              sx={styles.expandStyle}
               aria-label="show more">
-              <ExpandMoreIcon />
+              <Typography
+                variant="overline"
+                display="block"
+                sx={{
+                  fontSize: '0.85rem',
+                  color: '#008ca5',
+                  margin: 0
+                }}
+                gutterBottom>
+                Comments
+              </Typography>
             </ExpandMore>
             <ExpandMore
+              sx={{ marginLeft: '15px' }}
               expand={expandedDetails}
               onClick={handleExpandDetailsClick}
               aria-expanded={expandedDetails}
@@ -289,6 +330,6 @@ export const MovieDetails = () => {
           </Collapse>
         </Card>
       )}
-    </div>
+    </ThemeProvider>
   );
 };

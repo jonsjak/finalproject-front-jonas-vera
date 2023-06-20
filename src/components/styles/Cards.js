@@ -13,6 +13,7 @@ export const SlidingCard = styled.div`
   display: flex;
   width: ${(props) => (props.personal ? '345px' : '250px')};
   height: ${(props) => (props.personal && '600px')};
+  overflow-y: ${(props) => (props.personal ? 'scroll' : '')};
   border-radius: ${(props) => (props.personal && '4px')};
   position: fixed;
   z-index: 1000;
@@ -46,8 +47,6 @@ export const AboutCard = styled.div`
   transform: translate(-50%, -50%);
   box-shadow: rgba(0, 0, 0, 0.2) 0px 2px 1px -1px;
   z-index: 999;
-  max-height: 600px;
-  overflow: scroll;
   border-radius: 4px;
   width: 800px;
   background: white;

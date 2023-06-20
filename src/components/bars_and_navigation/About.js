@@ -19,7 +19,7 @@ const About = () => {
         <Card
           sx={{
             padding: '20px',
-            overflow: 'scroll',
+            overflowY: 'scroll',
             height: '600px'
           }}>
           <CardHeader

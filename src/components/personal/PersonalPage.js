@@ -7,16 +7,14 @@ import { Tab, Tabs, Typography, CardMedia, CardContent, IconButton, ThemeProvide
 import ClearIcon from '@mui/icons-material/Clear';
 import { SlidingCard } from 'components/styles/Cards';
 import { theme } from 'components/styles/muiTheme';
-import { PersonalWrapper, SavedMoviesWrapper } from 'components/styles/Containers';
+import { PersonalWrapper } from 'components/styles/Containers';
 import Clapper from '../../images/clapboard-g163cd4bec_640.png';
 import { SavedMovieList } from './SavedMovieList';
 
 // Saved Movies Tab
 const SavedMoviesTab = () => {
   return (
-    <SavedMoviesWrapper>
-      <SavedMovieList />
-    </SavedMoviesWrapper>
+    <SavedMovieList />
   );
 };
 

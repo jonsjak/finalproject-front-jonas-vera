@@ -67,7 +67,6 @@ export const NotFoundBackground = styled.div`
 
 export const PersonalWrapper = styled.div`
   height: 460px; 
-  overflow: scroll; 
   padding-top: 30px; 
   display: flex; 
   flex-direction: column;
@@ -75,15 +74,9 @@ export const PersonalWrapper = styled.div`
   justify-content: flex-start;
 `
 
-export const SavedMoviesWrapper = styled.div`
-  height: 500px;
-  overflow: scroll;
-`
-
 export const SavedMoviesContainer = styled.div`
   display: flex; 
   height: 120px;
-  overflow: scroll;
   justify-content: space-between;
   background: #e8e8e8; 
   margin-top: 15px;

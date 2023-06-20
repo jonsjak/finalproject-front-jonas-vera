@@ -19,7 +19,19 @@ export const AddMovieForm = ({
   const dispatch = useDispatch();
   const accessToken = useSelector((store) => store.user.accessToken);
 
+  const convertToBase64 = (e) => {
+    const reader = new FileReader();
+    reader.readAsDataURL(e.target.files[0]);
+    reader.onload = () => {
+      setMovieStill(reader.result);
+    };
+    reader.onerror = (error) => {
+      console.log('Error', error);
+    }
+  }
+
   const onSubmitMovie = async () => {
+    console.log('apple', movieStill)
     const inputData = {
       title: movieTitle,
       location: movieLocation,
@@ -29,6 +41,7 @@ export const AddMovieForm = ({
       coordinates: markerPosition,
       LikedBy: []
     };
+
     const newMovieToPost = { ...selectedMovie, ...inputData };
     const options = {
       method: 'POST',
@@ -93,14 +106,6 @@ export const AddMovieForm = ({
           value={sceneDescription}
           onChange={(e) => setSceneDescription(e.target.value)} />
         <TextField
-          helperText="Paste in an URL of a still image from the film scene"
-          id="outlined-basic margin-none"
-          label="Movie still image"
-          variant="outlined"
-          size="small"
-          value={movieStill}
-          onChange={(e) => setMovieStill(e.target.value)} />
-        <TextField
           helperText="Paste in an URL to an image of the place"
           id="outlined-basic margin-none"
           label="Image of the place"
@@ -108,6 +113,14 @@ export const AddMovieForm = ({
           size="small"
           value={locationImage}
           onChange={(e) => setLocationImage(e.target.value)} />
+        <Button
+          variant="contained"
+          compontent="label">
+            Upload movie still
+          <input
+            type="file"
+            onChange={convertToBase64} />
+        </Button>
         <Button
           type="button"
           onClick={onSubmitMovie}
