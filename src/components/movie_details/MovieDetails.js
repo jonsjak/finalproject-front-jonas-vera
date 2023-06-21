@@ -9,8 +9,8 @@ import ClearIcon from '@mui/icons-material/Clear';
 import location from 'reducers/location';
 import menus from 'reducers/menus';
 import { SaveMovie } from 'components/personal/SaveMovie';
-import GetMovieComments from './GetMovieComments';
 import { AddComment } from 'components/personal/AddComment';
+import { GetComments } from './GetComments';
 
 const ExpandMore = styled((props) => {
   const { expand, ...other } = props; // eslint-disable-line prefer-object-spread
@@ -278,7 +278,7 @@ export const MovieDetails = () => {
                 <p>{comment.userName}</p>
               </div>
             ))} */}
-            <GetMovieComments />
+            <GetComments />
             <FormControl
               sx={{ m: 1, minWidth: 200 }}
               size="small">

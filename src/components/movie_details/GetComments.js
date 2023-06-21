@@ -3,7 +3,7 @@ import { List, ListItem, ListItemText, Typography } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 
-const GetMovieComments = () => {
+export const GetComments = () => {
   const selectedMovieId = useSelector((store) => store.location.activeMovie._id);
   const accessToken = useSelector((store) => store.user.accessToken);
   const [commentedMovie, setCommentedMovie] = useState([]);
@@ -54,5 +54,3 @@ const GetMovieComments = () => {
     </div>
   );
 };
-
-export default GetMovieComments;
