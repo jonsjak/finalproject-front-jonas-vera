@@ -29,7 +29,7 @@ export const SaveMovie = () => {
   const handleClearMovie = () => {
     if (accessToken) {
       const { _id } = activeMovie;
-      dispatch(deleteSavedMovieFetch(userId, accessToken, _id, 'activeMovie'));
+      dispatch(deleteSavedMovieFetch(userId, accessToken, _id));
     } else {
       navigate('/user/login')
     }

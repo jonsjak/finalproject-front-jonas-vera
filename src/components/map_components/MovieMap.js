@@ -40,6 +40,12 @@ export const MovieMap = () => {
     dispatch(menus.actions.toggleMoviePopup(true));
   };
 
+  const handleOnClearClick = () => {
+    dispatch(menus.actions.toggleMoviePopup(true));
+    dispatch(menus.actions.toggleHeaderMenu(true));
+    setTimeout(() => dispatch(menus.actions.toggleMoviePopup(false)), 1)
+  };
+
   if (isLoading) {
     return (
       <Loader />
@@ -59,7 +65,6 @@ export const MovieMap = () => {
         maxBounds={outerBounds}
         maxBoundsViscosity={1}
         zoom={2}
-        scrollWheelZoom={true}
         minZoom={3}
         zoomStart={2}>
         <TileLayer
@@ -75,7 +80,12 @@ export const MovieMap = () => {
             key={movie._id}
             icon={filmMarker}
             position={movieCoordinates
-              ? movieCoordinates[index] : [-33.893, 151.1988]}>
+              ? movieCoordinates[index] : [-33.893, 151.1988]}
+            eventHandlers={{
+              click: () => {
+                dispatch(menus.actions.toggleHeaderMenu(false));
+              },
+            }}>
             {!popupHidden && (
               <Popup
                 style={{
@@ -83,7 +93,8 @@ export const MovieMap = () => {
                   width: '300px' }}>
                 <MovieCard
                   movie={movie}
-                  handleOnReadClick={handleOnReadClick} />
+                  handleOnReadClick={handleOnReadClick}
+                  handleOnClearClick={handleOnClearClick} />
               </Popup>
             )}
           </Marker>
@@ -93,7 +104,12 @@ export const MovieMap = () => {
             icon={filmMarker}
             key={movie._id}
             position={movieStartCoordinates
-              ? movieStartCoordinates[index] : [-33.893, 151.1988]}>
+              ? movieStartCoordinates[index] : [-33.893, 151.1988]}
+              eventHandlers={{
+                click: () => {
+                  dispatch(menus.actions.toggleHeaderMenu(false));
+                },
+              }}>
             {!popupHidden && (
               <Popup
                 style={{ margin: '0px',
@@ -101,7 +117,8 @@ export const MovieMap = () => {
               }}>
               <MovieCard
                 movie={movie}
-                handleOnReadClick={handleOnReadClick} />
+                handleOnReadClick={handleOnReadClick}
+                handleOnClearClick={handleOnClearClick} />
               </Popup>
             )}
           </Marker>

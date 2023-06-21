@@ -1,12 +1,19 @@
 import * as React from 'react';
 import { theme } from 'components/styles/muiTheme';
-import { CardContent, Typography, CardMedia, Button, CardActions, Card, ThemeProvider, Link } from '@mui/material';
+import { CardContent, Typography, CardMedia, Button, CardActions, Card, ThemeProvider, Link, IconButton } from '@mui/material';
+import ClearIcon from '@mui/icons-material/Clear';
 import { MovieTitleHeader } from 'components/styles/Text';
 
-export const MovieCard = ({ movie, handleOnReadClick }) => {
+export const MovieCard = ({ movie, handleOnReadClick, handleOnClearClick }) => {
   return (
     <ThemeProvider theme={theme}>
       <Card sx={{ width: 301 }}>
+        <IconButton
+          sx={{ position: 'absolute', top: '2px', right: '2px' }}
+          aria-label="clear"
+          onClick={() => handleOnClearClick(movie)}>
+          <ClearIcon sx={{ fontSize: '16px', color: 'white' }} />
+        </IconButton>
         <CardMedia
           component="img"
           alt="location-img"
