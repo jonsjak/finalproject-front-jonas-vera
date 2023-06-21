@@ -10,7 +10,8 @@ const menus = createSlice({
     register: false,
     about: false,
     isMapClickable: false,
-    movieCardHidden: false
+    movieCardHidden: false,
+    headerMenuShowing: true,
   },
   reducers: {
     // Not used
@@ -35,6 +36,9 @@ const menus = createSlice({
     },
     toggleMoviePopup: (store, action) => {
       store.movieCardHidden = action.payload;
+    },
+    toggleHeaderMenu: (store, action) => {
+      store.headerMenuShowing = action.payload;
     },
     }
   }

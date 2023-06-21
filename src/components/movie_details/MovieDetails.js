@@ -1,7 +1,7 @@
 /* eslint-disable react/jsx-props-no-spreading */
 import React, { useState } from 'react';
 import { styled } from '@mui/material/styles';
-import { CardContent, Typography, CardMedia, CardActions, Card, CardHeader, Collapse, IconButton, FormControl, TextField, Button, ThemeProvider, createTheme } from '@mui/material';
+import { CardContent, Typography, CardMedia, CardActions, Card, CardHeader, Collapse, IconButton, ThemeProvider, createTheme } from '@mui/material';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { useSelector, useDispatch } from 'react-redux';
 import Carousel from 'react-material-ui-carousel';
@@ -10,6 +10,7 @@ import location from 'reducers/location';
 import menus from 'reducers/menus';
 import { SaveMovie } from 'components/personal/SaveMovie';
 import GetMovieComments from './GetMovieComments';
+import { AddComment } from 'components/personal/AddComment';
 
 const ExpandMore = styled((props) => {
   const { expand, ...other } = props; // eslint-disable-line prefer-object-spread
@@ -43,9 +44,7 @@ export const MovieDetails = () => {
   const dispatch = useDispatch();
   const [expandedDetails, setExpandedDetails] = useState(false);
   const [expandedComments, setExpandedComments] = useState(false);
-  const [message, setMessage] = useState('');
   const selectedMovie = useSelector((store) => store.location.activeMovie);
-  const accessToken = useSelector((store) => store.user.accessToken);
 
   const handleExpandDetailsClick = () => {
     setExpandedDetails(!expandedDetails);
@@ -58,32 +57,7 @@ export const MovieDetails = () => {
   const handleOnClearClick = () => {
     dispatch(location.actions.setActiveMovie(null));
     dispatch(menus.actions.toggleMoviePopup(false));
-  };
-
-  const handleSubmit = async () => {
-    const options = {
-      method: 'PUT',
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: accessToken
-      },
-      body: JSON.stringify({ message })
-    };
-    try {
-      // eslint-disable-next-line no-underscore-dangle
-      const response = await fetch(`https://movie-globe-backend-djwdbjbdsa-lz.a.run.app/movies/${selectedMovie._id}/addcomment`, options);
-      const data = await response.json(); // fix line above?
-
-      if (data.success) {
-        // eslint-disable-next-line no-underscore-dangle
-        dispatch(location.actions.addComment({ movieId: selectedMovie._id, message }));
-      } else {
-        console.log('comment not posted')
-      }
-    } catch (error) {
-      console.log('Error:', error);
-    }
-    setMessage('')
+    dispatch(menus.actions.toggleHeaderMenu(true));
   };
 
   const styles = {
@@ -329,6 +303,15 @@ export const MovieDetails = () => {
                   Post Comment
               </Button>
             </FormControl>
+            <CardContent>
+              {selectedMovie.Comments && selectedMovie.Comments.map((comment) => (
+                <>
+                  <p>{comment.message}</p>
+                  <p>{comment.userName}</p>
+                </>
+              ))}
+              <AddComment selectedMovie={selectedMovie} />
+            </CardContent>
           </Collapse>
         </Card>
       )}

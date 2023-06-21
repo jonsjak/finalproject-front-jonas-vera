@@ -80,7 +80,7 @@ export const NotFoundCard = styled.div`
 `;
 
 export const MovieDetailCard = styled.div`
-  padding: 12px;
+  padding: 0px 12px;
   display: flex;
   flex-direction: column;
   width: 100%;

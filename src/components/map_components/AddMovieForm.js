@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import { TextField, Typography, FormControl, Button } from '@mui/material';
 import { useSelector, useDispatch } from 'react-redux';
 import location, { fetchPrivateMovies } from 'reducers/location';
+import { InputLabel } from 'components/styles/Input';
 
 export const AddMovieForm = ({
   markerPosition,
@@ -19,11 +20,22 @@ export const AddMovieForm = ({
   const dispatch = useDispatch();
   const accessToken = useSelector((store) => store.user.accessToken);
 
-  const convertToBase64 = (e) => {
+  const convertStillToBase64 = (e) => {
     const reader = new FileReader();
     reader.readAsDataURL(e.target.files[0]);
     reader.onload = () => {
       setMovieStill(reader.result);
+    };
+    reader.onerror = (error) => {
+      console.log('Error', error);
+    }
+  }
+
+  const convertImageToBase64 = (e) => {
+    const reader = new FileReader();
+    reader.readAsDataURL(e.target.files[0]);
+    reader.onload = () => {
+      setLocationImage(reader.result);
     };
     reader.onerror = (error) => {
       console.log('Error', error);
@@ -73,68 +85,65 @@ export const AddMovieForm = ({
   }
 
   return (
-    <>
+    <FormControl sx={{ m: 1, minWidth: 200 }} size="small">
       <Typography
         gutterBottom
         variant="h4"
         component="div"
-        sx={{ fontSize: '1.8rem' }}>
-        Add
+        sx={{ fontSize: '1.2rem' }}>
+        Add a movie location from&nbsp;
         <span
           style={{
-            fontStyle: 'italic'
+            color: '#037588',
+            fontStyle: 'italic',
+            fontWeight: '900'
           }}>
           {selectedMovie.Title}
         </span>
       </Typography>
-      <FormControl sx={{ m: 1, minWidth: 200 }} size="small">
-        <TextField
-          helperText="Name of movie location"
-          id="outlined-size-small margin-none"
-          label="Location"
-          variant="outlined"
-          size="small"
-          value={movieLocation}
-          onChange={(e) => setMovieLocation(e.target.value)} />
-        <TextField
-          helperText="Describe the scene from the film taking place here"
-          id="outlined-multiline-static margin-none"
-          label="Scene description"
-          multiline
-          rows={3}
-          size="small"
-          value={sceneDescription}
-          onChange={(e) => setSceneDescription(e.target.value)} />
-        <TextField
-          helperText="Paste in an URL to an image of the place"
-          id="outlined-basic margin-none"
-          label="Image of the place"
-          variant="outlined"
-          size="small"
-          value={locationImage}
-          onChange={(e) => setLocationImage(e.target.value)} />
-        <Button
-          variant="contained"
-          compontent="label">
-            Upload movie still
-          <input
-            type="file"
-            onChange={convertToBase64} />
-        </Button>
-        <Button
-          type="button"
-          onClick={onSubmitMovie}
-          variant="contained"
-          sx={{
-            width: '180px',
-            alignSelf: 'center',
-            fontWeight: 700
-          }}
-          size="large">
-            Add movie
-        </Button>
-      </FormControl>
-    </>
-
+      <TextField
+        helperText="Name of movie location"
+        id="outlined-size-small margin-none"
+        label="Location"
+        variant="outlined"
+        size="small"
+        value={movieLocation}
+        onChange={(e) => setMovieLocation(e.target.value)} />
+      <TextField
+        helperText="Describe the scene from the film taking place here"
+        id="outlined-multiline-static margin-none"
+        label="Scene description"
+        multiline
+        rows={3}
+        size="small"
+        value={sceneDescription}
+        onChange={(e) => setSceneDescription(e.target.value)} />
+      <InputLabel htmlFor="location-image">
+        Upload location image
+        <input
+          id="location-image"
+          type="file"
+          onChange={convertImageToBase64} />
+      </InputLabel>
+      <InputLabel htmlFor="movie-still">
+        Upload movie still
+        <input
+          id="movie-still"
+          type="file"
+          onChange={convertStillToBase64} />
+      </InputLabel>
+      <Button
+        type="button"
+        onClick={onSubmitMovie}
+        variant="contained"
+        sx={{
+          width: '180px',
+          alignSelf: 'center',
+          fontWeight: 700
+        }}
+        size="large">
+          Add movie
+      </Button>
+    </FormControl>
   )
 }

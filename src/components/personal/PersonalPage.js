@@ -14,7 +14,9 @@ import { SavedMovieList } from './SavedMovieList';
 // Saved Movies Tab
 const SavedMoviesTab = () => {
   return (
-    <SavedMovieList />
+    <div style={{ marginTop: '10px' }}>
+      <SavedMovieList />
+    </div>
   );
 };
 
