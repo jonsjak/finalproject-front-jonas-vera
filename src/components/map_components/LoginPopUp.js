@@ -9,6 +9,11 @@ const PopUp = styled.div`
   z-index: 999;
   left: 5%;
   bottom: 3%;
+
+  @media (max-width: 768px) {
+    bottom: 5%;
+    left: 0%;
+  }
 `;
 
 export const LoginPopUp = () => {

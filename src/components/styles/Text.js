@@ -18,6 +18,6 @@ export const MenuText = styled.p`
 
   @media (max-width: 768px) {
     font-size: 1em;
-    color: #EF8354;
+    background: #dcdcdc;
   }
 `
