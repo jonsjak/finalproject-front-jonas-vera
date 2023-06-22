@@ -28,7 +28,7 @@ export const IconMenuBar = styled.menu`
   height: 110vh;
 
   @media (max-width: 768px) {
-    bottom: 34px;
+    bottom: 6%;
   }
 `
 
@@ -39,7 +39,7 @@ export const MenuBackground = styled.div`
   z-index: 996;
   padding: 0px;
   width: 100px;
-  background: linear-gradient(to right, #68a0d6 0%,#008ca5 100%); 
+  background: #dcdcdc; 
   height: 110vh;
   transform: rotate(-7deg);
   
@@ -49,7 +49,7 @@ export const MenuBackground = styled.div`
 `
 
 export const LoaderBackground = styled.div`
-  background: #2D3142; 
+  background: #dcdcdc; 
   margin-top: 0px;
   height: 100vh;
   position: relative;

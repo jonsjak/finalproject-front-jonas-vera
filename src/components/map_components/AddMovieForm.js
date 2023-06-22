@@ -15,21 +15,9 @@ export const AddMovieForm = ({
 }) => {
   const [movieLocation, setMovieLocation] = useState('');
   const [sceneDescription, setSceneDescription] = useState('');
-  const [movieStill, setMovieStill] = useState('');
   const [locationImage, setLocationImage] = useState('');
   const dispatch = useDispatch();
   const accessToken = useSelector((store) => store.user.accessToken);
-
-  const convertStillToBase64 = (e) => {
-    const reader = new FileReader();
-    reader.readAsDataURL(e.target.files[0]);
-    reader.onload = () => {
-      setMovieStill(reader.result);
-    };
-    reader.onerror = (error) => {
-      console.log('Error', error);
-    }
-  }
 
   const convertImageToBase64 = (e) => {
     const reader = new FileReader();
@@ -43,12 +31,10 @@ export const AddMovieForm = ({
   }
 
   const onSubmitMovie = async () => {
-    console.log('apple', movieStill)
     const inputData = {
       title: movieTitle,
       location: movieLocation,
       scene_description: sceneDescription,
-      movie_location_still: movieStill,
       location_image: locationImage,
       coordinates: markerPosition,
       LikedBy: []
@@ -94,7 +80,7 @@ export const AddMovieForm = ({
         Add a movie location from&nbsp;
         <span
           style={{
-            color: '#037588',
+            color: '#f08353',
             fontStyle: 'italic',
             fontWeight: '900'
           }}>
@@ -125,18 +111,19 @@ export const AddMovieForm = ({
           type="file"
           onChange={convertImageToBase64} />
       </InputLabel>
-      <InputLabel htmlFor="movie-still">
-        Upload movie still
-        <input
-          id="movie-still"
-          type="file"
-          onChange={convertStillToBase64} />
-      </InputLabel>
+      <Typography
+        color="text.secondary"
+        variant="caption"
+        display="block"
+        gutterBottom>
+        Max 100 KB, jpeg or png
+      </Typography>
       <Button
         type="button"
         onClick={onSubmitMovie}
         variant="contained"
         sx={{
+          marginTop: '40px',
           width: '180px',
           alignSelf: 'center',
           fontWeight: 700

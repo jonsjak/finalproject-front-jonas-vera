@@ -5,6 +5,7 @@ import location, { fetchPublicMovies } from 'reducers/location';
 import menus from 'reducers/menus';
 import user from 'reducers/user';
 import { NavBarContainer } from 'components/styles/Containers';
+import { SmallMenuText } from 'components/styles/Text';
 
 export const NavBarMain = () => {
   const dispatch = useDispatch();
@@ -43,9 +44,9 @@ export const NavBarMain = () => {
                   className={toggleSideBar
                     ? 'button active' : 'button'}
                   id="btn">
-                  <div className="bar top" />
+                  <div className="bar top-mobile" />
                   <div className="bar middle" />
-                  <div className="bar bottom" />
+                  <div className="bar bottom-mobile" />
                 </button>
               </div>
               <main className={toggleSideBar
@@ -59,7 +60,11 @@ export const NavBarMain = () => {
                         ? 'button active' : 'button'}
                       id="btn">
                       <div className="bar top" />
-                      <div className="bar middle" />
+                      <div className="bar-text middle">
+                        <SmallMenuText className="middle">
+                          Menu
+                        </SmallMenuText>
+                      </div>
                       <div className="bar bottom" />
                     </button>
                   </div>

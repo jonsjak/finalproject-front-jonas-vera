@@ -1,7 +1,9 @@
 /* eslint-disable react/no-unescaped-entities */
 /* eslint-disable max-len */
+/* eslint-disable react/jsx-props-no-spreading */
 import React from 'react';
 import { AboutCard } from 'components/styles/Cards';
+import { styled } from '@mui/material/styles';
 import ClearIcon from '@mui/icons-material/Clear';
 import { IconButton, ThemeProvider, Typography, CardHeader, Card, CardContent, CardMedia } from '@mui/material';
 import { theme } from 'components/styles/muiTheme';
@@ -12,16 +14,22 @@ import Slide2 from '../../images/slide2.png'
 import Slide3 from '../../images/slide3.png'
 import Slide4 from '../../images/slide4.png'
 
+const StyledCard = styled((props) => (
+  <Card {...props} />
+))(() => ({
+  padding: '20px',
+  overflowY: 'scroll',
+  height: '600px',
+  '@media (max-width: 780px)': {
+    height: '80vh'
+  }
+}));
+
 const About = () => {
   return (
     <ThemeProvider theme={theme}>
       <AboutCard>
-        <Card
-          sx={{
-            padding: '20px',
-            overflowY: 'scroll',
-            height: '600px'
-          }}>
+        <StyledCard>
           <CardHeader
             action={
               <Link
@@ -102,7 +110,7 @@ const About = () => {
               Start your cinematic adventure now and experience movies in a whole new way with Movie Globe!
             </Typography>
           </CardContent>
-        </Card>
+        </StyledCard>
       </AboutCard>
     </ThemeProvider>
   );

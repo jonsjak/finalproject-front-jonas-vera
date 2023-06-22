@@ -10,6 +10,8 @@ export const GetComments = ({ selectedMovie, showUserComments }) => {
   const movieComments = selectedMovie.Comments || [];
 
   useEffect(() => {
+    let isMounted = true;
+
     const fetchData = async () => {
       const options = {
         method: 'GET',
@@ -20,7 +22,7 @@ export const GetComments = ({ selectedMovie, showUserComments }) => {
       };
       try {
         // eslint-disable-next-line no-underscore-dangle
-        if (accessToken && selectedMovie._id) {
+        if (accessToken && selectedMovie._id && isMounted) {
           // eslint-disable-next-line no-underscore-dangle
           const response = await fetch(`https://movie-globe-backend-djwdbjbdsa-lz.a.run.app/movies/${selectedMovie._id}/getcomments`, options);
           const data = await response.json();
@@ -37,6 +39,9 @@ export const GetComments = ({ selectedMovie, showUserComments }) => {
       }
     };
     fetchData();
+    return () => {
+      isMounted = false;
+    };
   // eslint-disable-next-line no-underscore-dangle
   }, [accessToken, dispatch, selectedMovie._id]);
 
@@ -90,8 +95,8 @@ export const GetComments = ({ selectedMovie, showUserComments }) => {
           <ListSubheader
             sx={{
               padding: '0px',
-              borderBottom: '1px solid #008ca5',
-              color: '#008ca5',
+              borderBottom: '1px solid #f08353',
+              color: '#f08353',
               top: '-5px'
             }}
             id="nested-list-subheader">
