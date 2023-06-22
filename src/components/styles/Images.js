@@ -8,8 +8,8 @@ export const CameraLogo = styled.img`
   z-index: 999;
 
   @media (max-width: 768px) {
-    height: 8em;
-    top: -22px;
+    height: auto;
+    width: 100%;
   }
 `
 
