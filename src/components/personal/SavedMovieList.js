@@ -1,14 +1,28 @@
 /* eslint-disable react/jsx-props-no-spreading */
 import React, { useEffect, useState } from 'react';
+import { styled } from '@mui/material/styles';
 import { useSelector, useDispatch } from 'react-redux';
 import { MovieDetailCard, NoMoviesCard } from 'components/styles/Cards';
 import { getSavedMoviesFetch, deleteSavedMovieFetch } from 'reducers/location';
 import ClearIcon from '@mui/icons-material/Clear';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { IconButton, CardMedia, Typography, AccordionDetails, CardContent, Accordion, AccordionSummary } from '@mui/material';
+import EditOffIcon from '@mui/icons-material/EditOff';
 import { Player } from '@lottiefiles/react-lottie-player';
 import DriveFileRenameOutlineIcon from '@mui/icons-material/DriveFileRenameOutline';
 import { AddComment } from './AddComment';
+import { GetComments } from './GetComments';
+
+const StyledAccordionSummary = styled((props) => (
+  <AccordionSummary expandIcon={<ExpandMoreIcon />} aria-controls="panel-content" {...props} />
+))(() => ({
+  alignItems: 'flex-end',
+  padding: '9px',
+  position: 'relative',
+  '& .MuiAccordionSummary-content': {
+    margin: '0px 0px'
+  }
+}));
 
 export const SavedMovieList = () => {
   const [showCommentInput, setShowCommentInput] = useState({});
@@ -34,38 +48,17 @@ export const SavedMovieList = () => {
     }));
   };
 
-  const styles = {
-    accordionSummaryStyle: {
-      alignItems: 'flex-end',
-      padding: '9px',
-      position: 'relative',
-      margin: '0px 0px',
-      '& .Mui-expanded': {
-        margin: '0px 0px'
-      }
-    },
-    accordionStyle: {
-      marginBottom: '10px',
-      boxShadow: 3
-    }
-  }
-
   return (
     <div>
       {savedMoviesCollection.length ? savedMoviesCollection.map((savedMovie, index) => (
-        <Accordion key={savedMovie.imdbID} sx={styles.accordionStyle}>
-          <AccordionSummary
-            sx={styles.accordionSummaryStyle}
-            expandIcon={<ExpandMoreIcon />}
-            aria-controls="panel1a-content"
-            id="panel1a-header">
-            <IconButton
-              aria-label="clear"
-              sx={{ position: 'absolute', top: '5px', right: '6px' }}
-              // eslint-disable-next-line no-underscore-dangle
-              onClick={() => handleClearMovie(savedMovie._id)}>
-              <ClearIcon sx={{ fontSize: '16px' }} />
-            </IconButton>
+        <Accordion
+          key={savedMovie.imdbID}
+          sx={{
+            marginBottom: '10px',
+            boxShadow: 3
+          }}
+          disableGutters>
+          <StyledAccordionSummary>
             <CardMedia
               component="img"
               height="120px"
@@ -93,35 +86,39 @@ export const SavedMovieList = () => {
                 ({savedMovie.Year}), {savedMovie.Country}
               </Typography>
             </MovieDetailCard>
-          </AccordionSummary>
+          </StyledAccordionSummary>
           <AccordionDetails sx={{ padding: '9px' }}>
-            <CardContent
-              sx={{
-                display: 'flex',
-                justifyContent: 'space-between'
-              }}>
-              <Typography
-                variant="body1"
-                color="text.primary"
-                sx={{
-                  fontStyle: 'italic',
-                  fontSize: '1rem'
-                }}>
-                Comments...
-              </Typography>
-              <IconButton
-                aria-label="clear"
-                sx={{ alignSelf: 'flex-end' }}
-                // eslint-disable-next-line no-underscore-dangle
-                onClick={() => handleShowForm(index)}>
-                <DriveFileRenameOutlineIcon sx={{ fontSize: '16px' }} />
-              </IconButton>
-            </CardContent>
             <CardContent>
+              {/* eslint-disable-next-line no-underscore-dangle */}
+              <GetComments selectedMovie={savedMovie} showUserComments="true" />
+              <CardContent
+                sx={{
+                  display: 'flex',
+                  justifyContent: 'space-between',
+                  padding: '0px'
+                }}>
+                <IconButton
+                  aria-label="clear"
+                  sx={{ alignSelf: 'flex-end' }}
+                  // eslint-disable-next-line no-underscore-dangle
+                  onClick={() => handleClearMovie(savedMovie._id)}>
+                  <ClearIcon size="medium" />
+                </IconButton>
+                <IconButton
+                  aria-label="clear"
+                  sx={{ alignSelf: 'flex-end' }}
+                  // eslint-disable-next-line no-underscore-dangle
+                  onClick={() => handleShowForm(index)}>
+                  {showCommentInput[index]
+                    ? (
+                      <EditOffIcon size="medium" />
+                    ) : (
+                      <DriveFileRenameOutlineIcon size="medium" />)}
+                </IconButton>
+              </CardContent>
               {showCommentInput[index]
                 && (
-                  // eslint-disable-next-line no-underscore-dangle
-                  <AddComment selectedMovie={savedMovie._id} />
+                  <AddComment selectedMovie={savedMovie} />
                 )}
             </CardContent>
           </AccordionDetails>

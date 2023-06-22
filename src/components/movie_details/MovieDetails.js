@@ -1,7 +1,10 @@
 /* eslint-disable react/jsx-props-no-spreading */
 import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 import { styled } from '@mui/material/styles';
-import { CardContent, Typography, CardMedia, CardActions, Card, CardHeader, Collapse, IconButton, ThemeProvider, createTheme } from '@mui/material';
+import { CardContent, Typography, Button, CardMedia, CardActions, Card, CardHeader, Collapse, IconButton, ThemeProvider, createTheme } from '@mui/material';
+import DriveFileRenameOutlineIcon from '@mui/icons-material/DriveFileRenameOutline';
+import EditOffIcon from '@mui/icons-material/EditOff';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { useSelector, useDispatch } from 'react-redux';
 import Carousel from 'react-material-ui-carousel';
@@ -10,6 +13,7 @@ import location from 'reducers/location';
 import menus from 'reducers/menus';
 import { SaveMovie } from 'components/personal/SaveMovie';
 import { AddComment } from 'components/personal/AddComment';
+import { GetComments } from 'components/personal/GetComments';
 
 const ExpandMore = styled((props) => {
   const { expand, ...other } = props; // eslint-disable-line prefer-object-spread
@@ -43,7 +47,9 @@ export const MovieDetails = () => {
   const dispatch = useDispatch();
   const [expandedDetails, setExpandedDetails] = useState(false);
   const [expandedComments, setExpandedComments] = useState(false);
+  const [showCommentInput, setShowCommentInput] = useState(false);
   const selectedMovie = useSelector((store) => store.location.activeMovie);
+  const accessToken = useSelector((store) => store.user.accessToken);
 
   const handleExpandDetailsClick = () => {
     setExpandedDetails(!expandedDetails);
@@ -57,6 +63,10 @@ export const MovieDetails = () => {
     dispatch(location.actions.setActiveMovie(null));
     dispatch(menus.actions.toggleMoviePopup(false));
     dispatch(menus.actions.toggleHeaderMenu(true));
+  };
+
+  const handleShowForm = () => {
+    setShowCommentInput(!showCommentInput);
   };
 
   const styles = {
@@ -169,17 +179,31 @@ export const MovieDetails = () => {
               aria-expanded={expandedComments}
               sx={styles.expandStyle}
               aria-label="show more">
-              <Typography
-                variant="overline"
-                display="block"
-                sx={{
-                  fontSize: '0.85rem',
-                  color: '#008ca5',
-                  margin: 0
-                }}
-                gutterBottom>
-                Comments
-              </Typography>
+              {expandedComments
+                ? (
+                  <Typography
+                    variant="overline"
+                    display="block"
+                    sx={{
+                      fontSize: '0.85rem',
+                      color: '#008ca5',
+                      margin: 0
+                    }}
+                    gutterBottom>
+                    Hide reviews
+                  </Typography>
+                ) : (
+                  <Typography
+                    variant="overline"
+                    display="block"
+                    sx={{
+                      fontSize: '0.85rem',
+                      color: '#008ca5',
+                      margin: 0
+                    }}
+                    gutterBottom>
+                    Location reviews
+                  </Typography>)}
             </ExpandMore>
             <ExpandMore
               sx={{ marginLeft: '15px' }}
@@ -266,19 +290,42 @@ export const MovieDetails = () => {
                 alt={`Poster for ${selectedMovie.title}`} />
             </CardContent>
           </Collapse>
-
           <Collapse
             in={expandedComments}
             timeout="auto"
             unmountOnExit>
             <CardContent>
-              {selectedMovie.Comments && selectedMovie.Comments.map((comment) => (
-                <>
-                  <p>{comment.message}</p>
-                  <p>{comment.userName}</p>
-                </>
-              ))}
-              <AddComment selectedMovie={selectedMovie} />
+              {/* eslint-disable-next-line no-underscore-dangle */}
+              <GetComments selectedMovie={selectedMovie} showUserComments="false" />
+              {accessToken
+                ? (
+                  <div style={{ width: '100%', display: 'flex', justifyContent: 'flex-end' }}>
+                    <IconButton
+                      aria-label="clear"
+                      sx={{ alignSelf: 'flex-end' }}
+                      // eslint-disable-next-line no-underscore-dangle
+                      onClick={() => handleShowForm()}>
+                      {showCommentInput
+                        ? (
+                          <EditOffIcon size="large" />
+                        ) : (
+                          <DriveFileRenameOutlineIcon size="large" />)}
+                    </IconButton>
+                  </div>
+                ) : (
+                  <div style={{ width: '100%', display: 'flex', justifyContent: 'center' }}>
+                    <Link to="/user/login">
+                      <Button
+                        size="small"
+                        to="/user/login">
+                          Log in to review
+                      </Button>
+                    </Link>
+                  </div>
+                )}
+              {showCommentInput
+                && (
+                  <AddComment selectedMovie={selectedMovie} />)}
             </CardContent>
           </Collapse>
         </Card>

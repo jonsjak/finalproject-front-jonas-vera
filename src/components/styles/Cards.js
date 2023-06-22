@@ -25,6 +25,11 @@ export const SlidingCard = styled.div`
   background-color: white;
   padding: ${(props) => (props.personal ? '5px' : '20px')};
   animation: ${GoRight} 2.5s ease forwards;
+
+  @media (max-width: 768px) {
+    height: ${(props) => (props.personal && '400px')};
+    width: ${(props) => (props.personal && '300px')};
+  }
 `
 
 const GoLeft = keyframes`

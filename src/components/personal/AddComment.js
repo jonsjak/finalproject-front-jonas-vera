@@ -7,15 +7,20 @@ export const AddComment = ({ selectedMovie }) => {
   const [message, setMessage] = useState('');
   const dispatch = useDispatch();
   const accessToken = useSelector((store) => store.user.accessToken);
+  const name = useSelector((store) => store.user.userName);
 
   const handleSubmit = async () => {
+    const comment = {
+      message,
+      userName: name
+    }
     const options = {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
         Authorization: accessToken
       },
-      body: JSON.stringify({ message })
+      body: JSON.stringify(comment)
     };
     try {
       // eslint-disable-next-line no-underscore-dangle
@@ -24,7 +29,12 @@ export const AddComment = ({ selectedMovie }) => {
 
       if (data.success) {
         // eslint-disable-next-line no-underscore-dangle
-        dispatch(location.actions.addComment({ movieId: selectedMovie._id, message }));
+        dispatch(location.actions.addComment({ movieId: selectedMovie._id, comment }));
+        dispatch(location.actions.setComments({
+          // eslint-disable-next-line no-underscore-dangle
+          movieId: selectedMovie._id,
+          comments: [...selectedMovie.Comments, comment]
+        }));
       } else {
         console.log('comment not posted')
       }
@@ -40,12 +50,13 @@ export const AddComment = ({ selectedMovie }) => {
         boxSizing: 'border-box',
         display: 'flex',
         flexDirection: 'column',
-        justifyContent: 'center'
+        justifyContent: 'center',
+        marginTop: '30px'
       }}
       size="small">
       <TextField
         id="outlined-multiline-static margin-none"
-        label="Write your comment or review here..."
+        label="Your comment or review..."
         multiline
         rows={3}
         size="small"

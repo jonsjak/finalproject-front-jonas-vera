@@ -38,6 +38,10 @@ export const MenuBackground = styled.div`
   background: linear-gradient(to right, #68a0d6 0%,#008ca5 100%); 
   height: 110vh;
   transform: rotate(-7deg);
+  
+    @media (max-width: 768px) {
+      display: none;
+    }
 `
 
 export const LoaderBackground = styled.div`
