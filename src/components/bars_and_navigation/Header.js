@@ -8,7 +8,9 @@ import { CameraLogo } from 'components/styles/Images';
 import { HeaderContainer } from 'components/styles/Containers';
 import { SmallMenuText } from 'components/styles/Text';
 import IconButton from '@mui/material/IconButton';
+import { useMediaQuery } from 'react-responsive'
 import logo from '../../images/camera-logo-new4.png';
+import logoSmall from '../../images/camera-logo-small.png'
 
 const StyledIconButton = styled((props) => (
   <IconButton aria-label="clear" {...props} />
@@ -34,6 +36,8 @@ export const Header = () => {
   const dispatch = useDispatch();
   const showHeader = useSelector((store) => store.menus.headerMenuShowing);
 
+  const isMobile = useMediaQuery({ query: '(max-width: 417px)' })
+
   const handleShowMenu = () => {
     dispatch(menus.actions.toggleHeaderMenu(true));
   };
@@ -44,7 +48,7 @@ export const Header = () => {
         ? (
           <Link to="/">
             <CameraLogo
-              src={logo}
+              src={isMobile ? logoSmall : logo}
               alt="logo" />
           </Link>
         ) : (
