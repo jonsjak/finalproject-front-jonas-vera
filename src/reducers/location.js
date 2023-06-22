@@ -70,8 +70,16 @@ const location = createSlice({
     removeSavedMovie: (store, action) => {
       const userIdRemove = action.payload.userIdRemove;
       const _id = action.payload._id;
-    
+
       const updatedMovies = store.movies.map((movie) => {
+        if (movie._id === _id) {
+          const newLikedBy = movie.LikedBy.filter((id) => id !== userIdRemove);
+          return { ...movie, LikedBy: newLikedBy };
+        }
+        return movie;
+      });
+    
+      const updatedSavedMovies = store.savedmovies.map((movie) => {
         if (movie._id === _id) {
           const newLikedBy = movie.LikedBy.filter((id) => id !== userIdRemove);
           return { ...movie, LikedBy: newLikedBy };
@@ -86,12 +94,12 @@ const location = createSlice({
         };
         store.activeMovie = updatedActiveMovie;
       }
-    
       store.movies = updatedMovies;
+      store.savedmovies = updatedSavedMovies;
     },
     // Show all saved movies in the savedmovies array in store      
     setAllSavedMovies: (store, action) => {
-      store.savedmovies = action.payload;
+      store.savedmovies = [...action.payload];
     },
     // Add new movie to the movies array
     addMovie: (store, action) => {
@@ -112,23 +120,57 @@ const location = createSlice({
     },
     // Work in progress - add a comment to the Comments property array in a movie
     addComment: (store, action) => {
-      const { movieId, message } = action.payload;
-    
-      const updatedMovies = store.movies.map((movie) => {
+      const { movieId, comment } = action.payload;
+
+      const updatedSavedMovies = store.savedmovies.map((movie) => {
         if (movie._id === movieId) {
-          const newComments = [...movie.Comments, message];
+          const newComments = [...movie.Comments, comment];
           return { ...movie, Comments: newComments };
         }
         return movie;
       });
+
+      let updatedActiveMovie = store.activeMovie;
+
+      if (store.activeMovie && store.activeMovie._id === movieId) {
+        updatedActiveMovie = {
+          ...store.activeMovie,
+          Comments: [...store.activeMovie.Comments, comment]
+        };
+      }
     
-      const updatedActiveMovie = { ...store.activeMovie, Comments: [...store.activeMovie.Comments, message] };
+      return {
+        ...store,
+        savedmovies: updatedSavedMovies,
+        activeMovie: updatedActiveMovie
+      };
+    },    
+    setComments: (store, action) => {
+      const { movieId, comments } = action.payload;
     
-      store.movies = updatedMovies;
-      store.activeMovie = updatedActiveMovie;
-    },
+      const updatedSavedMovies = store.savedmovies.map((movie) => {
+        if (movie._id === movieId) {
+          return { ...movie, Comments: comments };
+        }
+        return movie;
+      });
+
+      let updatedActiveMovie = store.activeMovie;
+
+      if (store.activeMovie && store.activeMovie._id === movieId) {
+        updatedActiveMovie = { ...store.activeMovie, Comments: comments };
+      }
+
+      return {
+        ...store,
+        savedmovies: updatedSavedMovies,
+        activeMovie: updatedActiveMovie,
+      };
+    }
   }
 });
+
+
 
 // Thunk for fetching PUBLIC movies
 export const fetchPublicMovies = (movieStartCoordinates) => async (dispatch) => {
@@ -255,14 +297,19 @@ export const deleteSavedMovieFetch = (userId, accessToken, _id) => {
       .then((res) => res.json())
       .then((data) => {
         batch(() => {
-          dispatch(location.actions.removeSavedMovie(userId));
+          dispatch(location.actions.removeSavedMovie({userIdRemove: userId, _id}));
           
-            const { activeMovie } = getState().location;
-            const updatedActiveMovie = {
+          const { activeMovie } = getState().location;
+          let updatedActiveMovie = null;
+          
+          if (activeMovie) {
+            updatedActiveMovie = {
               ...activeMovie,
               LikedBy: activeMovie.LikedBy.filter((id) => id !== userId),
             };
-            dispatch(location.actions.setActiveMovie(updatedActiveMovie));
+          }
+          
+          dispatch(location.actions.setActiveMovie(updatedActiveMovie));
           
           dispatch(getSavedMoviesFetch(accessToken));
         });
@@ -273,8 +320,6 @@ export const deleteSavedMovieFetch = (userId, accessToken, _id) => {
       });
   };
 };
-
-
 
 
 export default location;

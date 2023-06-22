@@ -64,6 +64,7 @@ export const MovieMap = () => {
         center={startingPosition}
         maxBounds={outerBounds}
         maxBoundsViscosity={1}
+        scrollWheelZoom={false}
         zoom={2}
         minZoom={3}
         zoomStart={2}>

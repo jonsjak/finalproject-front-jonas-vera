@@ -17,9 +17,7 @@ html {
   scroll-behavior: smooth;
 }
 
-input[type="file"] {
-  display: none;
-}
+/* LEAFLET */
 
 .leaflet-container a.leaflet-popup-close-button {
   display: none;
@@ -99,7 +97,32 @@ input[type="file"] {
   padding: 5px 5px 10px 5px;
 }
 
+/* INPUT */
 
+input[type="file"] {
+  display: none;
+}
+
+/* SCROLL BAR */
+
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f1f1; 
+}
+ 
+::-webkit-scrollbar-thumb {
+  background: #888; 
+}
+
+
+::-webkit-scrollbar-thumb:hover {
+  background: #555; 
+}
+
+/* MENU */
 @import url(https://fonts.googleapis.com/css?family=Arimo:400,400italic,700,700italic);
 
 main {
@@ -357,25 +380,6 @@ nav {
   transition: all 1s ease;
 }
 
-::-webkit-scrollbar {
-  width: 10px;
-}
-
-/* Track */
-::-webkit-scrollbar-track {
-  background: #f1f1f1; 
-}
- 
-/* Handle */
-::-webkit-scrollbar-thumb {
-  background: #888; 
-}
-
-/* Handle on hover */
-::-webkit-scrollbar-thumb:hover {
-  background: #555; 
-}
-
 @media (min-width: 480px) {
   .nav-list {
     display: block;
@@ -399,12 +403,31 @@ nav {
     top: 16px;
     right: -17px;
   }
+
+  .leaflet-touch .leaflet-bar a {
+    padding: 0px;
+  }
+
+  .leaflet-left {
+    left: -8px;
+  }
+
   .leaflet-top {
-    top: 89px;
+    top: 300px;
+  }
+
+  .leaflet-touch .leaflet-control-zoom-out {
+    font-size: 30px;
   }
   
-  .leaflet-left {
-    left: -1px;
+  .leaflet-touch .leaflet-control-zoom-in, .leaflet-touch .leaflet-control-zoom-out {
+    font-size: 30px;
   }
+
+  .sidebar-list {
+    bottom: -194px;
+    right: -19px;
+}
+  
 }
 

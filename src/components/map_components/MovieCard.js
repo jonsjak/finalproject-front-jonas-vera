@@ -12,7 +12,7 @@ export const MovieCard = ({ movie, handleOnReadClick, handleOnClearClick }) => {
           sx={{ position: 'absolute', top: '2px', right: '2px' }}
           aria-label="clear"
           onClick={() => handleOnClearClick(movie)}>
-          <ClearIcon sx={{ fontSize: '16px', color: 'white' }} />
+          <ClearIcon sx={{ color: 'white' }} />
         </IconButton>
         <CardMedia
           component="img"

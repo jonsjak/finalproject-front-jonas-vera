@@ -91,7 +91,11 @@ export const PersonalPage = () => {
           onClick={() => handleOnClearClick()}>
           <ClearIcon sx={{ fontSize: '16px' }} />
         </IconButton>
-        <CardContent sx={{ paddingTop: '0px', height: '460px' }}>
+        <CardContent
+          sx={{
+            paddingTop: '0px',
+            height: '460px'
+          }}>
           <Tabs
             value={value}
             onChange={handleChange}

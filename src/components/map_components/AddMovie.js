@@ -50,7 +50,7 @@ export const AddMovie = () => {
             setSearchResults(json.Search)
           });
       } else {
-        setSearchResults([]); // visa lista
+        setSearchResults([]);
       }
     }, 1000);
 
@@ -92,23 +92,31 @@ export const AddMovie = () => {
         position={markerPosition}
         icon={filmMarker}
         eventHandlers={{
-            click: () => {
-              dispatch(menus.actions.toggleHeaderMenu(false));
-            },
+          click: () => {
+            dispatch(menus.actions.toggleHeaderMenu(false));
+          },
         }}>
         {!popupHidden && (    
           <Popup>
             <Card sx={{ width: 301, height: 500 }}>
               <CardContent>
                 <IconButton
-                  sx={{ position: 'absolute', top: '2px', right: '2px' }}
+                  sx={{
+                    position: 'absolute',
+                    top: '2px',
+                    right: '2px' 
+                  }}
                   aria-label="clear"
                   onClick={() => handleOnClearClick()}>
-                <ClearIcon sx={{ fontSize: '16px' }} />
+                <ClearIcon />
               </IconButton>
                 {userInput ? null : (
                   <>
-                  <Typography gutterBottom variant="h2" component="div" sx={{ fontSize: '2.2rem' }}>
+                  <Typography
+                    gutterBottom
+                    variant="h2"
+                    component="div"
+                    sx={{ fontSize: '2.2rem' }}>
                     Want to add a location?
                   </Typography>
                   <TextField
