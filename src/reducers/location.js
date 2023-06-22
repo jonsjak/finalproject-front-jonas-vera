@@ -203,6 +203,7 @@ export const fetchPublicMovies = (movieStartCoordinates) => async (dispatch) => 
 
 // Thunk for fetching PRIVATE movies
 export const fetchPrivateMovies = (accessToken) => async (dispatch) => {
+  dispatch(location.actions.setLoading(true))
   //Emptying public movies array in order for it to be replaces by private movies array
   dispatch(location.actions.setStartMovies([]))
   dispatch(location.actions.setStartMovieCoordinates([]));
@@ -227,6 +228,7 @@ export const fetchPrivateMovies = (accessToken) => async (dispatch) => {
         console.log('no movie location');
       }
     }
+    setTimeout(() => dispatch(location.actions.setLoading(false)), 700)
   } catch (error) {
     console.log(error);
   }
@@ -286,7 +288,7 @@ export const savedMovieFetch = (userId, accessToken, activeMovie) => {
 // Thunk for deleting a saved movie
 //Deleting a user's id from the LikedBy property in a movie
 export const deleteSavedMovieFetch = (userId, accessToken, _id) => {
-  return (dispatch, getState) => {
+  return (dispatch) => {
     fetch(`https://movie-globe-backend-djwdbjbdsa-lz.a.run.app/movies/${_id}`, {
       method: 'DELETE',
       headers: {
@@ -298,18 +300,6 @@ export const deleteSavedMovieFetch = (userId, accessToken, _id) => {
       .then((data) => {
         batch(() => {
           dispatch(location.actions.removeSavedMovie({userIdRemove: userId, _id}));
-          
-          const { activeMovie } = getState().location;
-          let updatedActiveMovie = null;
-          
-          if (activeMovie) {
-            updatedActiveMovie = {
-              ...activeMovie,
-              LikedBy: activeMovie.LikedBy.filter((id) => id !== userId),
-            };
-          }
-          
-          dispatch(location.actions.setActiveMovie(updatedActiveMovie));
           
           dispatch(getSavedMoviesFetch(accessToken));
         });

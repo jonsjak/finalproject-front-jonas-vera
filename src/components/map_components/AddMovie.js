@@ -8,6 +8,8 @@ import menus from 'reducers/menus'
 import { theme } from 'components/styles/muiTheme';
 import filmIcon from '../../images/movie-marker5-01-01.png'
 import { AddMovieForm } from './AddMovieForm';
+import { v4 as uuidv4 } from 'uuid';
+import { Player } from '@lottiefiles/react-lottie-player';
 
 export const AddMovie = () => {
   const dispatch = useDispatch();
@@ -124,7 +126,7 @@ export const AddMovie = () => {
                     label="Search movie on OMDB"
                     type="search"
                     variant="standard"
-                    sx={{ width: '70%' }}
+                    sx={{ width: '100%' }}
                     value={(searchValue)}
                     onChange={handleMovieSearch} />
                   </>
@@ -136,11 +138,18 @@ export const AddMovie = () => {
                         type="button"
                         sx={{ textAlign: 'left' }}
                         onClick={() => addMovieOnClick(result.Title)}
-                        key={result.imdbID}>
+                        key={uuidv4()}>
                         {result.Title}
                       </Button>
                     ))}
                   </List>
+                )}
+                {!userInput && (
+                  <Player
+                    src="https://assets4.lottiefiles.com/private_files/lf30_yxwmprgm.json"
+                    style={{ opacity: '0.7' }}
+                    loop
+                    autoplay />
                 )}
                 {userInput
                   && <AddMovieForm

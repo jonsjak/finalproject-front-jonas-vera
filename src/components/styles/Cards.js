@@ -27,8 +27,8 @@ export const SlidingCard = styled.div`
   animation: ${GoRight} 2.5s ease forwards;
 
   @media (max-width: 768px) {
-    height: ${(props) => (props.personal && '400px')};
-    width: ${(props) => (props.personal && '300px')};
+    height: ${(props) => (props.personal && '80vh')};
+    width: ${(props) => (props.personal && '100%')};
   }
 `
 
@@ -51,7 +51,7 @@ export const AboutCard = styled.div`
   left: 50%;
   transform: translate(-50%, -50%);
   box-shadow: rgba(0, 0, 0, 0.2) 0px 2px 1px -1px;
-  z-index: 999;
+  z-index: 1001;
   border-radius: 4px;
   width: 800px;
   background: white;
@@ -59,16 +59,7 @@ export const AboutCard = styled.div`
   flex-direction: column;
   
   @media (max-width: 800px) {
-    width: 400px;
-    top: 200px;
-  }
-
-  @media (max-width: 400px) {
-    width: 300px;
-  }
-
-  @media (max-width: 300px) {
-    width: 250px;
+    width: 90%;
   }
 `;
 

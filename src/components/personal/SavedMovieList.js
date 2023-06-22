@@ -34,7 +34,7 @@ export const SavedMovieList = () => {
   // If a new movie is saved a new render will happen
   useEffect(() => {
     dispatch(getSavedMoviesFetch(accessToken));
-  }, [accessToken, dispatch, savedMoviesCollection.length]);
+  }, [accessToken, dispatch]);
 
   // Deleting a saved movie from the database and the redux store
   const handleClearMovie = (_id) => {

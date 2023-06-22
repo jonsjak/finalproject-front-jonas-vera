@@ -26,7 +26,7 @@ html {
 .leaflet-container {
   width: 100%;
   height: 100vh;
-  background: #2D3142;
+  background: #dcdcdc;
 }
 
 .leaflet-control-attribution.leaflet-control {
@@ -78,7 +78,7 @@ html {
 
 .leaflet-bar a:hover, .leaflet-bar a:focus {
   background-color: transparent;
-  color: #008ca5;
+  color: #f08353;
 }
 
 .leaflet-touch .leaflet-bar {
@@ -144,7 +144,7 @@ main {
   top: 0;
   z-index: 1;
   right: -459px;
-  background-color: #EF8354;
+  background-color: #2d3142;
   transition: transform .7s ease-in-out;
   -moz-transition: transform .7s ease-in-out;
   -ms-transition: transform .7s ease-in-out;
@@ -174,7 +174,16 @@ main {
   height: 5px;
   width: 50px;
   background-color: #2D3142;
-  margin: 10px auto;
+}
+
+.bar-text {
+  display: block;
+  width: 50px;
+  margin: auto;
+  height: 25px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .button {
@@ -209,6 +218,41 @@ main {
 
 .middle {
   margin: 0 auto;
+  transition: all .25s ease-in-out;
+  -moz-transition: all .25s ease-in-out;
+  -webkit-transition: all .25s  ease-in-out;
+}
+
+.top {
+  margin: 10px auto 0 auto;
+}
+
+.bottom {
+  margin: 0 auto 10px auto;
+}
+
+.top-mobile {
+  margin: 10px auto;
+}
+
+.top-small {
+  margin: 0 auto;
+}
+
+.bottom-small {
+  margin: 0 auto;
+}
+
+.bottom-mobile {
+  margin: 10px auto;
+}
+
+.bar {
+  -webkit-transition: all .7s ease;
+  -moz-transition: all .7s ease;
+  -ms-transition: all .7s ease;
+  -o-transition: all .7s ease;
+  transition: all .7s ease;
 }
 
 .bar {
@@ -228,7 +272,7 @@ main {
   transition: all .7s ease;
 }
 
-.button.active .top {
+.button.active .top, .button.active .top-mobile  {
   -webkit-transform: translateY(15px) rotateZ(45deg);
   -moz-transform: translateY(15px) rotateZ(45deg);
   -ms-transform: translateY(15px) rotateZ(45deg);
@@ -236,7 +280,7 @@ main {
   transform: translateY(15px) rotateZ(45deg);
 }
 
-.button.active .bottom {
+.button.active .bottom, .button.active .bottom-mobile {
   -webkit-transform: translateY(-15px) rotateZ(-45deg);
   -moz-transform: translateY(-15px) rotateZ(-45deg);
   -ms-transform: translateY(-15px) rotateZ(-45deg);
@@ -245,7 +289,7 @@ main {
 }
 
 .button.active .middle {
-  width: 0;
+  opacity: 0;
 }
 
 .move-to-left {
@@ -401,7 +445,7 @@ nav {
 @media (max-width: 768px) {
   .button {
     top: 16px;
-    right: -17px;
+    right: -28px;
   }
 
   .leaflet-touch .leaflet-bar a {
@@ -409,11 +453,11 @@ nav {
   }
 
   .leaflet-left {
-    left: -9px;
+    left: -10px;
   }
 
   .leaflet-top {
-    top: 300px;
+    top: 20%;
   }
 
   .leaflet-touch .leaflet-control-zoom-out {
@@ -427,7 +471,6 @@ nav {
   .sidebar-list {
     bottom: -194px;
     right: -19px;
-}
-  
+  }
 }
 

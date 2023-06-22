@@ -20,7 +20,7 @@ export const InputLabel = styled.label`
   outline: 0;
   border: 0;
   margin: 0;
-  margin-bottom: 15.600px;
+  margin-bottom: 3px;
   border-radius: 0;
   padding: 0;
   cursor: pointer;

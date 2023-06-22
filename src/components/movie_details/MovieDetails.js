@@ -29,15 +29,15 @@ const ExpandMore = styled((props) => {
 export const colorTheme = createTheme({
   palette: {
     primary: {
-      light: '#757ce8',
-      main: '#008ca5',
-      dark: '#037588',
+      light: '#ef9974',
+      main: '#f08353',
+      dark: '#e26d3b',
       contrastText: '#fff'
     },
     secondary: {
       light: '#ff7961',
       main: '#035f6f',
-      dark: '#ba000d',
+      dark: '#f08353',
       contrastText: '#000'
     }
   }
@@ -85,13 +85,13 @@ export const MovieDetails = () => {
     expandStyle: {
       borderRadius: '6px',
       '&:hover': {
-        background: '#008ca50a'
+        background: '#f0835312'
       },
       '&:active': {
         backgroundColor: 'transparent'
       },
       '.MuiTouchRipple-child': {
-        backgroundColor: '#008ca559'
+        backgroundColor: '#f0835359'
       }
     }
   }
@@ -186,7 +186,7 @@ export const MovieDetails = () => {
                     display="block"
                     sx={{
                       fontSize: '0.85rem',
-                      color: '#008ca5',
+                      color: '#f08353',
                       margin: 0
                     }}
                     gutterBottom>
@@ -198,7 +198,7 @@ export const MovieDetails = () => {
                     display="block"
                     sx={{
                       fontSize: '0.85rem',
-                      color: '#008ca5',
+                      color: '#f08353',
                       margin: 0
                     }}
                     gutterBottom>

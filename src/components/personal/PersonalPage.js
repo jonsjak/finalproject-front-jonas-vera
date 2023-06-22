@@ -56,8 +56,8 @@ export const PersonalPage = () => {
 
   // If not logged in personal page can't be accessed
   useEffect(() => {
-    if (!accessToken) {
-      navigate('/user/login')
+    if (!accessToken && navigate && !window.location.pathname.includes('/user/login')) {
+      navigate('/user/login');
     }
   }, [accessToken, navigate]);
 
@@ -89,7 +89,7 @@ export const PersonalPage = () => {
           sx={{ alignSelf: 'flex-end' }}
           aria-label="clear"
           onClick={() => handleOnClearClick()}>
-          <ClearIcon sx={{ fontSize: '16px' }} />
+          <ClearIcon size="medium" />
         </IconButton>
         <CardContent
           sx={{
@@ -101,7 +101,7 @@ export const PersonalPage = () => {
             onChange={handleChange}
             aria-label="icon label tabs">
             <Tab label="SAVED MOVIES" />
-            <Tab label="PERSONAL INFO" />
+            <Tab label="PERSONAL" />
           </Tabs>
           {renderTabContent()}
         </CardContent>

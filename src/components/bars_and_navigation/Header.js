@@ -4,25 +4,29 @@ import { Link } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import menus from 'reducers/menus';
 import { styled } from '@mui/material/styles';
-import { CameraLogo, GlobeLogo } from 'components/styles/Images';
-import { DiagonalBox, HeaderContainer } from 'components/styles/Containers';
-import { MenuText } from 'components/styles/Text';
+import { CameraLogo } from 'components/styles/Images';
+import { HeaderContainer } from 'components/styles/Containers';
+import { SmallMenuText } from 'components/styles/Text';
 import IconButton from '@mui/material/IconButton';
-import logo from '../../images/movie-logo6.png';
-import globe from '../../images/173986775earth-spinning-rotating-animation-15-2.gif';
+import logo from '../../images/camera-logo-new4.png';
 
 const StyledIconButton = styled((props) => (
   <IconButton aria-label="clear" {...props} />
 ))(() => ({
   position: 'absolute',
-  left: '15px',
-  top: '15px',
+  left: '20px',
+  top: '20px',
   zIndex: '999',
   borderRadius: '0px',
   padding: '0px',
+  width: 'auto',
+  margin: '0 auto',
+  display: 'flex',
+  flexDirection: 'column',
   '@media (max-width: 780px)': {
     left: '0px',
-    top: '0px'
+    top: '0px',
+    background: '#dcdcdc'
   }
 }));
 
@@ -38,20 +42,20 @@ export const Header = () => {
     <HeaderContainer>
       {showHeader
         ? (
-          <>
-            <DiagonalBox />
-            <Link to="/">
-              <CameraLogo
-                src={logo}
-                alt="logo" />
-              <GlobeLogo
-                src={globe}
-                alt="globe loader" />
-            </Link>
-          </>
+          <Link to="/">
+            <CameraLogo
+              src={logo}
+              alt="logo" />
+          </Link>
         ) : (
           <StyledIconButton onClick={() => handleShowMenu()}>
-            <MenuText>Menu</MenuText>
+            <div className="bar top-small" />
+            <div className="bar-text middle">
+              <SmallMenuText className="middle">
+              Menu
+              </SmallMenuText>
+            </div>
+            <div className="bar bottom-small" />
           </StyledIconButton>
         )}
     </HeaderContainer>
