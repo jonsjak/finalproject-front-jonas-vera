@@ -60,7 +60,7 @@ export const AboutCard = styled.div`
   
   @media (max-width: 800px) {
     width: 400px;
-    top: 414px;
+    top: 200px;
   }
 
   @media (max-width: 400px) {

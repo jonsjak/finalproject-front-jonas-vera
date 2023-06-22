@@ -26,6 +26,10 @@ export const IconMenuBar = styled.menu`
   justify-content: flex-end;
   padding: 0px;
   height: 110vh;
+
+  @media (max-width: 768px) {
+    bottom: 34px;
+  }
 `
 
 export const MenuBackground = styled.div`
