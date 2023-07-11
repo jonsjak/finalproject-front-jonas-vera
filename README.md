@@ -16,7 +16,7 @@ react-material-ui-carousel
 
 ### Watch it live!
 Find the deployed version at Netlify:
-https://unique-hummingbird-095311.netlify.app/](https://movie-globe.netlify.app/
+https://movie-globe.netlify.app/
 
 #### The app also comes with a backend counterpart
 Deploy: https://movie-globe-backend-djwdbjbdsa-lz.a.run.app/
